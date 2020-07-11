@@ -28,7 +28,7 @@ public class point
     public float neighbourFriction = 0.3f;
     private float friction = 1.0f;
     public float frictionForce;
-    public float average;
+    public float forceApplied;
 
     private float maxHeight = 1.0f;
 
@@ -67,9 +67,9 @@ public class point
         for (int i = 0; i < neighbours.Length;i++){
             totalForce += neighbours[i].y - this.y;
         }
-        average = totalForce / neighbours.Length;
-        this.addForce(average * neighbourFriction);
-        this.addForce(curDeceleration);
+        forceApplied = (totalForce / neighbours.Length) * neighbourFriction;
+        //apply gravity
+        forceApplied += curDeceleration;
         frictionForce = 0.5f * Mathf.Pow(this.acceleration,2.0f) * friction;
         float frictionDirection = 1.0f;
         if (this.speed < 0.0f){
@@ -78,7 +78,9 @@ public class point
         if (this.speed > 0.0f){
             frictionDirection = 1.0f;
         }
-        this.addForce(-frictionForce * frictionDirection);
+        //apply friction
+        forceApplied += (-frictionForce * frictionDirection);
+        this.addForce(forceApplied);
         this.speed += this.acceleration;
         this.acceleration = this.acceleration * drag;
         this.y += this.acceleration;
