@@ -65,6 +65,8 @@ public class potwater : MonoBehaviour
             bubbles[i] = createBubble(i);
         }
         pointField[4,4].addForce(6.0f);
+        
+        pointField[16,4].addForce(8.0f);
         heightMap = new Texture2D(numFieldPoints, numFieldPoints);
     }
 
@@ -173,13 +175,13 @@ public class potwater : MonoBehaviour
         //give these values to our shader
         this.GetComponent<Renderer>().material.SetFloat("xRad", xRad);
         this.GetComponent<Renderer>().material.SetFloat("zRad", zRad);
-        //count = count % 360;
-        this.GetComponent<Renderer>().material.SetFloat("time", count);
+        this.GetComponent<Renderer>().material.SetFloat("seperation", segSize);
+        this.GetComponent<Renderer>().material.SetFloat("totalSize", segSize * numSegs);
         this.GetComponent<Renderer>().material.SetVector("center", center2);
         this.GetComponent<Renderer>().material.SetTexture("_MainTex", heightMap);
-        this.GetComponent<Renderer>().material.SetVector("spoon_end", spoonEnd2);
         this.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
         this.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
+        this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
         //for each bubble, set the properties
         for (int i = 0; i < numBubbles;i++){
             bubbles[i].GetComponent<bubble>().zRadius = zRad;
