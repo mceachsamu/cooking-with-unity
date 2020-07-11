@@ -69,7 +69,7 @@ Shader "Unlit/water"
                     float4 height = tex2Dlod (_MainTex, float4(float2(v.uv.x,v.uv.y),0,0));
                     v.vertex.y = height.r;
 
-                    float step = seperation;
+                    float step = 0.05;
                     float texStep = seperation / totalSize;
                     float4 botLeft = tex2Dlod (_MainTex, float4(float2(v.uv.x - texStep,v.uv.y-texStep),0,0));
                     
@@ -80,10 +80,16 @@ Shader "Unlit/water"
                     float4 topLeft = tex2Dlod (_MainTex, float4(float2(v.uv.x-texStep,v.uv.y + texStep),0,0));
 
                     float4 vec1 =  float4(-step,topLeft.r,step,0) - float4(-step,botLeft.r, -step,0);
-
                     float4 vec2 =  float4(step,topRight.r,step,0) - float4(-step,botLeft.r, -step,0);
 
-                    o.worldNormal =  normalize(cross(vec1,vec2));
+                    
+                    float4 vec3 =  float4(-step,topLeft.r,step,0) - float4(-step,botLeft.r, -step,0);
+                    float4 vec4 =  float4(step,botRight.r,step,0) - float4(-step,botLeft.r, -step,0);
+
+                    float3 norm1 = normalize(cross(vec1,vec2));
+                    float3 norm2 = normalize(cross(vec3,vec4));
+
+                    o.worldNormal =  (norm1 + norm2)/ 2.0;
 
                 #endif
                 
@@ -150,7 +156,7 @@ Shader "Unlit/water"
                 float alpha = getAlpha(i);
                 
                 float shading = getShading(i);
-                if(shading < 0.7){
+                if(shading < 0.9){
                     col = secondaryColor;
                 }
                 else{

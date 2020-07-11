@@ -36,8 +36,8 @@ public class potwater : MonoBehaviour
     private GameObject[] bubbles;
 
 
-    private Vector4 primaryCol = new Vector3(1.0f,0.349f,0.0f);
-    private Vector4 secondaryCol = new Vector3(1.0f,0.643f,0.450f);
+    private Vector4 primaryCol = new Vector3(223.0f/255.0f,0.0f/255.0f,79.0f/255.0f);
+    private Vector4 secondaryCol = new Vector3(255.0f/255,110.0f/255.0f,64.0f/255.0f);
     // Start is called before the first frame update
     public int numFieldPoints = 10;
     public float speration = 1;
@@ -66,7 +66,7 @@ public class potwater : MonoBehaviour
         }
         pointField[4,4].addForce(6.0f);
         
-        pointField[16,4].addForce(8.0f);
+        pointField[9,4].addForce(8.0f);
         heightMap = new Texture2D(numFieldPoints, numFieldPoints);
     }
 

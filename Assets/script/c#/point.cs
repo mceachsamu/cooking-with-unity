@@ -17,7 +17,7 @@ public class point
 
     private float mass = 3.0f;
 
-    private float deceleration = -0.001f;
+    private float deceleration = -0.00001f;
     public float curDeceleration = -0.00f;
 
     public float drag = 0.95f;
@@ -26,7 +26,7 @@ public class point
     public float speed = 0.0f;
 
     public float neighbourFriction = 0.3f;
-    private float friction = 1.0f;
+    private float friction = 0.5f;
     public float frictionForce;
     public float forceApplied;
 
@@ -65,12 +65,12 @@ public class point
         }
         float totalForce = 0.0f;
         for (int i = 0; i < neighbours.Length;i++){
-            totalForce += neighbours[i].y - this.y;
+            float difference = neighbours[i].y - this.y;
+            totalForce += difference;
         }
-        forceApplied = (totalForce / neighbours.Length) * neighbourFriction;
-        //apply gravity
-        forceApplied += curDeceleration;
-        frictionForce = 0.5f * Mathf.Pow(this.acceleration,2.0f) * friction;
+        this.forceApplied = (totalForce / neighbours.Length) * neighbourFriction;
+        
+        this.frictionForce = 0.5f * Mathf.Pow(this.acceleration,2.0f) * friction;
         float frictionDirection = 1.0f;
         if (this.speed < 0.0f){
             frictionDirection = -1.0f;
@@ -79,8 +79,13 @@ public class point
             frictionDirection = 1.0f;
         }
         //apply friction
-        forceApplied += (-frictionForce * frictionDirection);
-        this.addForce(forceApplied);
+        this.forceApplied += (-this.frictionForce * frictionDirection);
+        if (Mathf.Abs(this.forceApplied) < this.curDeceleration + 0.5f){
+            this.curDeceleration = this.curDeceleration * 0.001f;
+        }
+        //apply gravity
+        this.forceApplied += this.curDeceleration;
+        this.addForce(this.forceApplied);
         this.speed += this.acceleration;
         this.acceleration = this.acceleration * drag;
         this.y += this.acceleration;
