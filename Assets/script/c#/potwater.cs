@@ -64,9 +64,9 @@ public class potwater : MonoBehaviour
         for (int i = 0; i < numBubbles;i++){
             bubbles[i] = createBubble(i);
         }
-        pointField[4,4].addForce(6.0f);
+        pointField[5,5].addForce(3.0f);
         
-        pointField[9,4].addForce(8.0f);
+        pointField[20,20].addForce(5.0f);
         heightMap = new Texture2D(numFieldPoints, numFieldPoints);
     }
 

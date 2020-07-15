@@ -17,16 +17,16 @@ public class point
 
     private float mass = 3.0f;
 
-    private float deceleration = -0.00001f;
+    private float deceleration = -0.1f;
     public float curDeceleration = -0.00f;
 
-    public float drag = 0.95f;
+    public float drag = 0.97f;
     public float acceleration = 0.0f;
 
     public float speed = 0.0f;
 
-    public float neighbourFriction = 0.3f;
-    private float friction = 0.5f;
+    public float neighbourFriction = 0.1f;
+    private float friction = 0.8f;
     public float frictionForce;
     public float forceApplied;
 
