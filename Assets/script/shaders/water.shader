@@ -184,16 +184,14 @@ Shader "Unlit/water"
                 float alpha = getAlpha(i);
                 
                 float shading = getShading(i);
-                if(shading < 0.9){
+                if(shading < 0.98){
                     col = secondaryColor;
                 }
                 else{
                     col = col* 1.0;
                 }
-                col = col * shading;
+               // col = col * shading;
                 col.a = alpha;
-
-
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }

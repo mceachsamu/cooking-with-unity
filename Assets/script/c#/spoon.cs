@@ -10,28 +10,41 @@ public class spoon : MonoBehaviour
 
     public GameObject lid;
 
+    //reference the water we are currently stirring
+    public GameObject water;
+
     //the dimensions of the lid
     Vector3 center;
 
     public GameObject Light;
     float xRad;
     float zRad;
+    //the multiplier for the force this spoon exhubits on water
+    public float forceMultiplier = 2.0f;
+
+    private int count = 0;
+
+    private Vector3 previousPosition;
     // Start is called before the first frame update
     void Start()
     {
         origin = this.transform.position;
+        previousPosition = origin;
         rotation = this.transform.rotation;
-       // center =  lid.GetComponent<lid>().transform.position;
-       // xRad = lid.GetComponent<lid>().lidXradius;
-       // zRad = lid.GetComponent<lid>().lidZradius;
+    }
+
+    private void addForceToWater(){
+        float force = (this.transform.position - previousPosition).magnitude;
+        water.GetComponent<potwater>().AddForceToWater(this.transform, force * forceMultiplier);
     }
 
     // Update is called once per frame
     void Update()
     {
+        this.addForceToWater();
         if (Input.GetMouseButton(1)){
         Vector3 mousePos = Input.mousePosition;
-        Vector3 flatPosition = new Vector3(mousePos.x/1000, this.transform.position.y, mousePos.y/1000);
+        Vector3 flatPosition = new Vector3((mousePos.x-500)/800, this.transform.position.y, mousePos.y/800);
         transform.localPosition = flatPosition;
         transform.rotation = new Quaternion(0.69f, 0.002f, 0.0f,0.72f);
         }else{
@@ -39,5 +52,12 @@ public class spoon : MonoBehaviour
             transform.rotation = rotation;
         }
         this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
+        
+        //only sample the position every 3 frames
+        if (count % 3 == 0) {
+            previousPosition = this.transform.position;
+        }
+        count++;
     }
+
 }

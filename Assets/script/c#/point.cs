@@ -7,9 +7,6 @@ public class point
     //position of point in world
     public float y;
 
-    public float x;
-
-    public float z;
     //the neighbouring points
     public  point[] neighbours;
 
@@ -26,7 +23,7 @@ public class point
     public float speed = 0.0f;
 
     public float neighbourFriction = 0.1f;
-    private float friction = 0.8f;
+    private float friction = 0.7f;
     public float frictionForce;
     public float forceApplied;
 
@@ -41,10 +38,8 @@ public class point
     }
 
     //initialize our point
-    public point(float x, float y, float z){
-        this.x = x;
+    public point(float y){
         this.y = y;
-        this.z = z;
     }
     //set the neighbours for this point
     public void setNeighbours(point[] neighs){

@@ -119,21 +119,17 @@
 
                 float overall = intensity + specIntensity;
                 // apply fog
-                if(overall < 0.2){
-                    col = col2*0.7 ;
+                
+                if(overall < 0.9){
+                    col = col*0.1;
+                }else if(overall < 1.0){
+                    col = col*0.8;
+                }else if(overall < 2.5){
+                    col = col* 0.9;
+                }else{
+                    col = col;
                 }
-                //if(overall < 0.4){
-                //    col = col*0.4;
-                //}
-                if(overall < 0.6){
-                    col = col2*0.9;
-                }
-               //if(overall < 0.8){
-               //    col = col*0.8;
-               //}
-                if(overall < 1.0){
-                    col = col* 1.0;
-                }
+                //col = col2 * overall;
                 col.a = alpha;
 
                 UNITY_APPLY_FOG(i.fogCoord, col);

@@ -10,6 +10,8 @@ public class bubble : MonoBehaviour
     public float scaleIncrease = 0.02f;
     public float maxScale = 0.3f;
 
+    public potwater water;
+
     private float curScale;
     public Vector3 center;
     public float xRadius;
