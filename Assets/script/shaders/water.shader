@@ -33,6 +33,13 @@ Shader "Unlit/water"
                 float2 uv : TEXCOORD0;
             };
 
+            struct normcalc
+            {
+                float2 uv : TEXCOORD0;
+                float step;
+                float texStep;
+            };
+
             struct v2f
             {
                 float2 uv : TEXCOORD0;
@@ -55,6 +62,29 @@ Shader "Unlit/water"
 
             uniform float4 _LightPos;
             uniform float4 secondaryColor;
+            
+            float3 getNormal(normcalc v)
+            {
+                    float4 botLeft = tex2Dlod (_MainTex, float4(float2(v.uv.x - v.texStep,v.uv.y-v.texStep),0,0));
+                    
+                    float4 botRight = tex2Dlod (_MainTex, float4(float2(v.uv.x + v.texStep,v.uv.y-v.texStep),0,0));
+                    
+                    float4 topRight = tex2Dlod (_MainTex, float4(float2(v.uv.x + v.texStep,v.uv.y + v.texStep),0,0));
+                    
+                    float4 topLeft = tex2Dlod (_MainTex, float4(float2(v.uv.x - v.texStep,v.uv.y + v.texStep),0,0));
+
+                    float4 vec1 =  float4(-v.step,topLeft.r,v.step,0) - float4(-v.step,botLeft.r, -v.step,0);
+                    float4 vec2 =  float4(v.step,topRight.r,v.step,0) - float4(-v.step,botLeft.r, -v.step,0);
+
+                    float4 vec3 =  float4(-v.step,topLeft.r,v.step,0) - float4(-v.step,botLeft.r, -v.step,0);
+                    float4 vec4 =  float4(v.step,botRight.r,v.step,0) - float4(-v.step,botLeft.r, -v.step,0);
+
+                    float3 norm1 = normalize(cross(vec1,vec2));
+                    float3 norm2 = normalize(cross(vec3,vec4));
+                    return (norm1 + norm2)/ 2.0;
+            }
+
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -69,27 +99,24 @@ Shader "Unlit/water"
                     float4 height = tex2Dlod (_MainTex, float4(float2(v.uv.x,v.uv.y),0,0));
                     v.vertex.y = height.r;
 
-                    float step = 0.05;
-                    float texStep = seperation / totalSize;
-                    float4 botLeft = tex2Dlod (_MainTex, float4(float2(v.uv.x - texStep,v.uv.y-texStep),0,0));
+                    normcalc n;
+                    n.step = 0.01;
+                    n.texStep = seperation / totalSize;
+                    n.uv = float2(v.uv.x + n.step, v.uv.y);
+                    float3 norm1 = getNormal(n);
                     
-                    float4 botRight = tex2Dlod (_MainTex, float4(float2(v.uv.x + texStep,v.uv.y-texStep),0,0));
-                    
-                    float4 topRight = tex2Dlod (_MainTex, float4(float2(v.uv.x+texStep,v.uv.y + texStep),0,0));
-                    
-                    float4 topLeft = tex2Dlod (_MainTex, float4(float2(v.uv.x-texStep,v.uv.y + texStep),0,0));
-
-                    float4 vec1 =  float4(-step,topLeft.r,step,0) - float4(-step,botLeft.r, -step,0);
-                    float4 vec2 =  float4(step,topRight.r,step,0) - float4(-step,botLeft.r, -step,0);
+                    n.uv = float2(v.uv.x - n.step, v.uv.y);
+                    float3 norm2 = getNormal(n);
 
                     
-                    float4 vec3 =  float4(-step,topLeft.r,step,0) - float4(-step,botLeft.r, -step,0);
-                    float4 vec4 =  float4(step,botRight.r,step,0) - float4(-step,botLeft.r, -step,0);
+                    n.uv = float2(v.uv.x, v.uv.y + n.step);
+                    float3 norm3 = getNormal(n);
 
-                    float3 norm1 = normalize(cross(vec1,vec2));
-                    float3 norm2 = normalize(cross(vec3,vec4));
+                    
+                    n.uv = float2(v.uv.x, v.uv.y - n.step);
+                    float3 norm4 = getNormal(n);
 
-                    o.worldNormal =  (norm1 + norm2)/ 2.0;
+                    o.worldNormal = (norm1 + norm2 + norm3 + norm4)/4.0;
 
                 #endif
                 
