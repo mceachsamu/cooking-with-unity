@@ -11,6 +11,7 @@
         zRad("zRad", float) = 0.0//to do --use to implement oval pots
         center("center", Vector) = (0.0,0.0,0.0,0.0)//center of pot water
         time("time", float) = 0.0 //increasing timer to help with animations
+        waterSize("waterSize", float) = 0.0//the size of the water we are rendering on for height purposes
     }
     SubShader
     {
@@ -52,6 +53,7 @@
             uniform float xRad;
             uniform float zRad;
             uniform float time;
+            uniform float waterSize;
             uniform float4 center;
             v2f vert (appdata v)
             {
@@ -59,14 +61,17 @@
 
                 v.vertex.x = v.vertex.x + sin(v.vertex.x*10 + time*3)/20;
                 v.vertex.z = v.vertex.z + sin(v.vertex.z*10 + time*3)/20;
+                float yPos = v.vertex.y;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                //o.vertex.x = o.vertex.x + sin(o.vertex.x*10 + time)/10;
+                
+               // o.vertex = UnityObjectToClipPos(v.vertex);
+                
+                
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.worldNormal = v.normal;
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
                 o.wpos = worldPos;
                 UNITY_TRANSFER_FOG(o,o.vertex);
-                //o.vertex = o.vertex * noise.y;
                 return o;
             }
 
@@ -100,7 +105,8 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = _Color;
+                fixed4 col = _Color2;
+                fixed4 col2 = _Color;
                 float alpha = getAlpha(i);
                 float3 lightDir = normalize(_LightPos - i.wpos);
                 float NdotL = dot(i.worldNormal, lightDir);
@@ -114,13 +120,13 @@
                 float overall = intensity + specIntensity;
                 // apply fog
                 if(overall < 0.2){
-                    col = col*0.4 ;
+                    col = col2*0.7 ;
                 }
                 //if(overall < 0.4){
                 //    col = col*0.4;
                 //}
                 if(overall < 0.6){
-                    col = col*0.5;
+                    col = col2*0.9;
                 }
                //if(overall < 0.8){
                //    col = col*0.8;

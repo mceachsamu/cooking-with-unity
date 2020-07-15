@@ -100,8 +100,9 @@ Shader "Unlit/water"
                     v.vertex.y = height.r;
 
                     normcalc n;
-                    n.step = 0.01;
                     n.texStep = seperation / totalSize;
+                    n.step = n.texStep;
+                    
                     n.uv = float2(v.uv.x + n.step, v.uv.y);
                     float3 norm1 = getNormal(n);
                     
@@ -189,7 +190,7 @@ Shader "Unlit/water"
                 else{
                     col = col* 1.0;
                 }
-                //col = col * shading;
+                col = col * shading;
                 col.a = alpha;
 
 

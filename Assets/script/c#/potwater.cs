@@ -6,7 +6,6 @@ public class potwater : MonoBehaviour
 {
 
     public GameObject prefab;
-    public GameObject prefab2;
     public GameObject pot;
     public GameObject Light;
     public GameObject lid;
@@ -45,6 +44,9 @@ public class potwater : MonoBehaviour
     private GameObject[,] points;
 
     public Texture2D heightMap;
+
+    //record the previous spoon position on each frame
+    private Vector3 preSpoonPos;
     void Start()
     {
        // ClearLog();
@@ -65,9 +67,29 @@ public class potwater : MonoBehaviour
             bubbles[i] = createBubble(i);
         }
         pointField[5,5].addForce(3.0f);
-        
-        pointField[20,20].addForce(5.0f);
+    
         heightMap = new Texture2D(numFieldPoints, numFieldPoints);
+    }
+
+    private Vector2 getClosestPoint(Vector3 position){
+        float xDiff = position.x - this.transform.position.x;
+        float zDiff = position.z - this.transform.position.z;
+        
+        float x = (xDiff / (segSize * numSegs)) * numFieldPoints;
+        float z = (zDiff / (segSize * numSegs)) * numFieldPoints;
+        if (x >= numFieldPoints){
+            x = numFieldPoints - 1;
+        }
+        if (x < 0.0f){
+            x = 0.0f;
+        } 
+        if (z >= numFieldPoints){
+            z = numFieldPoints - 1;
+        }
+        if (z < 0.0f){
+            z = 0.0f;
+        }
+        return new Vector2(x, z);
     }
 
     private point[,] initializePoints(int numPoints, float spacing) {
@@ -114,25 +136,6 @@ public class potwater : MonoBehaviour
         return points;
     }
 
-    public GameObject[,] visualizePoints(point[,] points) {
-        int counter = 0;
-        GameObject[,] objs = new GameObject[numFieldPoints,numFieldPoints];
-        for (int i = 0; i < numFieldPoints;i++){
-            for (int j = 0; j < numFieldPoints;j++){
-                GameObject point = new GameObject("Point-" + i);
-                point.AddComponent<MeshFilter>();
-                point.AddComponent<MeshRenderer>();
-                point.GetComponent<MeshRenderer>().material = prefab2.GetComponent<MeshRenderer>().material;
-                point.GetComponent<MeshFilter>().mesh = prefab2.GetComponent<MeshFilter>().mesh;
-                point.GetComponent<Transform>().localScale = prefab2.GetComponent<Transform>().localScale;
-                point.GetComponent<Transform>().position = new Vector3(points[i,j].x, points[i,j].y, points[i,j].z);
-                objs[i,j] = point;
-                counter++;
-            }
-        }
-        return objs;
-    }
-
     private GameObject createBubble(int i){
         GameObject bub = new GameObject("Bubble-" + i);
         bub.AddComponent<MeshFilter>();
@@ -151,6 +154,13 @@ public class potwater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        float mag = (this.SpoonHead.transform.position - preSpoonPos).magnitude;
+
+        Vector2 index = getClosestPoint(SpoonHead.transform.position);
+        
+        pointField[(int)index.x,(int)index.y].addForce(-1 * mag*2);
+        print(index.x);
         //count is an internal timer we give to the shader to move the water along with time
         count = count + speed;
         for (int i = 0; i < numFieldPoints;i++){
@@ -184,19 +194,26 @@ public class potwater : MonoBehaviour
         this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
         //for each bubble, set the properties
         for (int i = 0; i < numBubbles;i++){
+            Vector2 bubbleIndex = getClosestPoint(bubbles[i].transform.position);
+            float bubbleHeight = heightMap.GetPixel((int)bubbleIndex.x, (int)bubbleIndex.y).r;
+            bubbles[i].transform.position.Set(bubbles[i].transform.position.x, bubbles[i].transform.position.y+bubbleHeight, bubbles[i].transform.position.z);
+            bubbles[i].GetComponent<Renderer>().material.SetTexture("_MainTex", heightMap);
             bubbles[i].GetComponent<bubble>().zRadius = zRad;
             bubbles[i].GetComponent<bubble>().xRadius = xRad;
             bubbles[i].GetComponent<bubble>().scaleIncrease = speed;
-            bubbles[i].GetComponent<bubble>().center = new Vector3(pot.transform.position.x, this.transform.position.y, pot.transform.position.z);
+            bubbles[i].GetComponent<bubble>().center = new Vector3(pot.transform.position.x, this.transform.position.y+bubbleHeight, pot.transform.position.z);
             bubbles[i].GetComponent<Renderer>().material.SetFloat("xRad", xRad);
             bubbles[i].GetComponent<Renderer>().material.SetFloat("zRad", zRad);
             bubbles[i].GetComponent<Renderer>().material.SetFloat("time", count);
+            bubbles[i].GetComponent<Renderer>().material.SetFloat("waterSize", segSize * numSegs);
             bubbles[i].GetComponent<Renderer>().material.SetVector("center", center2);
             bubbles[i].GetComponent<Renderer>().material.SetVector("spoon_end", spoonEnd2);
             bubbles[i].GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
             bubbles[i].GetComponent<Renderer>().material.SetVector("_Color", primaryCol);
             bubbles[i].GetComponent<Renderer>().material.SetVector("_Color2", secondaryCol);
         }
+        //set the previous spoon position
+        preSpoonPos = SpoonHead.transform.position;
     }
 
     public Mesh createPlane(int numSegs, float segSize){

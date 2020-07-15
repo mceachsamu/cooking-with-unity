@@ -20,7 +20,7 @@ public class point
     private float deceleration = -0.1f;
     public float curDeceleration = -0.00f;
 
-    public float drag = 0.97f;
+    public float drag = 0.98f;
     public float acceleration = 0.0f;
 
     public float speed = 0.0f;

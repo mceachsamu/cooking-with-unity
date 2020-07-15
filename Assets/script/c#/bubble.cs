@@ -22,7 +22,7 @@ public class bubble : MonoBehaviour
         curScale = initialScale;
         float xPosition = center.x + Random.Range(-xRadius, xRadius);
         float zPosition = center.z + Random.Range(-zRadius, zRadius);
-        this.transform.position = new Vector3(xPosition, center.y-5.0f, zPosition);
+        this.transform.position = new Vector3(xPosition, center.y, zPosition);
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class bubble : MonoBehaviour
             this.transform.localScale = new Vector3(initialScale,initialScale,initialScale);
             float xPosition = center.x + Random.Range(-xRadius, xRadius);
             float zPosition = center.z + Random.Range(-zRadius, zRadius);
-            this.transform.position = new Vector3(xPosition, center.y-5.0f, zPosition);
+            this.transform.position = new Vector3(xPosition, center.y, zPosition);
         }
     }
 }
