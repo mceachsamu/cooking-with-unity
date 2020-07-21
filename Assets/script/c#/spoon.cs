@@ -22,6 +22,8 @@ public class spoon : MonoBehaviour
     //the multiplier for the force this spoon exhubits on water
     public float forceMultiplier = 2.0f;
 
+    public float maxForce = 0.7f;
+
     private int count = 0;
 
     private Vector3 previousPosition;
@@ -34,7 +36,11 @@ public class spoon : MonoBehaviour
     }
 
     private void addForceToWater(){
+        
         float force = (this.transform.position - previousPosition).magnitude;
+        if (force > maxForce){
+            force = maxForce;
+        }
         water.GetComponent<potwater>().AddForceToWater(this.transform, force * forceMultiplier);
     }
 
@@ -44,7 +50,7 @@ public class spoon : MonoBehaviour
         this.addForceToWater();
         if (Input.GetMouseButton(1)){
         Vector3 mousePos = Input.mousePosition;
-        Vector3 flatPosition = new Vector3((mousePos.x-500)/800, this.transform.position.y, mousePos.y/800);
+        Vector3 flatPosition = new Vector3((mousePos.x-500)/500, this.transform.position.y, mousePos.y/500);
         transform.localPosition = flatPosition;
         transform.rotation = new Quaternion(0.69f, 0.002f, 0.0f,0.72f);
         }else{
@@ -54,7 +60,7 @@ public class spoon : MonoBehaviour
         this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
         
         //only sample the position every 3 frames
-        if (count % 3 == 0) {
+        if (count % 2 == 0) {
             previousPosition = this.transform.position;
         }
         count++;

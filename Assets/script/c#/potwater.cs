@@ -39,9 +39,9 @@ public class potwater : MonoBehaviour
     private GameObject[] bubbles;
 
     //the main color of the water
-    private Vector4 primaryCol = new Vector3(3.0f/255,71.0f/255.0f,105.0f/255.0f);
+    private Vector4 primaryCol = new Vector3(170.0f/255,0.0f/255.0f,162.0f/255.0f);
     //the shading color of the water
-    private Vector4 secondaryCol = new Vector3(255.0f/255.0f,137.0f/255.0f,0.0f/255.0f);
+    private Vector4 secondaryCol = new Vector3(212.0f/255.0f,96.0f/255.0f,207.0f/255.0f);
     //the number of points defining the phsyical water mesh (complexity of (numFieldPoints ^ 2)* 4)
     public int numFieldPoints = 10;
     //the physical water mesh points, these define the y positions of the water surface
@@ -113,7 +113,7 @@ public class potwater : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("seperation", segSize);
         this.GetComponent<Renderer>().material.SetFloat("totalSize", segSize * numSegs);
         this.GetComponent<Renderer>().material.SetVector("center", center2);
-        this.GetComponent<Renderer>().material.SetTexture("_MainTex", heightMap);
+        this.GetComponent<Renderer>().material.SetTexture("_Tex", heightMap);
         this.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
         this.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
         this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
@@ -277,6 +277,8 @@ public class potwater : MonoBehaviour
         bub.GetComponent<bubble>().maxScale = Random.Range(0.05f,0.35f);
         bub.GetComponent<bubble>().water = this;
         bub.GetComponent<Transform>().parent = this.GetComponent<Transform>();
+        //water layer
+        bub.layer = 4;
         return bub;
     }
 
