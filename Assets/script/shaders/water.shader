@@ -4,7 +4,8 @@ Shader "Unlit/water"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}//the main texture -- not used
+        _Tex ("Texture", 2D) = "white" {}//the main texture-- used as the height map
+        _RenderTex ("RenderTexture", 3D) = "white" {}
         baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
         secondaryColor("secondary-color", Vector) = (1.0,0.44,0.0,0.0)
         xRad("xRad", float) = 0.0
@@ -20,6 +21,7 @@ Shader "Unlit/water"
         Pass
         {
             CGPROGRAM
+            
             #pragma vertex vert
             #pragma fragment frag
             // make fog work
@@ -46,11 +48,15 @@ Shader "Unlit/water"
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
                 float4 wpos : TEXCOORD1;
+                float4 screenPos : TEXCOORD2;
                 float3 worldNormal : NORMAL;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            sampler2D _Tex;
+            float4 _Tex_ST;
+            
+            sampler2D _RenderTex;
+            float4 _RenderTex_ST;
 
             uniform float seperation;
             uniform float totalSize;
@@ -65,13 +71,13 @@ Shader "Unlit/water"
             
             float3 getNormal(normcalc v)
             {
-                    float4 botLeft = tex2Dlod (_MainTex, float4(float2(v.uv.x - v.texStep,v.uv.y-v.texStep),0,0));
+                    float4 botLeft = tex2Dlod (_Tex, float4(float2(v.uv.x - v.texStep,v.uv.y-v.texStep),0,0));
                     
-                    float4 botRight = tex2Dlod (_MainTex, float4(float2(v.uv.x + v.texStep,v.uv.y-v.texStep),0,0));
+                    float4 botRight = tex2Dlod (_Tex, float4(float2(v.uv.x + v.texStep,v.uv.y-v.texStep),0,0));
                     
-                    float4 topRight = tex2Dlod (_MainTex, float4(float2(v.uv.x + v.texStep,v.uv.y + v.texStep),0,0));
+                    float4 topRight = tex2Dlod (_Tex, float4(float2(v.uv.x + v.texStep,v.uv.y + v.texStep),0,0));
                     
-                    float4 topLeft = tex2Dlod (_MainTex, float4(float2(v.uv.x - v.texStep,v.uv.y + v.texStep),0,0));
+                    float4 topLeft = tex2Dlod (_Tex, float4(float2(v.uv.x - v.texStep,v.uv.y + v.texStep),0,0));
 
                     float4 vec1 =  float4(-v.step,topLeft.r,v.step,0) - float4(-v.step,botLeft.r, -v.step,0);
                     float4 vec2 =  float4(v.step,topRight.r,v.step,0) - float4(-v.step,botLeft.r, -v.step,0);
@@ -90,13 +96,13 @@ Shader "Unlit/water"
                 v2f o;
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv, _Tex);
                 //get world position from object position
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
                 o.wpos = worldPos;
                 // sample the texture
                 #if !defined(SHADER_API_OPENGL)
-                    float4 height = tex2Dlod (_MainTex, float4(float2(v.uv.x,v.uv.y),0,0));
+                    float4 height = tex2Dlod (_Tex, float4(float2(v.uv.x,v.uv.y),0,0));
                     v.vertex.y = height.r;
 
                     normcalc n;
@@ -124,10 +130,12 @@ Shader "Unlit/water"
 
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv, _Tex);
                 worldPos = mul (unity_ObjectToWorld, v.vertex);
                 worldPos.y = worldPos.y;
                 o.wpos = worldPos;
+                
+				o.screenPos = ComputeScreenPos(o.vertex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
@@ -149,7 +157,7 @@ Shader "Unlit/water"
                 //distance the fragmant is from the center of the circle
                 float distFromCenter = length(centerToIntercept);
                 //declare our alpha value so by default the texture is opaque
-                float alpha = 1.0;
+                float alpha = 0.5;
                 //if the distance from the center to the camera vector is greater than the radius
                 //of the circle, make the fragmant invisible.
                 //TODO condider oval shapes (use zRadius)
@@ -179,6 +187,8 @@ Shader "Unlit/water"
             {
                 // sample the texture
                 fixed4 col = baseColor;
+                
+                fixed4 tex = tex2D(_RenderTex, i.screenPos.xy/i.screenPos.w);
                 //get the value of the noise maps at this fragmant
                 //check to see if we should render this fragment (if its inside the pot
                 float alpha = getAlpha(i);
@@ -190,7 +200,7 @@ Shader "Unlit/water"
                 else{
                     col = col* 1.0;
                 }
-               // col = col * shading;
+                //col = col * shading;
                 col.a = alpha;
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

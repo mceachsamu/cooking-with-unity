@@ -175,7 +175,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 170076733}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 2.53, y: 2.132, z: -0.46}
+  m_LocalPosition: {x: 0.02, y: 2.132, z: -0.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -341,7 +341,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lid: {fileID: 1347896943}
+  water: {fileID: 2136333434}
   Light: {fileID: 170076733}
+  forceMultiplier: 2
 --- !u!1 &816836904 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: dba5bcddd3c376a4d999675cd68ed85c,
@@ -836,7 +838,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1988701833}
-  prefab2: {fileID: 1301727315}
   pot: {fileID: 816836904}
   Light: {fileID: 170076733}
   lid: {fileID: 1347896943}
@@ -848,7 +849,6 @@ MonoBehaviour:
   speed: 0.1
   numBubbles: 30
   numFieldPoints: 50
-  speration: 0.1
   heightMap: {fileID: 0}
 --- !u!64 &2136333436
 MeshCollider:
@@ -917,7 +917,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136333434}
   m_LocalRotation: {x: 0.70710325, y: 0.002264045, z: -0.0022640445, w: 0.70710313}
-  m_LocalPosition: {x: -0.0131, y: 0.0128, z: 0.0005}
+  m_LocalPosition: {x: -0.0137, y: 0.0148, z: -0.0016}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 816836908}
