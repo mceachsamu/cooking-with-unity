@@ -92,7 +92,7 @@
                 //distance the fragmant is from the center of the circle
                 float distFromCenter = length(centerToIntercept);
                 //declare our alpha value so by default the texture is opaque
-                float alpha = 0.5;
+                float alpha = 1.0;
                 //if the distance from the center to the camera vector is greater than the radius
                 //of the circle, make the fragmant invisible.
                 //TODO condider oval shapes (use zRadius)

@@ -441,7 +441,7 @@ MonoBehaviour:
   segSize: 0.1
   speed: 0.1
   numBubbles: 10
-  numFieldPoints: 30
+  numFieldPoints: 20
   heightMap: {fileID: 0}
 --- !u!135 &259507579
 SphereCollider:
@@ -626,7 +626,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 311
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -646,7 +646,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 810073313}
   m_LocalRotation: {x: 0.32285652, y: -0, z: -0, w: 0.94644797}
-  m_LocalPosition: {x: 0.14, y: 1.94, z: -1.71}
+  m_LocalPosition: {x: -0.03, y: 2.4, z: -2.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2136882472}
@@ -827,7 +827,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   Light: {fileID: 327739157}
   forceMultiplier: 2
-  maxForce: 0.5
+  maxForce: 0.1
 --- !u!4 &1166588551 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4,
@@ -929,7 +929,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
