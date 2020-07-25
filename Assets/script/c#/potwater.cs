@@ -214,7 +214,7 @@ public class potwater : MonoBehaviour
         }
         return new Vector2(x, z);
     }
-    
+
     //initializes field points
     private point[,] initializePoints(int numPoints) {
         //initialize all the points without neighbours

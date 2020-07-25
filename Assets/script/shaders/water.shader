@@ -5,7 +5,7 @@ Shader "Unlit/water"
     Properties
     {
         _Tex ("Texture", 2D) = "white" {}//the main texture-- used as the height map
-        _RenderTex ("RenderTexture", 3D) = "white" {}
+        _RenderTex ("RenderTexture", 2D) = "white" {}
         baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
         secondaryColor("secondary-color", Vector) = (1.0,0.44,0.0,0.0)
         xRad("xRad", float) = 0.0
@@ -21,7 +21,7 @@ Shader "Unlit/water"
         Pass
         {
             CGPROGRAM
-            
+
             #pragma vertex vert
             #pragma fragment frag
             // make fog work
@@ -54,7 +54,7 @@ Shader "Unlit/water"
 
             sampler2D _Tex;
             float4 _Tex_ST;
-            
+
             sampler2D _RenderTex;
             float4 _RenderTex_ST;
 
@@ -68,15 +68,15 @@ Shader "Unlit/water"
 
             uniform float4 _LightPos;
             uniform float4 secondaryColor;
-            
+
             float3 getNormal(normcalc v)
             {
                     float4 botLeft = tex2Dlod (_Tex, float4(float2(v.uv.x - v.texStep,v.uv.y-v.texStep),0,0));
-                    
+
                     float4 botRight = tex2Dlod (_Tex, float4(float2(v.uv.x + v.texStep,v.uv.y-v.texStep),0,0));
-                    
+
                     float4 topRight = tex2Dlod (_Tex, float4(float2(v.uv.x + v.texStep,v.uv.y + v.texStep),0,0));
-                    
+
                     float4 topLeft = tex2Dlod (_Tex, float4(float2(v.uv.x - v.texStep,v.uv.y + v.texStep),0,0));
 
                     float4 vec1 =  float4(-v.step,topLeft.r,v.step,0) - float4(-v.step,botLeft.r, -v.step,0);
@@ -108,25 +108,22 @@ Shader "Unlit/water"
                     normcalc n;
                     n.texStep = seperation / totalSize;
                     n.step = n.texStep;
-                    
+
                     n.uv = float2(v.uv.x + n.step, v.uv.y);
                     float3 norm1 = getNormal(n);
-                    
+
                     n.uv = float2(v.uv.x - n.step, v.uv.y);
                     float3 norm2 = getNormal(n);
 
-                    
                     n.uv = float2(v.uv.x, v.uv.y + n.step);
                     float3 norm3 = getNormal(n);
 
-                    
                     n.uv = float2(v.uv.x, v.uv.y - n.step);
                     float3 norm4 = getNormal(n);
 
                     o.worldNormal = (norm1 + norm2 + norm3 + norm4)/4.0;
 
                 #endif
-                
 
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -134,7 +131,6 @@ Shader "Unlit/water"
                 worldPos = mul (unity_ObjectToWorld, v.vertex);
                 worldPos.y = worldPos.y;
                 o.wpos = worldPos;
-                
 				o.screenPos = ComputeScreenPos(o.vertex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
@@ -187,12 +183,10 @@ Shader "Unlit/water"
             {
                 // sample the texture
                 fixed4 col = baseColor;
-                
-                fixed4 tex = tex2D(_RenderTex, i.screenPos.xy/i.screenPos.w);
-                //get the value of the noise maps at this fragmant
-                //check to see if we should render this fragment (if its inside the pot
+
+                //check to see if we should render this fragment (if its inside the pot)
                 float alpha = getAlpha(i);
-                
+
                 float shading = getShading(i);
                 if(shading < 0.98){
                     col = secondaryColor;
@@ -200,10 +194,12 @@ Shader "Unlit/water"
                 else{
                     col = col* 1.0;
                 }
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x + (shading-1.5)/120.0, i.screenPos.y + (shading-1.5)/10.0)/i.screenPos.w);
                 //col = col * shading;
                 col.a = alpha;
+                tex.a = alpha;
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                return tex/4.0 + col;
             }
             ENDCG
         }
