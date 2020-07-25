@@ -153,7 +153,7 @@ Shader "Unlit/water"
                 //distance the fragmant is from the center of the circle
                 float distFromCenter = length(centerToIntercept);
                 //declare our alpha value so by default the texture is opaque
-                float alpha = 0.5;
+                float alpha = 1.0;
                 //if the distance from the center to the camera vector is greater than the radius
                 //of the circle, make the fragmant invisible.
                 //TODO condider oval shapes (use zRadius)
@@ -194,12 +194,15 @@ Shader "Unlit/water"
                 else{
                     col = col* 1.0;
                 }
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x + (shading-1.5)/120.0, i.screenPos.y + (shading-1.5)/10.0)/i.screenPos.w);
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x + (shading-1.5)/120.0, i.screenPos.y + (shading-1.5)/5.0)/i.screenPos.w);
                 //col = col * shading;
                 col.a = alpha;
                 tex.a = alpha;
+                if (tex.rbg.r > 0.5){
+                    tex.a = 0.0;
+                }
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return tex/4.0 + col;
+                return tex/2.0 + col;
             }
             ENDCG
         }

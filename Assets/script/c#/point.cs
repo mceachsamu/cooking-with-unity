@@ -12,18 +12,18 @@ public class point
 
     //how much neighbouring points effect this point
 
-    private float mass = 3.0f;
+    private float mass = 5.0f;
 
     private float deceleration = -0.001f;
     public float curDeceleration = -0.00f;
 
-    public float drag = 0.98f;
+    public float drag = 0.97f;
     public float acceleration = 0.0f;
 
     public float speed = 0.0f;
 
     public float neighbourFriction = 0.05f;
-    private float friction = 0.7f;
+    private float friction = 0.9f;
     public float frictionForce;
     public float forceApplied;
 
