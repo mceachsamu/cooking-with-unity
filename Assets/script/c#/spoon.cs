@@ -36,7 +36,6 @@ public class spoon : MonoBehaviour
     }
 
     private void addForceToWater(){
-        
         float force = (this.transform.position - previousPosition).magnitude;
         if (force > maxForce){
             force = maxForce;
@@ -47,25 +46,33 @@ public class spoon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //add a force to water each frame
         this.addForceToWater();
+        
+        //detect mouse click to move spoon
         if (Input.GetMouseButton(1)){
-        Vector3 mousePos = Input.mousePosition;
-        Vector3 flatPosition = new Vector3((mousePos.x-500)/500, this.transform.position.y, mousePos.y/500);
-        transform.localPosition = flatPosition;
-        transform.rotation = new Quaternion(0.69f, 0.002f, 0.0f,0.72f);
+            Vector3 mousePos = Input.mousePosition;
+            Vector3 flatPosition = new Vector3((mousePos.x-500)/500, this.transform.position.y, mousePos.y/500);
+            transform.localPosition = flatPosition;
+            transform.rotation = new Quaternion(0.69f, 0.002f, 0.0f,0.72f);
         }else{
+            //when there is no input, bring the spoon back the origin
             transform.position = origin;
             transform.rotation = rotation;
         }
-        this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
-        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", water.GetComponent<potwater>().waterOpaqueness);
-        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<Transform>().position.y);
-
-        //only sample the position every 3 frames
+        setShaderProperties();
+        //only sample the position every 2 frames
+        //if we dont do this, we wont get a big enough difference is spacing to sample a distance
         if (count % 2 == 0) {
             previousPosition = this.transform.position;
         }
         count++;
+    }
+
+    private void setShaderProperties(){
+        this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
+        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", water.GetComponent<potwater>().waterOpaqueness);
+        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<Transform>().position.y);
     }
 
 }

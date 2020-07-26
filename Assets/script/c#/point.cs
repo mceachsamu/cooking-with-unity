@@ -46,9 +46,6 @@ public class point
         this.neighbours = neighs;
     }
 
-    public float getMomentum(){
-        return mass * speed;
-    }
 
     //move this point based on its speed and its neighbours position
     public void move(){
@@ -64,7 +61,7 @@ public class point
             totalForce += difference;
         }
         this.forceApplied = (totalForce / neighbours.Length) * neighbourFriction;
-        
+
         this.frictionForce = 0.5f * Mathf.Pow(this.acceleration,2.0f) * friction;
         float frictionDirection = 1.0f;
         if (this.speed < 0.0f){

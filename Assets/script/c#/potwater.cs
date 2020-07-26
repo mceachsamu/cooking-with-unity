@@ -13,8 +13,6 @@ public class potwater : MonoBehaviour
     public GameObject Light;
     //the object who's transformation defines where the water can be seen through
     public GameObject lid;
-    //the game object that is defined at the bottom of the spoon
-    public GameObject SpoonHead;
 
     //radius of the potlid on bot x and z directions
     //TODO implement zRadius to allow oval lids
@@ -106,8 +104,6 @@ public class potwater : MonoBehaviour
         //get the center point for the pot
         Vector4 center2 = new Vector4(center.x,center.y,center.z,0.0f);
 
-        Vector3 spoonEnd = SpoonHead.transform.position;
-        Vector4 spoonEnd2 = new Vector4(spoonEnd.x,spoonEnd.y,spoonEnd.z,0.0f);
         //give these values to our shader
         this.GetComponent<Renderer>().material.SetFloat("xRad", xRad);
         this.GetComponent<Renderer>().material.SetFloat("zRad", zRad);
@@ -133,13 +129,10 @@ public class potwater : MonoBehaviour
             bubbles[i].GetComponent<Renderer>().material.SetFloat("time", count);
             bubbles[i].GetComponent<Renderer>().material.SetFloat("waterSize", segSize * numSegs);
             bubbles[i].GetComponent<Renderer>().material.SetVector("center", center2);
-            bubbles[i].GetComponent<Renderer>().material.SetVector("spoon_end", spoonEnd2);
             bubbles[i].GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
             bubbles[i].GetComponent<Renderer>().material.SetVector("_Color", primaryCol);
             bubbles[i].GetComponent<Renderer>().material.SetVector("_Color2", secondaryCol);
         }
-        //set the previous spoon position
-        preSpoonPos = SpoonHead.transform.position;
     }
 
     //creates a simple plane mesh to be used as the water surface
@@ -201,18 +194,20 @@ public class potwater : MonoBehaviour
         float zDiff = transform.position.z - this.transform.position.z;
         float x = (xDiff / (segSize * numSegs)) * numFieldPoints;
         float z = (zDiff / (segSize * numSegs)) * numFieldPoints;
+
         if (x >= numFieldPoints){
             x = numFieldPoints - 1;
         }
         if (x < 0.0f){
             x = 0.0f;
-        } 
+        }
         if (z >= numFieldPoints){
             z = numFieldPoints - 1;
         }
         if (z < 0.0f){
             z = 0.0f;
         }
+
         return new Vector2(x, z);
     }
 
@@ -221,6 +216,7 @@ public class potwater : MonoBehaviour
         //initialize all the points without neighbours
         int counter = 0;
         point[,] points = new point[numPoints,numPoints];
+
         for (int i = 0; i < numPoints;i++){
             for (int j = 0; j < numPoints; j++){
                 counter++;
@@ -265,6 +261,7 @@ public class potwater : MonoBehaviour
     //initilizes bubble object
     private GameObject createBubble(int i){
         GameObject bub = new GameObject("Bubble-" + i);
+
         bub.AddComponent<MeshFilter>();
         bub.AddComponent<MeshRenderer>();
         bub.GetComponent<MeshRenderer>().material = prefab.GetComponent<MeshRenderer>().material;
@@ -280,6 +277,7 @@ public class potwater : MonoBehaviour
         bub.GetComponent<Transform>().parent = this.GetComponent<Transform>();
         //water layer
         bub.layer = 4;
+
         return bub;
     }
 
