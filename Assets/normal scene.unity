@@ -434,15 +434,21 @@ MonoBehaviour:
   pot: {fileID: 122744734}
   Light: {fileID: 327739157}
   lid: {fileID: 1763447005}
-  SpoonHead: {fileID: 1000261384}
   xRadConst: 0
   zRadConst: 0
   numSegs: 40
   segSize: 0.1
+  waterOpaqueness: 1
   speed: 0.1
   numBubbles: 10
   numFieldPoints: 20
   heightMap: {fileID: 0}
+  neighbourFriction: 0.1
+  friction: 0.9
+  drag: 0.97
+  maxHeight: 1
+  mass: 3
+  deceleration: -0.1
 --- !u!135 &259507579
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -626,7 +632,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 823
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -646,7 +652,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 810073313}
   m_LocalRotation: {x: 0.32285652, y: -0, z: -0, w: 0.94644797}
-  m_LocalPosition: {x: -0.03, y: 2.4, z: -2.24}
+  m_LocalPosition: {x: -0.03, y: 1.86, z: -1.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2136882472}
@@ -665,7 +671,7 @@ GameObject:
   - component: {fileID: 1000261387}
   - component: {fileID: 1000261386}
   - component: {fileID: 1000261385}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -754,6 +760,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: dba5bcddd3c376a4d999675cd68ed85c, type: 3}
       propertyPath: m_Name
       value: cauldron
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: dba5bcddd3c376a4d999675cd68ed85c, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: dba5bcddd3c376a4d999675cd68ed85c, type: 3}
       propertyPath: m_LocalPosition.x

@@ -87,6 +87,8 @@ Material:
     - _StencilWriteMask: 255
     - _UVSec: 0
     - _UseUIAlphaClip: 0
+    - _WaterLevel: 0
+    - _WaterOpaqueness: 0
     - _WindQuality: 0
     - _ZWrite: 1
     - time: 0
