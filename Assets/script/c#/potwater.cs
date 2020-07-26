@@ -27,6 +27,7 @@ public class potwater : MonoBehaviour
     //the size of the segments on the plane generated
     public float segSize = 5.0f;
 
+    public float waterOpaqueness = 1.0f;
 
     float count = 0.0f;
 
@@ -39,9 +40,9 @@ public class potwater : MonoBehaviour
     private GameObject[] bubbles;
 
     //the main color of the water
-    private Vector4 primaryCol = new Vector3(170.0f/255,0.0f/255.0f,162.0f/255.0f);
+    private Vector4 primaryCol = new Vector3(155.0f/255,0.0f/255.0f,28.0f/255.0f);
     //the shading color of the water
-    private Vector4 secondaryCol = new Vector3(212.0f/255.0f,96.0f/255.0f,207.0f/255.0f);
+    private Vector4 secondaryCol = new Vector3(247.0f/255.0f,111.0f/255.0f,135.0f/255.0f);
     //the number of points defining the phsyical water mesh (complexity of (numFieldPoints ^ 2)* 4)
     public int numFieldPoints = 10;
     //the physical water mesh points, these define the y positions of the water surface

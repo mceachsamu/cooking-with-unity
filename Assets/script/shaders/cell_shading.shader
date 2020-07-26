@@ -4,6 +4,8 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
+        _WaterLevel("water level", float) = 0.0
+        _WaterOpaqueness("water opaqueness", float) = 0.0
     }
     SubShader
     {
@@ -40,6 +42,8 @@
             float4 _MainTex_ST;
 
             uniform float4 _LightPos;
+            uniform float _WaterLevel;
+            uniform float _WaterOpaqueness;
             v2f vert (appdata v)
             {
                 v2f o;
@@ -52,6 +56,15 @@
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 //o.vertex = o.vertex * noise.y;
                 return o;
+            }
+
+            float getAlpha(v2f i) {
+                float dist = _WaterLevel - i.wpos.y;
+                if (dist > 0.0){
+                    return 0.0;
+                }
+                float alpha = dist * _WaterOpaqueness;
+                return alpha;
             }
 
             fixed4 frag (v2f i) : SV_Target
@@ -79,6 +92,8 @@
                     col = col* 1.0;
                 }
 
+                float alpha = getAlpha(i);
+                col =  col + alpha;
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }

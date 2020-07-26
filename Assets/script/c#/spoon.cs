@@ -58,7 +58,9 @@ public class spoon : MonoBehaviour
             transform.rotation = rotation;
         }
         this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
-        
+        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", water.GetComponent<potwater>().waterOpaqueness);
+        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<Transform>().position.y);
+
         //only sample the position every 3 frames
         if (count % 2 == 0) {
             previousPosition = this.transform.position;

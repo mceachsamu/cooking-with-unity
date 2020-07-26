@@ -198,14 +198,18 @@ Shader "Unlit/water"
                 //col = col * shading;
                 col.a = alpha;
                 tex.a = alpha;
-                if (tex.rbg.r > 0.4){
+                if (tex.r > 0.1){
                     tex.a = 0.0;
                     tex.r = 0.0;
                     tex.g = 0.0;
                     tex.b = 0.0;
+                }else{
+                    tex = secondaryColor;
                 }
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return col - tex/2.0;
+                col = col + tex;
+                col.a = alpha;
+                return col;
             }
             ENDCG
         }
