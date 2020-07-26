@@ -49,8 +49,23 @@ public class potwater : MonoBehaviour
     //the resulting texture from the points field
     public Texture2D heightMap;
 
-    //record the previous spoon position on each frame, this is to get a differential if the spoon position
-    private Vector3 preSpoonPos;
+    //list our constants for our water physics
+
+    //neighbourFriction defines how much neighbouring points influence each other
+    public float neighbourFriction = 0.1f;
+    //friction defines amount of counter force for each point (higher friction const -> less friction)
+    public float friction = 0.9f;
+    //drag defines how quickly the acceleration of a point is decreased at each frame (higher drag const -> less drag)
+    public float drag = 0.97f;
+    //maxHeight defines the height of the water that we allow. at lower values the water surface is more defined. higher less defined but smoother
+    public float maxHeight = 1.0f;
+    //the mass defines the mass of each point. this effects how much points are effected by forces
+    public float mass = 3.0f;
+    //deceleration defines the rate at which each point tends to a state of rest
+    public float deceleration = -0.1f;
+
+
+
     void Start()
     {
        // ClearLog();
@@ -220,7 +235,7 @@ public class potwater : MonoBehaviour
         for (int i = 0; i < numPoints;i++){
             for (int j = 0; j < numPoints; j++){
                 counter++;
-                points[i,j] = new point(0.0f);
+                points[i,j] = new point(this, 0.0f);
             }
         }
         //now that we have initialized all our points, lets set all their neighbours

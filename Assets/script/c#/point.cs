@@ -12,33 +12,29 @@ public class point
 
     //how much neighbouring points effect this point
 
-    private float mass = 3.0f;
-
-    private float deceleration = -0.1f;
     public float curDeceleration = -0.00f;
 
-    public float drag = 0.97f;
     public float acceleration = 0.0f;
 
-    public float speed = 0.0f;
+    private potwater water;
 
-    public float neighbourFriction = 0.1f;
-    private float friction = 0.9f;
     public float frictionForce;
     public float forceApplied;
 
-    private float maxHeight = 1.0f;
+    public float speed = 0.0f;
+
 
     public Vector4 GetHeightValue(){
-        float height =  ((this.y + maxHeight))/(maxHeight*2.0f);
+        float height =  ((this.y + water.maxHeight))/(water.maxHeight*2.0f);
         return new Vector4(height,height,height,1.0f);
     }
     public void addForce(float force){
-        this.acceleration += force/mass;
+        this.acceleration += force/water.mass;
     }
 
     //initialize our point
-    public point(float y){
+    public point(potwater waterObj, float y){
+        this.water = waterObj;
         this.y = y;
     }
     //set the neighbours for this point
@@ -50,19 +46,19 @@ public class point
     //move this point based on its speed and its neighbours position
     public void move(){
         if (this.y > 0){
-            this.curDeceleration = 1.0f * this.deceleration;
+            this.curDeceleration = 1.0f * water.deceleration;
         }
         if (this.y < 0){
-            this.curDeceleration = -1.0f * this.deceleration;
+            this.curDeceleration = -1.0f * water.deceleration;
         }
         float totalForce = 0.0f;
         for (int i = 0; i < neighbours.Length;i++){
             float difference = neighbours[i].y - this.y;
             totalForce += difference;
         }
-        this.forceApplied = (totalForce / neighbours.Length) * neighbourFriction;
+        this.forceApplied = (totalForce / neighbours.Length) *  water.neighbourFriction;
 
-        this.frictionForce = 0.5f * Mathf.Pow(this.acceleration,2.0f) * friction;
+        this.frictionForce = 0.5f * Mathf.Pow(this.acceleration,2.0f) * water.friction;
         float frictionDirection = 1.0f;
         if (this.speed < 0.0f){
             frictionDirection = -1.0f;
@@ -71,7 +67,7 @@ public class point
             frictionDirection = 1.0f;
         }
         //apply friction
-        this.forceApplied += (-this.frictionForce * frictionDirection);
+        this.forceApplied += (this.frictionForce * frictionDirection);
         if (Mathf.Abs(this.forceApplied) < this.curDeceleration + 0.5f){
             this.curDeceleration = this.curDeceleration * 0.001f;
         }
@@ -79,7 +75,7 @@ public class point
         this.forceApplied += this.curDeceleration;
         this.addForce(this.forceApplied);
         this.speed += this.acceleration;
-        this.acceleration = this.acceleration * drag;
+        this.acceleration = this.acceleration * water.drag;
         this.y += this.acceleration;
     }
 
