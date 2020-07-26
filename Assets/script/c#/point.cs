@@ -24,27 +24,15 @@ public class point
     public float speed = 0.0f;
 
 
-    public Vector4 GetHeightValue(){
-        float height =  ((this.y + water.maxHeight))/(water.maxHeight*2.0f);
-        return new Vector4(height,height,height,1.0f);
-    }
-    public void addForce(float force){
-        this.acceleration += force/water.mass;
-    }
-
     //initialize our point
     public point(potwater waterObj, float y){
         this.water = waterObj;
         this.y = y;
     }
-    //set the neighbours for this point
-    public void setNeighbours(point[] neighs){
-        this.neighbours = neighs;
-    }
 
-
-    //move this point based on its speed and its neighbours position
+        //move this point based on its speed and its neighbours position
     public void move(){
+        //determine the direction of the center and set curDecelleration towards that direction
         if (this.y > 0){
             this.curDeceleration = 1.0f * water.deceleration;
         }
@@ -78,5 +66,21 @@ public class point
         this.acceleration = this.acceleration * water.drag;
         this.y += this.acceleration;
     }
+
+    public Vector4 GetHeightValue(){
+        float height =  ((this.y + water.maxHeight))/(water.maxHeight*2.0f);
+        return new Vector4(height,height,height,1.0f);
+    }
+    public void addForce(float force){
+        this.acceleration += force/water.mass;
+    }
+
+    //set the neighbours for this point
+    public void setNeighbours(point[] neighs){
+        this.neighbours = neighs;
+    }
+
+
+
 
 }
