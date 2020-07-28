@@ -38,9 +38,9 @@ public class potwater : MonoBehaviour
     private GameObject[] bubbles;
 
     //the main color of the water
-    private Vector4 primaryCol = new Vector3(155.0f/255,0.0f/255.0f,28.0f/255.0f);
+    public Vector4 primaryCol = new Vector3(155.0f/255,0.0f/255.0f,28.0f/255.0f);
     //the shading color of the water
-    private Vector4 secondaryCol = new Vector3(247.0f/255.0f,111.0f/255.0f,135.0f/255.0f);
+    public Vector4 secondaryCol = new Vector3(247.0f/255.0f,111.0f/255.0f,135.0f/255.0f);
     //the number of points defining the phsyical water mesh (complexity of (numFieldPoints ^ 2)* 4)
     public int numFieldPoints = 10;
     //the physical water mesh points, these define the y positions of the water surface
@@ -115,39 +115,41 @@ public class potwater : MonoBehaviour
         //radius of the shape will be the mesh size * the scaling of the object
         float xRad = pot.transform.localScale.x * xRadConst;
         float zRad = pot.transform.localScale.z * zRadConst;
-        Vector3 center = lid.transform.position;
-        //get the center point for the pot
-        Vector4 center2 = new Vector4(center.x,center.y,center.z,0.0f);
+        
 
         //give these values to our shader
         this.GetComponent<Renderer>().material.SetFloat("xRad", xRad);
         this.GetComponent<Renderer>().material.SetFloat("zRad", zRad);
         this.GetComponent<Renderer>().material.SetFloat("seperation", segSize);
         this.GetComponent<Renderer>().material.SetFloat("totalSize", segSize * numSegs);
-        this.GetComponent<Renderer>().material.SetVector("center", center2);
+        this.GetComponent<Renderer>().material.SetVector("center", getCenter());
         this.GetComponent<Renderer>().material.SetTexture("_Tex", heightMap);
         this.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
         this.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
         this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
-        //for each bubble, set the properties
-        for (int i = 0; i < numBubbles;i++){
-            Vector2 bubbleIndex = getClosestPoint(bubbles[i].transform);
-            float bubbleHeight = heightMap.GetPixel((int)bubbleIndex.x, (int)bubbleIndex.y).r;
-            bubbles[i].transform.position.Set(bubbles[i].transform.position.x, bubbles[i].transform.position.y+bubbleHeight, bubbles[i].transform.position.z);
-            bubbles[i].GetComponent<Renderer>().material.SetTexture("_MainTex", heightMap);
-            bubbles[i].GetComponent<bubble>().zRadius = zRad;
-            bubbles[i].GetComponent<bubble>().xRadius = xRad;
-            bubbles[i].GetComponent<bubble>().scaleIncrease = speed;
-            bubbles[i].GetComponent<bubble>().center = new Vector3(pot.transform.position.x, this.transform.position.y+bubbleHeight, pot.transform.position.z);
-            bubbles[i].GetComponent<Renderer>().material.SetFloat("xRad", xRad);
-            bubbles[i].GetComponent<Renderer>().material.SetFloat("zRad", zRad);
-            bubbles[i].GetComponent<Renderer>().material.SetFloat("time", count);
-            bubbles[i].GetComponent<Renderer>().material.SetFloat("waterSize", segSize * numSegs);
-            bubbles[i].GetComponent<Renderer>().material.SetVector("center", center2);
-            bubbles[i].GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
-            bubbles[i].GetComponent<Renderer>().material.SetVector("_Color", primaryCol);
-            bubbles[i].GetComponent<Renderer>().material.SetVector("_Color2", secondaryCol);
-        }
+    }
+
+    public Vector4 getCenter(){
+        Vector3 center = lid.transform.position;
+        //get the center point for the pot
+        Vector4 center4f = new Vector4(center.x,center.y,center.z,0.0f);
+        return center4f;
+    }
+
+    public float getCount(){
+        return count;
+    }
+
+    public float getXRadius(){
+        return pot.transform.localScale.x * xRadConst;
+    }
+
+    public float getZRadius(){
+        return pot.transform.localScale.z * zRadConst;
+    }
+
+    public float getSpeed(){
+        return speed;
     }
 
     //creates a simple plane mesh to be used as the water surface
@@ -204,7 +206,7 @@ public class potwater : MonoBehaviour
         return m;
     }
     //translates wolrd positions into the closest index on the field points matrix.
-    private Vector2 getClosestPoint(Transform transform){
+    public Vector2 getClosestPoint(Transform transform){
         float xDiff = transform.position.x - this.transform.position.x;
         float zDiff = transform.position.z - this.transform.position.z;
         float x = (xDiff / (segSize * numSegs)) * numFieldPoints;
