@@ -115,13 +115,12 @@ public class potwater : MonoBehaviour
         //radius of the shape will be the mesh size * the scaling of the object
         float xRad = pot.transform.localScale.x * xRadConst;
         float zRad = pot.transform.localScale.z * zRadConst;
-        
 
         //give these values to our shader
         this.GetComponent<Renderer>().material.SetFloat("xRad", xRad);
         this.GetComponent<Renderer>().material.SetFloat("zRad", zRad);
         this.GetComponent<Renderer>().material.SetFloat("seperation", segSize);
-        this.GetComponent<Renderer>().material.SetFloat("totalSize", segSize * numSegs);
+        this.GetComponent<Renderer>().material.SetFloat("totalSize", getSize());
         this.GetComponent<Renderer>().material.SetVector("center", getCenter());
         this.GetComponent<Renderer>().material.SetTexture("_Tex", heightMap);
         this.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
@@ -134,6 +133,10 @@ public class potwater : MonoBehaviour
         //get the center point for the pot
         Vector4 center4f = new Vector4(center.x,center.y,center.z,0.0f);
         return center4f;
+    }
+
+    public float getSize(){
+        return segSize * numSegs;
     }
 
     public float getCount(){

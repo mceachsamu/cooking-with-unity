@@ -38,24 +38,25 @@ public class bubble : MonoBehaviour
             float zPosition = center.z + Random.Range(-zRadius, zRadius);
             this.transform.position = new Vector3(xPosition, center.y, zPosition);
         }
+        setShaderProperties();
     }
 
     void setShaderProperties(){
         Vector2 bubbleIndex = water.getClosestPoint(this.transform);
-            float bubbleHeight = water.heightMap.GetPixel((int)bubbleIndex.x, (int)bubbleIndex.y).r;
-            this.transform.position.Set(this.transform.position.x, this.transform.position.y+bubbleHeight, this.transform.position.z);
-            this.GetComponent<Renderer>().material.SetTexture("_MainTex", water.heightMap);
-            // this.GetComponent<bubble>().zRadius = water.zRad;
-            // this.GetComponent<bubble>().xRadius = water.xRad;
-            this.GetComponent<bubble>().scaleIncrease = water.getSpeed();
-//            this.GetComponent<bubble>().center = new Vector3(pot.transform.position.x, water.transform.position.y+bubbleHeight, pot.transform.position.z);
-            this.GetComponent<Renderer>().material.SetFloat("xRad", water.getXRadius());
-            this.GetComponent<Renderer>().material.SetFloat("zRad", water.getXRadius());
-            this.GetComponent<Renderer>().material.SetFloat("time", water.getCount());
-            this.GetComponent<Renderer>().material.SetFloat("waterSize", water.segSize * water.numSegs);
-            this.GetComponent<Renderer>().material.SetVector("center", water.getCenter());
-            this.GetComponent<Renderer>().material.SetVector("_LightPos", water.Light.transform.position);
-            this.GetComponent<Renderer>().material.SetVector("_Color", water.primaryCol);
-            this.GetComponent<Renderer>().material.SetVector("_Color2", water.secondaryCol);
+        float bubbleHeight = water.heightMap.GetPixel((int)bubbleIndex.x, (int)bubbleIndex.y).r;
+        this.transform.position.Set(this.transform.position.x, water.transform.position.y+bubbleHeight, this.transform.position.z);
+        this.GetComponent<Renderer>().material.SetTexture("_MainTex", water.heightMap);
+        this.GetComponent<bubble>().zRadius = water.getXRadius();
+        this.GetComponent<bubble>().xRadius = water.getZRadius();
+        this.GetComponent<bubble>().scaleIncrease = water.getSpeed();
+        this.GetComponent<bubble>().center = new Vector3(water.pot.transform.position.x, water.transform.position.y+bubbleHeight, water.pot.transform.position.z);
+        this.GetComponent<Renderer>().material.SetFloat("xRad", water.getXRadius());
+        this.GetComponent<Renderer>().material.SetFloat("zRad", water.getXRadius());
+        this.GetComponent<Renderer>().material.SetFloat("time", water.getCount());
+        this.GetComponent<Renderer>().material.SetFloat("waterSize", water.segSize * water.numSegs);
+        this.GetComponent<Renderer>().material.SetVector("center", water.getCenter());
+        this.GetComponent<Renderer>().material.SetVector("_LightPos", water.Light.transform.position);
+        this.GetComponent<Renderer>().material.SetVector("_Color", water.primaryCol);
+        this.GetComponent<Renderer>().material.SetVector("_Color2", water.secondaryCol);
     }
 }
