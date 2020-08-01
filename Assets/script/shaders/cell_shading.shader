@@ -55,10 +55,18 @@
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
+                float2 uv = ((worldPos.xz - _PotCenter.xz - _WaterSize/2.0)/_WaterSize);
+                #if !defined(SHADER_API_OPENGL)
+                    float4 height = tex2Dlod (_HeightMap, float4(float2(uv.x,uv.y),0,0));
+                    //v.vertex.z = v.vertex.z + height.r/100.0;
+                #endif
+
+                o.vertex = UnityObjectToClipPos(v.vertex);
                 //o.vertex.x = o.vertex.x + sin(o.vertex.x*10 + time)/10;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.worldNormal = v.normal;
-                float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
+                worldPos = mul (unity_ObjectToWorld, v.vertex);
                 o.wpos = worldPos;
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 //o.vertex = o.vertex * noise.y;
@@ -85,7 +93,6 @@
                 float2 waterUV = getWaterUV(i);
                 float waterHeight = tex2D(_HeightMap, waterUV);
 
-
                 float overall = intensity + specIntensity;
                 // apply fog
                 if(overall < 0.2){
@@ -99,7 +106,7 @@
                 }
 
                 if (i.wpos.y < waterHeight + _WaterLevel){
-                   // col = waterHeight;
+//                    col = waterHeight;
                 }
 
                 UNITY_APPLY_FOG(i.fogCoord, col);

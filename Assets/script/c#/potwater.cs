@@ -64,8 +64,6 @@ public class potwater : MonoBehaviour
     //deceleration defines the rate at which each point tends to a state of rest
     public float deceleration = -0.1f;
 
-
-
     void Start()
     {
        // ClearLog();
@@ -179,33 +177,33 @@ public class potwater : MonoBehaviour
             for (int i = 0; i < numSegs; i++){
                 for (int j = 0; j < numSegs; j++){
                 //first traingle
-                vs[count] = new Vector3(i*segSize,0.0f,j*segSize);
+                vs[count] = new Vector3(i*segSize - this.getSize()/2.0f ,0.0f, j*segSize- this.getSize()/2.0f);
                 us[count] = new Vector2( (float)i / (float)numSegs, (float)j /(float)numSegs);
                 tri[count] = count;
                 count++;
 
-                vs[count] = new Vector3(i*segSize,0.0f,j*segSize + segSize);
+                vs[count] = new Vector3(i*segSize - this.getSize()/2.0f,0.0f,(j*segSize + segSize) - this.getSize()/2.0f);
                 us[count] = new Vector2( ((float)i) / (float)numSegs,  ((float)j+1.0f) / (float)numSegs);
                 tri[count] = count;
                 count++;
 
-                vs[count] = new Vector3(i*segSize + segSize,0.0f,j*segSize);
+                vs[count] = new Vector3(i*segSize + segSize - this.getSize()/2.0f,0.0f,j*segSize - this.getSize()/2.0f);
                 us[count] =  new Vector2( ((float)i+1.0f) / (float)numSegs,  ((float)j) / (float)numSegs);
                 tri[count] = count;
                 count++;
 
                 //second triangle
-                vs[count] = new Vector3(i*segSize + segSize,0.0f,j*segSize);
+                vs[count] = new Vector3(i*segSize + segSize - this.getSize()/2.0f,0.0f,j*segSize - this.getSize()/2.0f);
                 us[count] = new Vector2( ((float)i+1.0f) / (float)numSegs,  ((float)j) / (float)numSegs);
                 tri[count] = count;
                 count++;
 
-                vs[count] = new Vector3(i*segSize,0.0f,j*segSize + segSize);
+                vs[count] = new Vector3(i*segSize - this.getSize()/2.0f,0.0f,j*segSize + segSize - this.getSize()/2.0f);
                 us[count] = new Vector2(((float)i) / (float)numSegs,  ((float)j+1.0f) / (float)numSegs);
                 tri[count] = count;
                 count++;
 
-                vs[count] = new Vector3(i*segSize + segSize,0.0f,j*segSize + segSize);
+                vs[count] = new Vector3(i*segSize + segSize - this.getSize()/2.0f,0.0f,j*segSize + segSize - this.getSize()/2.0f);
                 us[count] = new Vector2( ((float)i + 1.0f) / (float)numSegs,  ((float)j + 1.0f) / (float)numSegs);
                 tri[count] = count;
                 count++;
@@ -219,10 +217,10 @@ public class potwater : MonoBehaviour
     }
     //translates wolrd positions into the closest index on the field points matrix.
     public Vector2 getClosestPoint(Transform transform){
-        float xDiff = transform.position.x - this.transform.position.x;
-        float zDiff = transform.position.z - this.transform.position.z;
-        float x = (xDiff / (segSize * numSegs)) * numFieldPoints;
-        float z = (zDiff / (segSize * numSegs)) * numFieldPoints;
+        float xDiff = transform.position.x - this.transform.position.x + this.getSize()/2.0f;
+        float zDiff = transform.position.z - this.transform.position.z + this.getSize()/2.0f;
+        float x = (xDiff / (this.getSize())) * numFieldPoints;
+        float z = (zDiff / (this.getSize())) * numFieldPoints;
 
         if (x >= numFieldPoints){
             x = numFieldPoints - 1;
@@ -300,6 +298,8 @@ public class potwater : MonoBehaviour
         bub.GetComponent<bubble>().center = new Vector3(pot.transform.position.x, lid.transform.position.y, pot.transform.position.z);
         bub.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
         bub.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
+
+        bub.GetComponent<Renderer>().material.renderQueue = -1;
         bub.GetComponent<bubble>().scaleIncrease = Random.Range(0.003f,0.006f);
         bub.GetComponent<bubble>().maxScale = Random.Range(0.05f,0.35f);
         bub.GetComponent<bubble>().water = this;

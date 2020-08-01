@@ -17,11 +17,14 @@ Shader "Unlit/water"
     }
     SubShader
     {
+        Tags {"Queue" = "Transparent" "RenderType"="Transparent" }
+        LOD 200
+        ZWrite Off
         Blend SrcAlpha OneMinusSrcAlpha
+        ColorMask RGB
         Pass
         {
             CGPROGRAM
-
             #pragma vertex vert
             #pragma fragment frag
             // make fog work
@@ -187,8 +190,10 @@ Shader "Unlit/water"
                 //check to see if we should render this fragment (if its inside the pot)
                 float alpha = getAlpha(i);
 
+                float distFromCenter = length(center - i.wpos);
+
                 float shading = getShading(i);
-                if(shading < 1.2){
+                if(shading < 1.3){
                     col = secondaryColor;
                 }
                 else{
