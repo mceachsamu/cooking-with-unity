@@ -194,7 +194,7 @@ Shader "Unlit/water"
                 else{
                     col = col* 1.0;
                 }
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x + (shading-1.5)/120.0, i.screenPos.y + (shading-1.5)/5.0)/i.screenPos.w);
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x + (shading-1.5)/120.0, i.screenPos.y + (shading-1.5)/10.0)/i.screenPos.w);
                 //col = col * shading;
                 col.a = alpha;
                 tex.a = alpha;

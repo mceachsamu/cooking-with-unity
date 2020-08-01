@@ -2,10 +2,13 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _MainTex("Texture", 2D) = "white" {}
+        _HeightMap("heightmap", 2D) = "white" {}
+        _WaterSize("water size", float) = 0.0
         _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
-        _WaterLevel("water level", float) = 0.0
+        _PotCenter("center", Vector) = (0.0,0.0,0.0,0.0)
         _WaterOpaqueness("water opaqueness", float) = 0.0
+        _WaterLevel("water level", float) = 0.0
     }
     SubShader
     {
@@ -41,9 +44,13 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
+            sampler2D _HeightMap;
+            float4 _HeightMap_ST;
+            uniform float _WaterSize;
+            uniform float4 _PotCenter;
             uniform float4 _LightPos;
-            uniform float _WaterLevel;
             uniform float _WaterOpaqueness;
+            uniform float _WaterLevel;
             v2f vert (appdata v)
             {
                 v2f o;
@@ -58,13 +65,8 @@
                 return o;
             }
 
-            float getAlpha(v2f i) {
-                float dist = _WaterLevel - i.wpos.y;
-                if (dist > 0.0){
-                    return 0.0;
-                }
-                float alpha = dist * _WaterOpaqueness;
-                return alpha;
+            float2 getWaterUV(v2f i){
+                return ((i.wpos.xz - _PotCenter.xz + _WaterSize/2.0)/_WaterSize);
             }
 
             fixed4 frag (v2f i) : SV_Target
@@ -80,10 +82,14 @@
                 float NdotH = dot(i.worldNormal, H);
                 float specIntensity = saturate(NdotH);
 
+                float2 waterUV = getWaterUV(i);
+                float waterHeight = tex2D(_HeightMap, waterUV);
+
+
                 float overall = intensity + specIntensity;
                 // apply fog
                 if(overall < 0.2){
-                    col = col*0.4 ;
+                    col = col*0.4;
                 }
                 if(overall < 0.6){
                     col = col*0.5;
@@ -92,8 +98,10 @@
                     col = col* 1.0;
                 }
 
-                float alpha = getAlpha(i);
-                col =  col + alpha;
+                if (i.wpos.y < waterHeight + _WaterLevel){
+                   // col = waterHeight;
+                }
+
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }

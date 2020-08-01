@@ -63,10 +63,7 @@
                 v.vertex.z = v.vertex.z + sin(v.vertex.z*10 + time*3)/20;
                 float yPos = v.vertex.y;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                
-               // o.vertex = UnityObjectToClipPos(v.vertex);
-                
-                
+
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.worldNormal = v.normal;
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);

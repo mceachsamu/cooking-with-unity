@@ -126,11 +126,20 @@ public class potwater : MonoBehaviour
         this.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
         this.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
         this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
+
+
+
+        pot.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
+        pot.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", this.waterOpaqueness);
+        pot.GetComponent<Renderer>().material.SetFloat("_WaterSize", this.getSize());
+        pot.GetComponent<Renderer>().material.SetTexture("_HeightMap", this.heightMap);
+        pot.GetComponent<Renderer>().material.SetVector("_PotCenter", this.getCenter());
+        pot.GetComponent<Renderer>().material.SetFloat("_WaterLevel", this.GetComponent<Transform>().position.y);
     }
 
+    //get the center point for the pot
     public Vector4 getCenter(){
         Vector3 center = lid.transform.position;
-        //get the center point for the pot
         Vector4 center4f = new Vector4(center.x,center.y,center.z,0.0f);
         return center4f;
     }

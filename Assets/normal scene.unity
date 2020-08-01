@@ -441,6 +441,8 @@ MonoBehaviour:
   waterOpaqueness: 1
   speed: 0.1
   numBubbles: 10
+  primaryCol: {x: 0.60784316, y: 0, z: 0.10980392, w: 0}
+  secondaryCol: {x: 0.96862745, y: 0.43529412, z: 0.5294118, w: 0}
   numFieldPoints: 20
   heightMap: {fileID: 0}
   neighbourFriction: 0.1
