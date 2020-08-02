@@ -40,9 +40,9 @@ public class potwater : MonoBehaviour
     private GameObject[] bubbles;
 
     //the main color of the water
-    public Vector4 primaryCol = new Vector3(155.0f/255,0.0f/255.0f,28.0f/255.0f);
+    public Color primaryCol = new Color(155.0f/255,0.0f/255.0f,28.0f/255.0f);
     //the shading color of the water
-    public Vector4 secondaryCol = new Vector3(247.0f/255.0f,111.0f/255.0f,135.0f/255.0f);
+    public Color secondaryCol = new Color(247.0f/255.0f,111.0f/255.0f,135.0f/255.0f);
     //the number of points defining the phsyical water mesh (complexity of (numFieldPoints ^ 2)* 4)
     public int numFieldPoints = 10;
     //the physical water mesh points, these define the y positions of the water surface
@@ -69,7 +69,7 @@ public class potwater : MonoBehaviour
     [Range(1.0f, 10.0f)]
     public float mass = 3.0f;
     //deceleration defines the rate at which each point tends to a state of rest
-    [Range(-0.01f, 0.1f)]
+    [Range(-0.01f, -0.1f)]
     public float deceleration = -0.1f;
 
     void Start()
