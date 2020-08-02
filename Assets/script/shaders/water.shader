@@ -192,14 +192,14 @@ Shader "Unlit/water"
                 float distFromCenter = length(center - i.wpos);
 
                 float shading = getShading(i);
-                // if(shading < 1.3){
-                //     col = secondaryColor;
-                // }
-                // else{
-                //     col = col* 1.0;
-                // }
+                if(shading < 1.1){
+                    col = secondaryColor;
+                }
+                else{
+                    col = col* 1.0;
+                }
                 fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x + (shading-1.5)/120.0, i.screenPos.y + (shading-1.5)/20.0)/i.screenPos.w);
-                col = col * shading;
+                //col = col * shading;
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 col = col + tex * tex.a;
                 col.a = alpha;

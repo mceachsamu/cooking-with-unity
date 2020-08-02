@@ -443,11 +443,11 @@ MonoBehaviour:
   numBubbles: 10
   primaryCol: {x: 0.60784316, y: 0, z: 0.10980392, w: 0}
   secondaryCol: {x: 0.96862745, y: 0.43529412, z: 0.5294118, w: 0}
-  numFieldPoints: 50
+  numFieldPoints: 20
   heightMap: {fileID: 0}
-  neighbourFriction: 0.3
+  neighbourFriction: 0.2
   friction: 0.9
-  drag: 0.95
+  drag: 0.94
   maxHeight: 1
   mass: 3
   deceleration: -0.1
@@ -935,7 +935,7 @@ MonoBehaviour:
   lid: {fileID: 1763447005}
   water: {fileID: 259507576}
   Light: {fileID: 327739157}
-  forceMultiplier: 2
+  forceMultiplier: 5
   maxForce: 0.7
 --- !u!4 &1166588551 stripped
 Transform:

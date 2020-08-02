@@ -33,12 +33,7 @@ public class point
         //move this point based on its speed and its neighbours position
     public void move(){
         //determine the direction of the center and set curDecelleration towards that direction
-        if (this.y > 0){
-            this.curDeceleration = 1.0f * water.deceleration;
-        }
-        if (this.y < 0){
-            this.curDeceleration = -1.0f * water.deceleration;
-        }
+        
         float totalForce = 0.0f;
         for (int i = 0; i < neighbours.Length;i++){
             float difference = neighbours[i].y - this.y;
@@ -54,12 +49,16 @@ public class point
         if (this.speed > 0.0f){
             frictionDirection = 1.0f;
         }
-        //apply friction
-        this.forceApplied += (this.frictionForce * frictionDirection);
-        if (Mathf.Abs(this.forceApplied) < this.curDeceleration + 0.5f){
-            this.curDeceleration = this.curDeceleration * 0.001f;
+
+
+        //decrease/increase gravity based on amplitude
+        if (this.y > 0){
+            this.curDeceleration = 1.0f * (water.deceleration * 1.0f * Mathf.Abs(this.y) * 0.1f);
         }
-        //apply gravity
+        if (this.y < 0){
+            this.curDeceleration = -1.0f * (water.deceleration * 1.0f * Mathf.Abs(this.y) * 0.1f);
+        }
+
         this.forceApplied += this.curDeceleration;
         this.addForce(this.forceApplied);
         this.speed += this.acceleration;

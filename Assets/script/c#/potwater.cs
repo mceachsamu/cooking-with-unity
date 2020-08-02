@@ -109,7 +109,7 @@ public class potwater : MonoBehaviour
             }
         }
 
-        print(pointField[20,20].y + " ");
+        //print(pointField[20,20].y + " ");
 
         heightMap.Apply();
 
