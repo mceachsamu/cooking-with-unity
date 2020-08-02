@@ -445,7 +445,7 @@ MonoBehaviour:
   secondaryCol: {x: 0.96862745, y: 0.43529412, z: 0.5294118, w: 0}
   numFieldPoints: 20
   heightMap: {fileID: 0}
-  neighbourFriction: 0.2
+  neighbourFriction: 0.071
   friction: 0.9
   drag: 0.94
   maxHeight: 1
