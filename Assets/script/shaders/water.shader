@@ -196,7 +196,7 @@ Shader "Unlit/water"
                 if(shading < 1.1){
                     col = secondaryColor;
                 }
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + (shading-1.5)/2000.0)/i.screenPos.w);
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + (shading-1.5)/10.0)/i.screenPos.w);
                 //col = col * shading;
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 col = col + tex * abs(1.0 - tex.r);
