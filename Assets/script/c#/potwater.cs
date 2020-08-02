@@ -72,6 +72,9 @@ public class potwater : MonoBehaviour
     [Range(-0.01f, -0.1f)]
     public float deceleration = -0.1f;
 
+    [Range(0.01f, 0.3f)]
+    public float damping = 0.1f;
+
     void Start()
     {
        // ClearLog();

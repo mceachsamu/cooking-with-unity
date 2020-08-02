@@ -33,7 +33,7 @@ public class point
         //move this point based on its speed and its neighbours position
     public void move(){
         //determine the direction of the center and set curDecelleration towards that direction
-        
+
         float totalForce = 0.0f;
         for (int i = 0; i < neighbours.Length;i++){
             float difference = neighbours[i].y - this.y;
@@ -53,10 +53,10 @@ public class point
 
         //decrease/increase gravity based on amplitude
         if (this.y > 0){
-            this.curDeceleration = 1.0f * (water.deceleration * 1.0f * Mathf.Abs(this.y) * 0.1f);
+            this.curDeceleration = 1.0f * (water.deceleration * 1.0f * Mathf.Abs(this.y) * water.damping);
         }
         if (this.y < 0){
-            this.curDeceleration = -1.0f * (water.deceleration * 1.0f * Mathf.Abs(this.y) * 0.1f);
+            this.curDeceleration = -1.0f * (water.deceleration * 1.0f * Mathf.Abs(this.y) * water.damping);
         }
 
         this.forceApplied += this.curDeceleration;
@@ -78,8 +78,5 @@ public class point
     public void setNeighbours(point[] neighs){
         this.neighbours = neighs;
     }
-
-
-
 
 }
