@@ -25,6 +25,8 @@ public class potwater : MonoBehaviour
     //the size of the segments on the plane generated
     public float segSize = 5.0f;
 
+    //how quickly objects fade in water
+    [Range(0.0f, 3.0f)]
     public float waterOpaqueness = 1.0f;
 
     float count = 0.0f;
@@ -52,16 +54,22 @@ public class potwater : MonoBehaviour
     //list our constants for our water physics
 
     //neighbourFriction defines how much neighbouring points influence each other
+    [Range(0.0f, 0.3f)]
     public float neighbourFriction = 0.1f;
     //friction defines amount of counter force for each point (higher friction const -> less friction)
+    [Range(0.8f, 1.0f)]
     public float friction = 0.9f;
     //drag defines how quickly the acceleration of a point is decreased at each frame (higher drag const -> less drag)
+    [Range(0.9f, 1.0f)]
     public float drag = 0.97f;
     //maxHeight defines the height of the water that we allow. at lower values the water surface is more defined. higher less defined but smoother
+    [Range(0.1f, 5.0f)]
     public float maxHeight = 1.0f;
     //the mass defines the mass of each point. this effects how much points are effected by forces
+    [Range(1.0f, 10.0f)]
     public float mass = 3.0f;
     //deceleration defines the rate at which each point tends to a state of rest
+    [Range(-0.01f, 0.1f)]
     public float deceleration = -0.1f;
 
     void Start()
