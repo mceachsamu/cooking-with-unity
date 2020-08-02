@@ -11,6 +11,7 @@ Shader "Unlit/water"
         xRad("xRad", float) = 0.0
         seperation("seperation", float) = 0.0
         totalSize("totalSize", float) = 0.0
+        _MaxHeight("max height", float) = 0.0
         zRad("zRad", float) = 0.0//to do --use to implement oval pots
         center("center", Vector) = (0.0,0.0,0.0,0.0)//center of pot water
         _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
@@ -65,10 +66,10 @@ Shader "Unlit/water"
             uniform float totalSize;
             uniform float xRad;
             uniform float zRad;
+            uniform float _MaxHeight;
+
             uniform float4 center;
-
             uniform float4 baseColor;
-
             uniform float4 _LightPos;
             uniform float4 secondaryColor;
 
@@ -106,7 +107,7 @@ Shader "Unlit/water"
                 // sample the texture
                 #if !defined(SHADER_API_OPENGL)
                     float4 height = tex2Dlod (_Tex, float4(float2(v.uv.x,v.uv.y),0,0));
-                    v.vertex.y = height.r;
+                    v.vertex.y += height.r - _MaxHeight;
 
                     normcalc n;
                     n.texStep = seperation / totalSize;
@@ -195,13 +196,10 @@ Shader "Unlit/water"
                 if(shading < 1.1){
                     col = secondaryColor;
                 }
-                else{
-                    col = col* 1.0;
-                }
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x + (shading-1.5)/120.0, i.screenPos.y + (shading-1.5)/20.0)/i.screenPos.w);
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + (shading-1.5)/2000.0)/i.screenPos.w);
                 //col = col * shading;
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                col = col + tex * tex.a;
+                col = col + tex * abs(1.0 - tex.r);
                 col.a = alpha;
                 return col;
             }

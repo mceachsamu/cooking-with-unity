@@ -122,6 +122,8 @@ public class potwater : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("zRad", zRad);
         this.GetComponent<Renderer>().material.SetFloat("seperation", segSize);
         this.GetComponent<Renderer>().material.SetFloat("totalSize", getSize());
+        this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", maxHeight);
+
         this.GetComponent<Renderer>().material.SetVector("center", getCenter());
         this.GetComponent<Renderer>().material.SetTexture("_Tex", heightMap);
         this.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);

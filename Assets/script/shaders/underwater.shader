@@ -4,6 +4,7 @@
     {
         _MainTex("Texture", 2D) = "white" {}
         _HeightMap("heightmap", 2D) = "white" {}
+        _MaxHeight("max height", float) = 0.0
         _WaterSize("water size", float) = 0.0
         _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
         _PotCenter("center", Vector) = (0.0,0.0,0.0,0.0)
@@ -47,11 +48,15 @@
 
             sampler2D _HeightMap;
             float4 _HeightMap_ST;
+
             uniform float _WaterSize;
-            uniform float4 _PotCenter;
-            uniform float4 _LightPos;
+            uniform float _MaxHeight;
             uniform float _WaterOpaqueness;
             uniform float _WaterLevel;
+
+            uniform float4 _PotCenter;
+            uniform float4 _LightPos;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -106,12 +111,12 @@
                     col = col* 1.0;
                 }
 
-                float waterLevel = waterHeight + _WaterLevel;
+                float waterLevel = waterHeight + _WaterLevel - _MaxHeight ;
 
                 if (i.wpos.y < waterLevel){
-                    col.r = abs(i.wpos.y - waterLevel);
-                    col.g = abs(i.wpos.y - waterLevel);
-                    col.b = abs(i.wpos.y - waterLevel);
+                    col.r = abs(i.wpos.y - _WaterLevel) * _WaterOpaqueness;
+                    col.g = abs(i.wpos.y - _WaterLevel) * _WaterOpaqueness;
+                    col.b = abs(i.wpos.y - _WaterLevel) * _WaterOpaqueness;
                     col.a = 1.0;
                 }else{
                     col.a = 0.0;
