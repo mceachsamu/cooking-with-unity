@@ -125,7 +125,6 @@ Shader "Unlit/water"
                     float3 norm4 = getNormal(n);
 
                     o.worldNormal = (norm1 + norm2 + norm3 + norm4)/4.0;
-
                 #endif
 
 
@@ -193,26 +192,16 @@ Shader "Unlit/water"
                 float distFromCenter = length(center - i.wpos);
 
                 float shading = getShading(i);
-                if(shading < 1.3){
-                    col = secondaryColor;
-                }
-                else{
-                    col = col* 1.0;
-                }
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x + (shading-1.5)/120.0, i.screenPos.y + (shading-1.5)/10.0)/i.screenPos.w);
-                //col = col * shading;
-                col.a = alpha;
-                tex.a = alpha;
-                if (tex.r > 0.1){
-                    tex.a = 0.0;
-                    tex.r = 0.0;
-                    tex.g = 0.0;
-                    tex.b = 0.0;
-                }else{
-                    tex = secondaryColor;
-                }
+                // if(shading < 1.3){
+                //     col = secondaryColor;
+                // }
+                // else{
+                //     col = col* 1.0;
+                // }
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x + (shading-1.5)/120.0, i.screenPos.y + (shading-1.5)/20.0)/i.screenPos.w);
+                col = col * shading;
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                col = col + tex;
+                col = col + tex * tex.a;
                 col.a = alpha;
                 return col;
             }

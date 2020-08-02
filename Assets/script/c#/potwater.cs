@@ -100,6 +100,7 @@ public class potwater : MonoBehaviour
 
         //count is an internal timer we give to the shader to move the water along with time
         count = count + speed;
+        //this loop applies the physics model for each point in our field an updates the heightmap accordingly
         for (int i = 0; i < numFieldPoints;i++){
             for (int j = 0; j < numFieldPoints;j++){
                 pointField[i,j].move();
@@ -107,6 +108,8 @@ public class potwater : MonoBehaviour
                 heightMap.SetPixel(i,j, pointField[i,j].GetHeightValue());
             }
         }
+
+        print(pointField[20,20].y + " ");
 
         heightMap.Apply();
 

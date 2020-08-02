@@ -116,7 +116,6 @@
 
                 float overall = intensity + specIntensity;
                 // apply fog
-                
                 if(overall < 0.9){
                     col = col*0.1;
                 }else if(overall < 1.0){

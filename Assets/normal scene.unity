@@ -241,11 +241,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.94
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -412,7 +412,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 259507576}
   m_LocalRotation: {x: 0.7071068, y: -0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: -0.00007, z: -0}
+  m_LocalPosition: {x: 0, y: -0.00007, z: 0.00294}
   m_LocalScale: {x: 0.01, y: 0.009999998, z: 0.009999998}
   m_Children: []
   m_Father: {fileID: 122744735}
@@ -443,13 +443,13 @@ MonoBehaviour:
   numBubbles: 10
   primaryCol: {x: 0.60784316, y: 0, z: 0.10980392, w: 0}
   secondaryCol: {x: 0.96862745, y: 0.43529412, z: 0.5294118, w: 0}
-  numFieldPoints: 30
+  numFieldPoints: 50
   heightMap: {fileID: 0}
-  neighbourFriction: 0.1
-  friction: 0.93
+  neighbourFriction: 0.3
+  friction: 0.9
   drag: 0.95
   maxHeight: 1
-  mass: 2
+  mass: 3
   deceleration: -0.1
 --- !u!135 &259507579
 SphereCollider:
@@ -572,12 +572,32 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 327739157}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 1.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &756669760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100004, guid: 38f445fa4b15a2e45ab663675d1c7ca4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1034573336}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &756669762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756669760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1480787124b124b20b267acbda8e9432, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Light: {fileID: 327739157}
+  water: {fileID: 259507576}
 --- !u!1 &810073313
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +654,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 823
+    m_Bits: 1335
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -752,6 +772,83 @@ Transform:
   m_Father: {fileID: 1166588551}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1034573336
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1166588551}
+    m_Modifications:
+    - target: {fileID: 100004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_Name
+      value: underwaterpart
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300002, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: de84331754b9c474b86440570d5588fa, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
 --- !u!1001 &1108835626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -839,7 +936,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   Light: {fileID: 327739157}
   forceMultiplier: 2
-  maxForce: 0.1
+  maxForce: 0.7
 --- !u!4 &1166588551 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4,

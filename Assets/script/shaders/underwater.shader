@@ -1,4 +1,4 @@
-﻿Shader "Unlit/cell_shading"
+﻿Shader "Unlit/underwater"
 {
     Properties
     {
@@ -12,9 +12,10 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
-
+        Tags {"Queue" = "Transparent" "RenderType"="Transparent" }
+        LOD 200
+        Blend SrcAlpha OneMinusSrcAlpha
+        ColorMask RGB
         Pass
         {
             CGPROGRAM
@@ -107,7 +108,14 @@
 
                 float waterLevel = waterHeight + _WaterLevel;
 
-
+                if (i.wpos.y < waterLevel){
+                    col.r = abs(i.wpos.y - waterLevel);
+                    col.g = abs(i.wpos.y - waterLevel);
+                    col.b = abs(i.wpos.y - waterLevel);
+                    col.a = 1.0;
+                }else{
+                    col.a = 0.0;
+                }
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }
