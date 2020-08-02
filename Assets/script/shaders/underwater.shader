@@ -111,7 +111,7 @@
                     col = col* 1.0;
                 }
 
-                float waterLevel = waterHeight - _MaxHeight ;
+                float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight ;
 
                 if (i.wpos.y < waterLevel){
                     col.r = abs(i.wpos.y - _WaterLevel) * _WaterOpaqueness;
