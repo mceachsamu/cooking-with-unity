@@ -102,8 +102,8 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = _Color2;
-                fixed4 col2 = _Color;
+                fixed4 col = _Color;
+                fixed4 col2 = _Color2;
                 float alpha = getAlpha(i);
                 float3 lightDir = normalize(_LightPos - i.wpos);
                 float NdotL = dot(i.worldNormal, lightDir);
@@ -117,16 +117,15 @@
                 float overall = intensity + specIntensity;
                 // apply fog
                 if(overall < 0.9){
-                    col = col*0.1;
-                }else if(overall < 1.0){
                     col = col*0.8;
+                }else if(overall < 1.0){
+                    col = col2*0.8;
                 }else if(overall < 2.5){
-                    col = col* 0.9;
+                    col = col2* 0.9;
                 }else{
-                    col = col;
+                    col = col2;
                 }
-                //col = col2 * overall;
-                col.a = alpha;
+                col2.a = alpha;
 
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
