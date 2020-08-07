@@ -1141,7 +1141,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 200
+      scalar: 20
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -5110,7 +5110,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 259507576}
   m_LocalRotation: {x: 0.7071068, y: -0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: -0.00007, z: 0.00761}
+  m_LocalPosition: {x: 0, y: -0.0001, z: 0.009}
   m_LocalScale: {x: 0.01, y: 0.009999998, z: 0.009999998}
   m_Children: []
   m_Father: {fileID: 122744735}
@@ -5139,11 +5139,11 @@ MonoBehaviour:
   waterOpaqueness: 1
   speed: 0.068
   numBubbles: 5
-  primaryCol: {r: 0.60784316, g: 0, b: 0.10980392, a: 1}
-  secondaryCol: {r: 0.96862745, g: 0.43529412, b: 0.5294118, a: 1}
+  primaryCol: {r: 1, g: 0.44080997, b: 0, a: 1}
+  secondaryCol: {r: 1, g: 0.72898287, b: 0.19339621, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}
-  neighbourFriction: 0.071
+  neighbourFriction: 0.139
   friction: 0.9
   drag: 0.94
   maxHeight: 1
@@ -5377,7 +5377,7 @@ ParticleSystem:
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
-  useRigidbodyForVelocity: 1
+  useRigidbodyForVelocity: 0
   startDelay:
     serializedVersion: 2
     minMaxState: 0
@@ -5610,7 +5610,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 0.05
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -6569,7 +6569,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.7853982
+      scalar: 6.283185
       minScalar: 0.7853982
       maxCurve:
         serializedVersion: 2
@@ -10044,8 +10044,8 @@ Camera:
   m_GameObject: {fileID: 810073313}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -10084,14 +10084,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 810073313}
-  m_LocalRotation: {x: 0.32285652, y: -0, z: -0, w: 0.94644797}
-  m_LocalPosition: {x: -0.03, y: 2.29, z: -1.75}
+  m_LocalRotation: {x: 0.21131293, y: -0, z: -0, w: 0.9774185}
+  m_LocalPosition: {x: -0.03, y: 1.53, z: -1.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2136882472}
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 37.672, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 24.399002, y: 0, z: 0}
 --- !u!1001 &992994859
 PrefabInstance:
   m_ObjectHideFlags: 0

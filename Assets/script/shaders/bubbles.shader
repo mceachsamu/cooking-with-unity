@@ -119,13 +119,13 @@
                 if(overall < 0.9){
                     col = col*0.8;
                 }else if(overall < 1.0){
-                    col = col2*0.8;
+                    col = col2*0.95;
                 }else if(overall < 2.5){
-                    col = col2* 0.9;
+                    col = col2* 1.0;
                 }else{
                     col = col2;
                 }
-                col2.a = alpha;
+                col.a = alpha;
 
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
