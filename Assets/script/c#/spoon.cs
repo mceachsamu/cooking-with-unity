@@ -48,7 +48,6 @@ public class spoon : MonoBehaviour
     {
         //add a force to water each frame
         this.addForceToWater();
-        
         //detect mouse click to move spoon
         if (Input.GetMouseButton(1)){
             Vector3 mousePos = Input.mousePosition;

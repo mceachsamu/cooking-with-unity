@@ -42,13 +42,6 @@ public class point
         this.forceApplied = (totalForce / neighbours.Length) *  water.neighbourFriction;
 
         this.frictionForce = 0.5f * Mathf.Pow(this.acceleration,2.0f) * water.friction;
-        float frictionDirection = 1.0f;
-        if (this.speed < 0.0f){
-            frictionDirection = -1.0f;
-        }
-        if (this.speed > 0.0f){
-            frictionDirection = 1.0f;
-        }
 
 
         //decrease/increase gravity based on amplitude
