@@ -15,6 +15,15 @@ Shader "Unlit/water"
         zRad("zRad", float) = 0.0//to do --use to implement oval pots
         center("center", Vector) = (0.0,0.0,0.0,0.0)//center of pot water
         _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
+
+
+        [HDR]
+        _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
+        _SpecularColor("Specular Color", Color) = (0.1,0.1,0.1,1)
+        _Glossiness("Glossiness", Range(0, 100)) = 14
+
+        _RimColor("Rim Color", Color) = (1,1,1,1)
+        _RimAmount("Rim Amount", Range(0, 1)) = 1.0
     }
     SubShader
     {
@@ -41,7 +50,7 @@ Shader "Unlit/water"
 
             struct normcalc
             {
-                float2 uv : TEXCOORD0;
+                float2 uv;
                 float step;
                 float texStep;
             };
@@ -54,6 +63,7 @@ Shader "Unlit/water"
                 float4 wpos : TEXCOORD1;
                 float4 screenPos : TEXCOORD2;
                 float3 worldNormal : NORMAL;
+                float3 viewDir : TEXCOORD3;
             };
 
             sampler2D _Tex;
@@ -72,6 +82,12 @@ Shader "Unlit/water"
             uniform float4 baseColor;
             uniform float4 _LightPos;
             uniform float4 secondaryColor;
+
+            float _Glossiness;
+            float4 _SpecularColor;
+            float4 _RimColor;
+            float _RimAmount;
+            float4 _AmbientColor;
 
             float3 getNormal(normcalc v)
             {
@@ -135,6 +151,7 @@ Shader "Unlit/water"
                 worldPos.y = worldPos.y;
                 o.wpos = worldPos;
 				o.screenPos = ComputeScreenPos(o.vertex);
+                o.viewDir = WorldSpaceViewDir(v.vertex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
@@ -169,17 +186,33 @@ Shader "Unlit/water"
             //based on blinn phong shading
             float getShading (v2f i)
             {
+                fixed4 col = baseColor;
                 float3 lightDir = normalize(_LightPos - i.wpos);
                 float NdotL = dot(i.worldNormal, lightDir);
-                float intensity = saturate(NdotL);
-                float3 camDir = normalize(_WorldSpaceCameraPos - i.wpos);
+                float intensity = smoothstep(0, 0.01, NdotL);
+                float3 viewDir = i.viewDir;
 
-                float3 H = normalize(lightDir + camDir);
+                float3 H = normalize(_LightPos + viewDir);
                 float NdotH = dot(i.worldNormal, H);
-                float specIntensity = saturate(NdotH);
+                float specIntensity = pow(NdotH * intensity, _Glossiness * _Glossiness);
 
-                float overall = intensity + specIntensity;
-                return overall;
+                float specularIntensitySmooth = smoothstep(0.005, 0.01, specIntensity);
+                float4 specular = specularIntensitySmooth * _SpecularColor;
+
+                float4 rimDot = 1 - dot(viewDir, i.worldNormal);
+
+                float rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimDot);
+                float4 rim = rimIntensity * _RimColor;
+                float overall = intensity;
+
+                if (overall < 0.0){
+                    overall = 0.0;
+                }
+                if (overall > 0.0){
+                    overall = 1.0;
+                }
+
+                return col * (_AmbientColor + overall + specular + rim);
             }
 
             fixed4 frag (v2f i) : SV_Target
@@ -190,16 +223,10 @@ Shader "Unlit/water"
                 //check to see if we should render this fragment (if its inside the pot)
                 float alpha = getAlpha(i);
 
-                float distFromCenter = length(center - i.wpos);
-
                 float shading = getShading(i);
-                if(shading < 1.1){
-                    col = secondaryColor;
-                }
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y-0.01 + (shading-1.5)/10.0)/i.screenPos.w);
-                //col = col * shading;
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y)/i.screenPos.w);
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                col = col + tex * abs(1.0 - tex.r);
+                col = col*shading + tex * abs(1.0 - tex.r);
                 col.a = alpha;
                 return col;
             }
