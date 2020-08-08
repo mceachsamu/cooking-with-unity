@@ -441,7 +441,7 @@ MonoBehaviour:
   waterOpaqueness: 1
   speed: 0.068
   numBubbles: 5
-  primaryCol: {r: 1, g: 0.44080997, b: 0, a: 1}
+  primaryCol: {r: 0.9339623, g: 0.48642865, b: 0.004405493, a: 1}
   secondaryCol: {r: 1, g: 0.72898287, b: 0.19339621, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}

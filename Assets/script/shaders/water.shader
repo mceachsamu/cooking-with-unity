@@ -206,13 +206,13 @@ Shader "Unlit/water"
                 float overall = intensity;
 
                 if (overall < 0.0){
-                    overall = 0.0;
+                    overall = 0.5;
                 }
                 if (overall > 0.0){
                     overall = 1.0;
                 }
 
-                return col * (_AmbientColor + overall + specular + rim);
+                return (baseColor + overall + specular + rim);
             }
 
             fixed4 frag (v2f i) : SV_Target
