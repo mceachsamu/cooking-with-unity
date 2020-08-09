@@ -465,13 +465,13 @@ MonoBehaviour:
   secondaryCol: {r: 1, g: 0.72898287, b: 0.19339621, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}
-  neighbourFriction: 0.064
-  friction: 0.9
-  drag: 0.9753
+  neighbourFriction: 0.251
+  friction: 0.9459
+  drag: 0.9536
   maxHeight: 1
-  mass: 5.69
-  deceleration: -0.1
-  damping: 0.108
+  mass: 6.83
+  deceleration: -0.0807
+  damping: 0.282
 --- !u!135 &259507579
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -847,8 +847,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.8
-      minScalar: 0.5
+      scalar: 2.4
+      minScalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4930,7 +4930,7 @@ ParticleSystem:
     vector0_0:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.01
+      scalar: 0.1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -10781,7 +10781,7 @@ MonoBehaviour:
   lid: {fileID: 1763447005}
   water: {fileID: 259507576}
   Light: {fileID: 327739157}
-  forceMultiplier: 5
+  forceMultiplier: 10
   maxForce: 0.7
 --- !u!4 &1166588551 stripped
 Transform:

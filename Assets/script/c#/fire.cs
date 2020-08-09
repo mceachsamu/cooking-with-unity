@@ -6,7 +6,7 @@ public class fire : MonoBehaviour
 {
 
 
-    public float gravity = 0.001f;
+    public float gravity = 0.01f;
 
     public float force = 0.1f;
 
