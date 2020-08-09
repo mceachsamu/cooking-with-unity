@@ -40,7 +40,7 @@ public class spoon : MonoBehaviour
         if (force > maxForce){
             force = maxForce;
         }
-        water.GetComponent<potwater>().AddForceToWater(this.transform, force * forceMultiplier);
+        water.GetComponent<potwater>().AddForceToWater(this.transform.position, force * forceMultiplier);
     }
 
     // Update is called once per frame

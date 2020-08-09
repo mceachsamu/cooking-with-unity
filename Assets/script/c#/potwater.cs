@@ -98,9 +98,9 @@ public class potwater : MonoBehaviour
     }
 
 
-    public void AddForceToWater(Transform transform, float forceAmount){
+    public void AddForceToWater(Vector3 position, float forceAmount){
         //ensures we dont get an out of bounds exception and translates position to water
-        Vector2 index = getClosestPoint(transform);
+        Vector2 index = getClosestPoint(position);
         pointField[(int)index.x,(int)index.y].addForce(-1 * forceAmount);
     }
 
@@ -141,14 +141,17 @@ public class potwater : MonoBehaviour
         this.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
         this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
 
-
-
         pot.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
         pot.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", this.waterOpaqueness);
         pot.GetComponent<Renderer>().material.SetFloat("_WaterSize", this.getSize());
         pot.GetComponent<Renderer>().material.SetTexture("_HeightMap", this.heightMap);
         pot.GetComponent<Renderer>().material.SetVector("_PotCenter", this.getCenter());
         pot.GetComponent<Renderer>().material.SetFloat("_WaterLevel", this.GetComponent<Transform>().position.y);
+    }
+
+    public float getHeightAtPosition(Vector3 position){
+        Vector2 closest = getClosestPoint(position);
+        return this.heightMap.GetPixel((int)closest.x, (int)closest.y).r + this.transform.position.y - maxHeight;
     }
 
     //get the center point for the pot
@@ -232,9 +235,9 @@ public class potwater : MonoBehaviour
         return m;
     }
     //translates wolrd positions into the closest index on the field points matrix.
-    public Vector2 getClosestPoint(Transform transform){
-        float xDiff = transform.position.x - this.transform.position.x + this.getSize()/2.0f;
-        float zDiff = transform.position.z - this.transform.position.z + this.getSize()/2.0f;
+    public Vector2 getClosestPoint(Vector3 position){
+        float xDiff = position.x - this.transform.position.x + this.getSize()/2.0f;
+        float zDiff = position.z - this.transform.position.z + this.getSize()/2.0f;
         float x = (xDiff / (this.getSize())) * numFieldPoints;
         float z = (zDiff / (this.getSize())) * numFieldPoints;
 

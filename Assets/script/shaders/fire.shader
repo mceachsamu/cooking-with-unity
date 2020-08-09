@@ -54,13 +54,6 @@
             v2f vert (appdata v)
             {
                 v2f o;
-                #if !defined(SHADER_API_OPENGL)
-                    float4 noise = tex2Dlod (_NoiseMap, float4(float2(v.uv.x,v.uv.y),0,0));
-                    v.vertex.x = v.vertex.x*(noise.r +1 )+ sin(v.vertex.y*10)/100;
-                    v.vertex.z = v.vertex.z*(noise.r +1 )+ sin(v.vertex.y*10)/010;
-                #endif
-                v.vertex.x = v.vertex.x + sin(v.vertex.y*10)/100;
-
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 // o.vertex.x = v.vertex.x + v.vertex.x;
                 o.uv.xy = TRANSFORM_TEX(v.uv.xy, _MainTex);

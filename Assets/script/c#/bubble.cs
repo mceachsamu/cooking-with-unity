@@ -42,7 +42,7 @@ public class bubble : MonoBehaviour
     }
 
     void setShaderProperties(){
-        Vector2 bubbleIndex = water.getClosestPoint(this.transform);
+        Vector2 bubbleIndex = water.getClosestPoint(this.transform.position);
         float bubbleHeight = water.heightMap.GetPixel((int)bubbleIndex.x, (int)bubbleIndex.y).r - water.maxHeight;
         this.transform.position.Set(this.transform.position.x, water.transform.position.y+bubbleHeight, this.transform.position.z);
         this.GetComponent<Renderer>().material.SetTexture("_MainTex", water.heightMap);
