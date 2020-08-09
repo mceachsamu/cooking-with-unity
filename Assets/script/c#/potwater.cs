@@ -77,6 +77,7 @@ public class potwater : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = 60;
        // ClearLog();
         //get the radius of our pot lid
         xRadConst = lid.GetComponent<lid>().lidXradius;
@@ -108,6 +109,9 @@ public class potwater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        int current = (int)(1f / Time.unscaledDeltaTime);
+        print(current);
 
         //count is an internal timer we give to the shader to move the water along with time
         count = count + speed;
