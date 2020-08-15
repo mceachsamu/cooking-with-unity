@@ -84,7 +84,8 @@ public class potwater : MonoBehaviour
         zRadConst = lid.GetComponent<lid>().lidZradius;
         //set the same as xradius for now
         //create a new 2d plane mesh for this object
-        Mesh mesh = createPlane(numSegs, segSize);
+        shapes3D shapeGen = new shapes3D();
+        Mesh mesh = shapeGen.CreatePlane(numSegs, segSize);
         this.GetComponent<MeshFilter>().mesh = mesh;
         //initialize our field points
         this.pointField = initializePoints(numFieldPoints);
@@ -98,13 +99,11 @@ public class potwater : MonoBehaviour
         heightMap = new Texture2D(numFieldPoints, numFieldPoints);
     }
 
-
     public void AddForceToWater(Vector3 position, float forceAmount){
         //ensures we dont get an out of bounds exception and translates position to water
         Vector2 index = getClosestPoint(position);
         pointField[(int)index.x,(int)index.y].addForce(-1 * forceAmount);
     }
-
 
     // Update is called once per frame
     void Update()
@@ -185,59 +184,7 @@ public class potwater : MonoBehaviour
         return speed;
     }
 
-    //creates a simple plane mesh to be used as the water surface
-    public Mesh createPlane(int numSegs, float segSize){
-        Mesh m = new Mesh();
-        m.name = "mesh";
-        m.Clear();
 
-        Vector3[] vs = new Vector3[(int)(numSegs*numSegs)*6];
-        Vector2[] us = new Vector2[(int)(numSegs*numSegs)*6];
-        int[] tri = new int[(int)(numSegs*numSegs)*6];
-
-        float width = (float)(numSegs) * segSize;
-        int count = 0;
-            for (int i = 0; i < numSegs; i++){
-                for (int j = 0; j < numSegs; j++){
-                //first traingle
-                vs[count] = new Vector3(i*segSize - this.getSize()/2.0f ,0.0f, j*segSize- this.getSize()/2.0f);
-                us[count] = new Vector2( (float)i / (float)numSegs, (float)j /(float)numSegs);
-                tri[count] = count;
-                count++;
-
-                vs[count] = new Vector3(i*segSize - this.getSize()/2.0f,0.0f,(j*segSize + segSize) - this.getSize()/2.0f);
-                us[count] = new Vector2( ((float)i) / (float)numSegs,  ((float)j+1.0f) / (float)numSegs);
-                tri[count] = count;
-                count++;
-
-                vs[count] = new Vector3(i*segSize + segSize - this.getSize()/2.0f,0.0f,j*segSize - this.getSize()/2.0f);
-                us[count] =  new Vector2( ((float)i+1.0f) / (float)numSegs,  ((float)j) / (float)numSegs);
-                tri[count] = count;
-                count++;
-
-                //second triangle
-                vs[count] = new Vector3(i*segSize + segSize - this.getSize()/2.0f,0.0f,j*segSize - this.getSize()/2.0f);
-                us[count] = new Vector2( ((float)i+1.0f) / (float)numSegs,  ((float)j) / (float)numSegs);
-                tri[count] = count;
-                count++;
-
-                vs[count] = new Vector3(i*segSize - this.getSize()/2.0f,0.0f,j*segSize + segSize - this.getSize()/2.0f);
-                us[count] = new Vector2(((float)i) / (float)numSegs,  ((float)j+1.0f) / (float)numSegs);
-                tri[count] = count;
-                count++;
-
-                vs[count] = new Vector3(i*segSize + segSize - this.getSize()/2.0f,0.0f,j*segSize + segSize - this.getSize()/2.0f);
-                us[count] = new Vector2( ((float)i + 1.0f) / (float)numSegs,  ((float)j + 1.0f) / (float)numSegs);
-                tri[count] = count;
-                count++;
-            }
-        }
-        m.vertices = vs;
-        m.uv = us;
-        m.triangles = tri;
-        m.RecalculateNormals();
-        return m;
-    }
     //translates wolrd positions into the closest index on the field points matrix.
     public Vector2 getClosestPoint(Vector3 position){
         float xDiff = position.x - this.transform.position.x + this.getSize()/2.0f;
