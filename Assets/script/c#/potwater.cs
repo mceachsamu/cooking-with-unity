@@ -110,7 +110,6 @@ public class potwater : MonoBehaviour
     {
 
         int current = (int)(1f / Time.unscaledDeltaTime);
-        print(current);
 
         //count is an internal timer we give to the shader to move the water along with time
         count = count + speed;
@@ -122,8 +121,6 @@ public class potwater : MonoBehaviour
                 heightMap.SetPixel(i,j, pointField[i,j].GetHeightValue());
             }
         }
-
-        //print(pointField[20,20].y + " ");
 
         heightMap.Apply();
 
