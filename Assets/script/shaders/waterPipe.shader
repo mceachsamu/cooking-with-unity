@@ -62,23 +62,21 @@
 
                 float sway = v.vertex.z / AdjustedPipeLength;
                 o.uv.z = sway;
-                float4 end = (pipeEnd * (1.0-sway) + prevEnd * (sway))/1.0;
+                float4 end = (pipeEnd * (1.0-sway) + prevEnd * (sway));
 
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
 
-                float adjusted = ((start.x-end.x)) / (AdjustedPipeLength);
-                v.vertex.z *= adjusted;
+                float adjustedX = ((start.x-end.x)) / (AdjustedPipeLength);
+                v.vertex.z *= adjustedX;
 
-                float z = v.vertex.z;
-                float endZ = (start.x-end.x);
+                float z = length(v.vertex.xz);
+                float endZ = (start.xz-end.xz);
                 float a = (end.y) / (endZ*endZ);
                 float y = z * z * a;
                 v.vertex.y -= y;
 
                 float x = v.vertex.x;
                 float endX = (start.z-end.z);
-                float a2 = (end.y) / (endX*endX);
-                float y2 = x * x * a2;
                 v.vertex.x -= endX*sway;
 
                 v.vertex.x += sin(_Count * v.vertex.y)/100;

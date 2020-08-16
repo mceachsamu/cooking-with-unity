@@ -8,6 +8,8 @@ public class waterPipe : MonoBehaviour
     public float baseLength = 1.0f;
     public int numSegmentsRound = 15;
     public int numSegmentsLong = 10;
+
+    public GameObject light;
     public GameObject water;
 
     public GameObject start;
@@ -30,16 +32,19 @@ public class waterPipe : MonoBehaviour
     void Update()
     {
         count++;
+        Vector3 pos = water.GetComponent<potwater>().getCenter();
+        water.GetComponent<potwater>().AddForceToWater(pos, 0.05f);
         this.GetComponent<Renderer>().material.SetVector("_PipeStart", this.transform.position);
-        this.GetComponent<Renderer>().material.SetVector("_PipeEnd", water.GetComponent<potwater>().getCenter());
+        this.GetComponent<Renderer>().material.SetVector("_PipeEnd", pos);
         this.GetComponent<Renderer>().material.SetFloat("_Count", count);
         this.GetComponent<Renderer>().material.SetFloat("_PipeLength", baseLength);
         this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
-        
-        float diffX = water.GetComponent<potwater>().getCenter().x - PreviousPoint.x;
-        float diffY = water.GetComponent<potwater>().getCenter().y - PreviousPoint.y;
-        float diffZ = water.GetComponent<potwater>().getCenter().z - PreviousPoint.z;
-        
+        this.GetComponent<Renderer>().material.SetVector("_LightPos", light.transform.position);
+
+        float diffX = pos.x - PreviousPoint.x;
+        float diffY = pos.y - PreviousPoint.y;
+        float diffZ = pos.z - PreviousPoint.z;
+
         PreviousPoint.x += diffX * creep;
         PreviousPoint.y -= diffY * creep;
         PreviousPoint.z += diffZ * creep;
