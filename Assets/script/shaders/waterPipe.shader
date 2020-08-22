@@ -66,18 +66,19 @@
 
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
 
-                float adjustedX = ((start.x-end.x)) / (AdjustedPipeLength);
+                float adjustedX = (length(start.xz-end.xz)) / (AdjustedPipeLength);
                 v.vertex.z *= adjustedX;
 
                 float z = length(v.vertex.xz);
-                float endZ = (start.xz-end.xz);
+                float endZ = length(start.xz-end.xz);
                 float a = (end.y) / (endZ*endZ);
                 float y = z * z * a;
                 v.vertex.y -= y;
 
-                float x = v.vertex.x;
                 float endX = (start.z-end.z);
-                v.vertex.x -= endX*sway;
+                //v.vertex.x -= endX*sway;
+                // float endZ2 = (start.x-end.x);
+                // v.vertex.z -= endZ2*sway;
 
                 v.vertex.x += sin(_Count * v.vertex.y)/100;
                 o.vertex = UnityObjectToClipPos(v.vertex);
