@@ -36,6 +36,7 @@
                 float3 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
+                float4 objvertex : NORMAL;
             };
 
             sampler2D _MainTex;
@@ -86,14 +87,15 @@
                 v.vertex.z -= endZ2*sway;
 
                 #if !defined(SHADER_API_OPENGL)
-                    float4 col = tex2Dlod (_NoiseMap, float4(float2(v.uv.x + _Count/1000,v.uv.y),0,0));
+                    float4 col = tex2Dlod (_NoiseMap, float4(float2(v.uv.x + _Count/200,v.uv.y - _Count/100),0,0));
                     float s = (col.r)*sway;
-                    v.vertex.xz += s*0.4;
+                    v.vertex.xz += s*0.8;
                 #endif
 
                 //v.vertex.x += sin(_Count/2 * v.vertex.y)/100;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv.xy = TRANSFORM_TEX(v.uv.xy, _MainTex);
+                o.objvertex = v.vertex;
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
@@ -101,10 +103,10 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 col = tex2D(_NoiseMap, float2(i.uv.x + _Count/200,i.uv.y - _Count/100));
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return col * i.uv.z;
+                return col;
             }
             ENDCG
         }
