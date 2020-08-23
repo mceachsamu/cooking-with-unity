@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class spoon : MonoBehaviour
 {
-
+    //get the origin of the spoon so we can reset its position
     Vector3 origin;
     Quaternion rotation;
 
@@ -49,7 +49,7 @@ public class spoon : MonoBehaviour
         //add a force to water each frame
         this.addForceToWater();
         //detect mouse click to move spoon
-        if (Input.GetMouseButton(1)){
+        if (Input.GetMouseButton(1) && !Input.GetKey("z")){
             Vector3 mousePos = Input.mousePosition;
             Vector3 flatPosition = new Vector3((mousePos.x-500)/500, this.transform.position.y, mousePos.y/500);
             transform.localPosition = flatPosition;

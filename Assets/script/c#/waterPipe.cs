@@ -16,6 +16,8 @@ public class waterPipe : MonoBehaviour
 
     private Vector3 PreviousPoint;
 
+    private Vector3 FallPosition;
+
     private int count = 0;
 
     public float creep = 0.05f;
@@ -32,27 +34,24 @@ public class waterPipe : MonoBehaviour
     void Update()
     {
         count++;
-        Vector3 pos = water.GetComponent<potwater>().getCenter();
-        water.GetComponent<potwater>().AddForceToWater(pos, 0.05f);
+        water.GetComponent<potwater>().AddForceToWater(FallPosition, 0.1f);
         this.GetComponent<Renderer>().material.SetVector("_PipeStart", this.transform.position);
-        this.GetComponent<Renderer>().material.SetVector("_PipeEnd", pos);
+        this.GetComponent<Renderer>().material.SetVector("_PipeEnd", FallPosition);
+
         this.GetComponent<Renderer>().material.SetFloat("_Count", count);
         this.GetComponent<Renderer>().material.SetFloat("_PipeLength", baseLength);
         this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
         this.GetComponent<Renderer>().material.SetVector("_LightPos", light.transform.position);
 
-        float diffX = pos.x - PreviousPoint.x;
-        float diffY = pos.y - PreviousPoint.y;
-        float diffZ = pos.z - PreviousPoint.z;
-
+        float diffX = FallPosition.x - PreviousPoint.x;
+        float diffY = FallPosition.y - PreviousPoint.y;
+        float diffZ = FallPosition.z - PreviousPoint.z;
         PreviousPoint.x += diffX * creep;
-        PreviousPoint.y -= diffY * creep;
+        PreviousPoint.y += diffY * creep;
         PreviousPoint.z += diffZ * creep;
     }
 
-    //rotates this object to face a point
-    private void RotateToPoint(Vector3 point) {
-        Vector3 position = this.GetComponent<Transform>().position;
-        
+    public void SetFallPosition(Vector3 position) {
+        FallPosition = position;
     }
 }

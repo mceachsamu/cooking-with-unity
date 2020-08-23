@@ -56,6 +56,8 @@
                 float4 pipeEnd = _PipeEnd;
                 float4 prevEnd = _PreviousEnd;
 
+                pipeEnd.y = _PipeEnd.y-1.5;
+                prevEnd.y = _PreviousEnd.y-1.5;
                 float startZ = v.vertex.z;
 
                 float AdjustedPipeLength = _PipeLength*mag;
@@ -69,18 +71,18 @@
                 float adjustedX = (length(start.xz-end.xz)) / (AdjustedPipeLength);
                 v.vertex.z *= adjustedX;
 
-                float z = length(v.vertex.xz);
-                float endZ = length(start.xz-end.xz);
-                float a = (end.y) / (endZ*endZ);
+                float z = length(v.vertex.z);
+                float endZ = length(start.z-end.z);
+                float a =  (end.y) / (endZ*endZ);
                 float y = z * z * a;
-                v.vertex.y -= y;
+                v.vertex.y += y;
 
-                float endX = (start.z-end.z);
-                //v.vertex.x -= endX*sway;
-                // float endZ2 = (start.x-end.x);
-                // v.vertex.z -= endZ2*sway;
+               //float endX = (_PipeEnd.z-end.z);
+               //v.vertex.x -= endX*sway;
+               //float endZ2 = (_PipeEnd.x-end.x);
+               //v.vertex.z -= endZ2*sway;
 
-                v.vertex.x += sin(_Count * v.vertex.y)/100;
+                v.vertex.x += sin(_Count/2 * v.vertex.y)/100;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv.xy = TRANSFORM_TEX(v.uv.xy, _MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
