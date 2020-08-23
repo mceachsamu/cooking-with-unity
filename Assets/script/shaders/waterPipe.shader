@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _NoiseMap ("noise map", 2D) = "white" {}
         _PipeStart("pipe start", Vector) = (0.0,0.0,0.0,0.0)
         _PipeEnd("pipe end", Vector) = (0.0,0.0,0.0,0.0)
         _PreviousEnd("pipe end previous", Vector) = (0.0,0.0,0.0,0.0)
@@ -39,6 +40,8 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            sampler2D _NoiseMap;
+            float4 _NoiseMap_ST;
             float4 _PipeStart;
             float4 _PipeEnd;
             float4 _PreviousEnd;
@@ -60,7 +63,7 @@
                 prevEnd.y = _PreviousEnd.y-1.5;
                 float startZ = v.vertex.z;
 
-                float AdjustedPipeLength = _PipeLength*mag;
+                float AdjustedPipeLength = _PipeLength*mag*1.3;
 
                 float sway = v.vertex.z / AdjustedPipeLength;
                 o.uv.z = sway;
@@ -77,12 +80,18 @@
                 float y = z * z * a;
                 v.vertex.y += y;
 
-               //float endX = (_PipeEnd.z-end.z);
-               //v.vertex.x -= endX*sway;
-               //float endZ2 = (_PipeEnd.x-end.x);
-               //v.vertex.z -= endZ2*sway;
+                float endX = (_PipeEnd.z-end.z);
+                v.vertex.x -= endX*sway;
+                float endZ2 = (_PipeEnd.x-end.x);
+                v.vertex.z -= endZ2*sway;
 
-                v.vertex.x += sin(_Count/2 * v.vertex.y)/100;
+                #if !defined(SHADER_API_OPENGL)
+                    float4 col = tex2Dlod (_NoiseMap, float4(float2(v.uv.x + _Count/1000,v.uv.y),0,0));
+                    float s = (col.r)*sway;
+                    v.vertex.xz += s*0.4;
+                #endif
+
+                //v.vertex.x += sin(_Count/2 * v.vertex.y)/100;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv.xy = TRANSFORM_TEX(v.uv.xy, _MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
