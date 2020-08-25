@@ -556,7 +556,7 @@ MonoBehaviour:
   waterOpaqueness: 1
   speed: 0.024
   numBubbles: 5
-  primaryCol: {r: 0, g: 0.59978414, b: 0.6117647, a: 1}
+  primaryCol: {r: 0, g: 0.43486932, b: 0.4433962, a: 1}
   secondaryCol: {r: 0.082013145, g: 0.89386916, b: 0.9150943, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}
@@ -6296,14 +6296,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43168dd7491514c73a5b37acf2b6ca1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseRadius: 0.05
-  baseLength: 3
-  numSegmentsRound: 15
-  numSegmentsLong: 30
+  baseRadius: 0.06
+  baseLength: 5
+  numSegmentsRound: 30
+  numSegmentsLong: 60
   light: {fileID: 327739157}
   water: {fileID: 259507576}
   start: {fileID: 247625750}
-  creep: 0.05
+  creep: 0.1
+  force: 0.1
 --- !u!65 &1510246518
 BoxCollider:
   m_ObjectHideFlags: 0

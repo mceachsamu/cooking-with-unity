@@ -7,8 +7,22 @@
         _PipeStart("pipe start", Vector) = (0.0,0.0,0.0,0.0)
         _PipeEnd("pipe end", Vector) = (0.0,0.0,0.0,0.0)
         _PreviousEnd("pipe end previous", Vector) = (0.0,0.0,0.0,0.0)
+        _Direction("direction", Vector) = (0.0,0.0,0.0,0.0)
         _Count("timer", float) = 0.0
         _PipeLength("length", float) = 0.0
+        _PipeRadius("radius", float) = 0.0
+        _PipeSegments("number of segments", float) = 0.0
+
+        baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
+
+        _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
+        [HDR]
+        _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
+        _SpecularColor("Specular Color", Color) = (0.0,0.0,0.0,1)
+        _Glossiness("Glossiness", Range(0, 100)) = 14
+
+        _RimColor("Rim Color", Color) = (1,1,1,1)
+        _RimAmount("Rim Amount", Range(0, 1)) = 1.0
     }
     SubShader
     {
@@ -36,7 +50,10 @@
                 float3 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
-                float4 objvertex : NORMAL;
+                float4 normal : NORMAL;
+                float4 wpos : TEXCOORD1;
+                float3 viewDir : TEXCOORD2;
+                float4 screenPos : TEXCOORD3;
             };
 
             sampler2D _MainTex;
@@ -46,67 +63,143 @@
             float4 _PipeStart;
             float4 _PipeEnd;
             float4 _PreviousEnd;
+            float4 _Direction;
+
+            float4 _LightPos;
+
+            float4 baseColor;
+            float _Glossiness;
+            float4 _SpecularColor;
+            float4 _RimColor;
+            float _RimAmount;
+            float4 _AmbientColor;
 
             float _Count;
             float _PipeLength;
+            float _PipeRadius;
+            float _PipeSegments;
+
+            float4 getVertexDistortion(float4 vertex, float2 uv){
+                float mag = vertex.z;
+                vertex *= mag;
+                float4 start = _PipeStart;
+                float4 pipeEnd = _PipeEnd;
+                float4 prevEnd = _PreviousEnd;
+
+                float adjust = 1.4;
+                pipeEnd.y = _PipeEnd.y - adjust;
+                prevEnd.y = _PreviousEnd.y - adjust;
+                float startZ = vertex.z;
+
+                float AdjustedPipeLength = _PipeLength*mag;
+
+                float sway = vertex.z / AdjustedPipeLength;
+
+                float4 end = (pipeEnd * (1.0-sway) + prevEnd * (sway));
+
+
+                float adjustedX = (length(start.z-end.z)) / (AdjustedPipeLength);
+                vertex.z *= adjustedX;
+
+                float z = length(vertex.z);
+                float endZ = length(start.z-end.z);
+                float a =  (end.y) / (endZ*endZ);
+                float y = z * z * a;
+                vertex.y += y;
+
+                // float endX = (_PipeEnd.z-end.z);
+                // v.vertex.x -= endX*sway;
+                // float endZ2 = (_PipeEnd.x-end.x);
+                // v.vertex.z -= endZ2*sway;
+
+                #if !defined(SHADER_API_OPENGL)
+                    float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/100),0,0));
+                    float s = (col.r)*(sway);
+                    vertex.x += (s*1.0) - 0.5*sway;
+                #endif
+                return vertex;
+            }
 
             v2f vert (appdata v)
             {
                 v2f o;
 
-                float mag = v.vertex.z;
-                v.vertex *= mag;
-                float4 start = _PipeStart;
-                float4 pipeEnd = _PipeEnd;
-                float4 prevEnd = _PreviousEnd;
-
-                pipeEnd.y = _PipeEnd.y-1.5;
-                prevEnd.y = _PreviousEnd.y-1.5;
-                float startZ = v.vertex.z;
-
-                float AdjustedPipeLength = _PipeLength*mag*1.3;
-
-                float sway = v.vertex.z / AdjustedPipeLength;
-                o.uv.z = sway;
-                float4 end = (pipeEnd * (1.0-sway) + prevEnd * (sway));
-
+                v.vertex = getVertexDistortion(v.vertex, v.uv);
+                float PI = 3.14159265359;
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
+                float4 start = _Direction + _PipeStart * v.vertex.z;
+                float4 angle = PI * 2 / _PipeSegments;
 
-                float adjustedX = (length(start.xz-end.xz)) / (AdjustedPipeLength);
-                v.vertex.z *= adjustedX;
+                float4 H = start - worldPos;
 
-                float z = length(v.vertex.z);
-                float endZ = length(start.z-end.z);
-                float a =  (end.y) / (endZ*endZ);
-                float y = z * z * a;
-                v.vertex.y += y;
+                float y = cos(angle*2) * H;
+                float x = sin(angle*2) * H;
+                float4 next = float4(start.x + x, start.y + y, start.z, start.w);
+                float4 next2 = float4(start.x - x, start.y - y, start.z, start.w);
+                float zstep = 0.1;
+                float4 next3 = float4(start.x + x, start.y + y, start.z + zstep, start.w);
+                float4 next4 = float4(start.x - x, start.y - y, start.z + zstep, start.w);
 
-                float endX = (_PipeEnd.z-end.z);
-                v.vertex.x -= endX*sway;
-                float endZ2 = (_PipeEnd.x-end.x);
-                v.vertex.z -= endZ2*sway;
+                // next = normalize(getVertexDistortion(next, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y)));
+                // next2 = normalize(getVertexDistortion(next2, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y)));
 
-                #if !defined(SHADER_API_OPENGL)
-                    float4 col = tex2Dlod (_NoiseMap, float4(float2(v.uv.x + _Count/200,v.uv.y - _Count/100),0,0));
-                    float s = (col.r)*sway;
-                    v.vertex.xz += s*0.8;
-                #endif
+                // next3 = normalize(getVertexDistortion(next3, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
+                // next4 = normalize(getVertexDistortion(next4, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
 
+
+                float normal = cross(next-next3,next-next4);
+
+                o.normal = normal;
+                o.wpos = worldPos;
                 //v.vertex.x += sin(_Count/2 * v.vertex.y)/100;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv.xy = TRANSFORM_TEX(v.uv.xy, _MainTex);
-                o.objvertex = v.vertex;
+                o.viewDir = WorldSpaceViewDir(v.vertex);
+                o.screenPos = ComputeScreenPos(o.vertex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
+            }
+
+            //based on blinn phong shading
+            float4 getShading (v2f i)
+            {
+                fixed4 col = baseColor;
+                float3 lightDir = normalize(_LightPos - i.wpos);
+                float NdotL = dot(i.normal, lightDir);
+                float intensity =   smoothstep(0, 0.1, NdotL);
+                float3 viewDir = i.viewDir;
+
+                float3 H = normalize(_LightPos + viewDir);
+                float NdotH = dot(i.normal, H);
+                float specIntensity = pow(NdotH * intensity, _Glossiness * _Glossiness);
+
+                float specularIntensitySmooth = smoothstep(0.005, 0.01, specIntensity);
+                float4 specular = specularIntensitySmooth * _SpecularColor;
+
+                float4 rimDot = 1 - dot(viewDir, i.normal);
+
+                float rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimDot);
+                float4 rim = rimIntensity * _RimColor;
+                float overall = intensity * 0.5;
+
+                if (overall < 0.0){
+                    overall = 0.5;
+                }
+                if (overall > 0.0){
+                    overall = 1.0;
+                }
+
+                return (baseColor + overall + specular + rim);
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_NoiseMap, float2(i.uv.x + _Count/200,i.uv.y - _Count/100));
+                fixed4 col = tex2D(_MainTex, float2(i.screenPos.x , i.screenPos.y)/i.screenPos.w);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                float4 shading = getShading(i);
+                return col + baseColor * shading/4;
             }
             ENDCG
         }

@@ -6,6 +6,7 @@ Shader "Unlit/water"
     {
         _Tex ("Texture", 2D) = "white" {}//the main texture-- used as the height map
         _RenderTex ("RenderTexture", 2D) = "white" {}
+        _Texture ("tex", 2D) = "white" {}
         baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
         secondaryColor("secondary-color", Vector) = (1.0,0.44,0.0,0.0)
         xRad("xRad", float) = 0.0
@@ -69,6 +70,9 @@ Shader "Unlit/water"
             sampler2D _Tex;
             float4 _Tex_ST;
 
+            sampler2D _Texture;
+            float4 _Texture_ST;
+
             sampler2D _RenderTex;
             float4 _RenderTex_ST;
 
@@ -123,6 +127,7 @@ Shader "Unlit/water"
                 // sample the texture
                 #if !defined(SHADER_API_OPENGL)
                     float4 height = tex2Dlod (_Tex, float4(float2(v.uv.x,v.uv.y),0,0));
+                    float4 height2 = tex2Dlod (_Texture, float4(float2(v.uv.x,v.uv.y),0,0));
                     v.vertex.y += height.r - _MaxHeight;
 
                     normcalc n;
@@ -184,12 +189,12 @@ Shader "Unlit/water"
             }
 
             //based on blinn phong shading
-            float getShading (v2f i)
+            float4 getShading (v2f i)
             {
                 fixed4 col = baseColor;
                 float3 lightDir = normalize(_LightPos - i.wpos);
-                float NdotL = dot(i.worldNormal, lightDir);
-                float intensity = smoothstep(0, 0.01, NdotL);
+                float NdotL = dot(i.worldNormal , lightDir);
+                float intensity = smoothstep(0, 0.1, NdotL);
                 float3 viewDir = i.viewDir;
 
                 float3 H = normalize(_LightPos + viewDir);
@@ -223,10 +228,12 @@ Shader "Unlit/water"
                 //check to see if we should render this fragment (if its inside the pot)
                 float alpha = getAlpha(i);
 
-                float shading = getShading(i);
+                float4 shading = getShading(i);
+                //render the render texure relative to screen position
                 fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y)/i.screenPos.w);
+                fixed4 tex2 = tex2D(_Texture, float2(i.screenPos.x, i.screenPos.y)/i.screenPos.w);
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                col = col*shading + tex * abs(1.0 - tex.r);
+                col = col*shading +  tex * abs(1.0 - tex.r);
                 col.a = alpha;
                 return col;
             }
