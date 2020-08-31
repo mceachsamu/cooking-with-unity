@@ -44,11 +44,11 @@ public class waterPipe : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_Count", count);
         this.GetComponent<Renderer>().material.SetFloat("_PipeLength", baseLength);
         this.GetComponent<Renderer>().material.SetFloat("_PipeRadius", baseRadius);
-        this.GetComponent<Renderer>().material.SetFloat("_PipeSegments", numSegmentsRound);
+        this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsRound", numSegmentsRound);
+        this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsLong", numSegmentsLong);
         this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
         this.GetComponent<Renderer>().material.SetVector("_LightPos", light.transform.position);
         this.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potwater>().primaryCol);
-
 
         Vector3 diection = this.transform.rotation * Vector3.up;
         this.GetComponent<Renderer>().material.SetVector("_Direction", diection);
@@ -60,7 +60,6 @@ public class waterPipe : MonoBehaviour
         PreviousPoint.y += diffY * creep;
         PreviousPoint.z += diffZ * creep;
     }
-
 
     public void SetFallPosition(Vector3 position) {
         FallPosition = position;

@@ -6303,7 +6303,7 @@ MonoBehaviour:
   light: {fileID: 327739157}
   water: {fileID: 259507576}
   start: {fileID: 247625750}
-  creep: 0.1
+  creep: 0.01
   force: 0.1
 --- !u!65 &1510246518
 BoxCollider:

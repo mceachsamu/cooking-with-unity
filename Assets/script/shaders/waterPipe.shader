@@ -11,7 +11,8 @@
         _Count("timer", float) = 0.0
         _PipeLength("length", float) = 0.0
         _PipeRadius("radius", float) = 0.0
-        _PipeSegments("number of segments", float) = 0.0
+        _PipeSegmentsRound("number of segments round", float) = 0.0
+        _PipeSegmentsLong("number of segments long", float) = 0.0
 
         baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
 
@@ -77,7 +78,8 @@
             float _Count;
             float _PipeLength;
             float _PipeRadius;
-            float _PipeSegments;
+            float _PipeSegmentsRound;
+            float _PipeSegmentsLong;
 
             float4 getVertexDistortion(float4 vertex, float2 uv){
                 float mag = vertex.z;
@@ -86,9 +88,9 @@
                 float4 pipeEnd = _PipeEnd;
                 float4 prevEnd = _PreviousEnd;
 
-                float adjust = 1.4;
-                pipeEnd.y = _PipeEnd.y - adjust;
-                prevEnd.y = _PreviousEnd.y - adjust;
+                float adjust = 1.7;
+                pipeEnd.y = pipeEnd.y - adjust;
+                prevEnd.y = pipeEnd.y - adjust;
                 float startZ = vertex.z;
 
                 float AdjustedPipeLength = _PipeLength*mag;
@@ -97,23 +99,22 @@
 
                 float4 end = (pipeEnd * (1.0-sway) + prevEnd * (sway));
 
-
-                float adjustedX = (length(start.z-end.z)) / (AdjustedPipeLength);
-                vertex.z *= adjustedX;
+                float adjusted = (length(start.xz-end.xz) / AdjustedPipeLength);
+                vertex.z *= adjusted;
 
                 float z = length(vertex.z);
-                float endZ = length(start.z-end.z);
+                float endZ = length(start.zx-end.zx);
                 float a =  (end.y) / (endZ*endZ);
                 float y = z * z * a;
                 vertex.y += y;
-
-                // float endX = (_PipeEnd.z-end.z);
-                // v.vertex.x -= endX*sway;
-                // float endZ2 = (_PipeEnd.x-end.x);
-                // v.vertex.z -= endZ2*sway;
+                //dot product using direction vector?
+                float endX = (start.z-end.z);
+                vertex.x -= endX*sway;
+                float endZ2 = (start.x-end.x);
+                vertex.z -= endZ2*sway;
 
                 #if !defined(SHADER_API_OPENGL)
-                    float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/100),0,0));
+                    float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/80),0,0));
                     float s = (col.r)*(sway);
                     vertex.x += (s*1.0) - 0.5*sway;
                 #endif
@@ -127,13 +128,12 @@
                 v.vertex = getVertexDistortion(v.vertex, v.uv);
                 float PI = 3.14159265359;
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
-                float4 start = _Direction + _PipeStart * v.vertex.z;
-                float4 angle = PI * 2 / _PipeSegments;
+                float4 start = normalize(_Direction) * v.vertex.z + _PipeStart;
+                float4 angle = PI * 2 / _PipeSegmentsRound;
 
                 float4 H = start - worldPos;
-
-                float y = cos(angle*2) * H;
-                float x = sin(angle*2) * H;
+                float y = cos(angle) * H;
+                float x = sin(angle) * H;
                 float4 next = float4(start.x + x, start.y + y, start.z, start.w);
                 float4 next2 = float4(start.x - x, start.y - y, start.z, start.w);
                 float zstep = 0.1;
@@ -145,7 +145,6 @@
 
                 // next3 = normalize(getVertexDistortion(next3, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
                 // next4 = normalize(getVertexDistortion(next4, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
-
 
                 float normal = cross(next-next3,next-next4);
 
@@ -199,7 +198,7 @@
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 float4 shading = getShading(i);
-                return col + baseColor * shading/4;
+                return float4(col.b,col.b,col.b,col.a)/2 + baseColor * shading/2;
             }
             ENDCG
         }
