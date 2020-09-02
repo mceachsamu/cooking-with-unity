@@ -88,9 +88,9 @@
                 float4 pipeEnd = _PipeEnd;
                 float4 prevEnd = _PreviousEnd;
 
-                float adjust = 1.7;
-                pipeEnd.y = pipeEnd.y - adjust;
-                prevEnd.y = pipeEnd.y - adjust;
+                float adjust = 0.0;
+                pipeEnd.y = pipeEnd.y;
+                prevEnd.y = pipeEnd.y;
                 float startZ = vertex.z;
 
                 float AdjustedPipeLength = _PipeLength*mag;
@@ -99,19 +99,19 @@
 
                 float4 end = (pipeEnd * (1.0-sway) + prevEnd * (sway));
 
-                float adjusted = (length(start.xz-end.xz) / AdjustedPipeLength);
-                vertex.z *= adjusted;
+                float adjusted = (length(start.z-end.z) / AdjustedPipeLength);
+                vertex.z *= adjusted*2;
 
                 float z = length(vertex.z);
-                float endZ = length(start.zx-end.zx);
-                float a =  (end.y) / (endZ*endZ);
+                float endZ = length(start.z-end.z);
+                float a = (end.y + start.y) / (endZ*endZ);
                 float y = z * z * a;
                 vertex.y += y;
                 //dot product using direction vector?
                 float endX = (start.z-end.z);
-                vertex.x -= endX*sway;
+                //vertex.x -= endX*sway;
                 float endZ2 = (start.x-end.x);
-                vertex.z -= endZ2*sway;
+                //vertex.z -= endZ2*sway;
 
                 #if !defined(SHADER_API_OPENGL)
                     float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/80),0,0));
