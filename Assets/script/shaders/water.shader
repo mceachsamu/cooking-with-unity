@@ -217,21 +217,21 @@ Shader "Unlit/water"
                     overall = 1.0;
                 }
 
-                return (baseColor + overall + specular + rim);
+                float4 finalColor = (baseColor + overall + specular + rim);
+                finalColor.a = NdotL;
+                return finalColor;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
                 fixed4 col = baseColor;
-
                 //check to see if we should render this fragment (if its inside the pot)
                 float alpha = getAlpha(i);
 
                 float4 shading = getShading(i);
                 //render the render texure relative to screen position
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y)/i.screenPos.w);
-                fixed4 tex2 = tex2D(_Texture, float2(i.screenPos.x, i.screenPos.y)/i.screenPos.w);
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + shading.a/5 - 0.14)/i.screenPos.w);
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 col = col*shading +  tex * abs(1.0 - tex.r);
                 col.a = alpha;
