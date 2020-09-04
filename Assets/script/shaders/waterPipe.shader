@@ -8,6 +8,7 @@
         _PipeEnd("pipe end", Vector) = (0.0,0.0,0.0,0.0)
         _PreviousEnd("pipe end previous", Vector) = (0.0,0.0,0.0,0.0)
         _Direction("direction", Vector) = (0.0,0.0,0.0,0.0)
+        _DirectionPrev("Direction Previous", Vector) = (0.0,0.0,0.0,0.0)
         _Count("timer", float) = 0.0
         _PipeLength("length", float) = 0.0
         _PipeRadius("radius", float) = 0.0
@@ -65,6 +66,7 @@
             float4 _PipeEnd;
             float4 _PreviousEnd;
             float4 _Direction;
+            float4 _DirectionPrev;
 
             float4 _LightPos;
 
@@ -83,35 +85,33 @@
 
             float4 getVertexDistortion(float4 vertex, float2 uv){
                 float mag = vertex.z;
-                vertex *= mag;
+                vertex.xy *= mag;
+
                 float4 start = _PipeStart;
                 float4 pipeEnd = _PipeEnd;
                 float4 prevEnd = _PreviousEnd;
+                float pipeLength = _PipeLength;
 
-                float adjust = 0.0;
-                pipeEnd.y = pipeEnd.y;
-                prevEnd.y = pipeEnd.y;
-                float startZ = vertex.z;
+                float4 direction = normalize(start - _PipeEnd);
+                float4 directionPrev = normalize(start - _PreviousEnd);
 
-                float AdjustedPipeLength = _PipeLength*mag;
+                float sway = (vertex.z / pipeLength);
 
-                float sway = vertex.z / AdjustedPipeLength;
 
-                float4 end = (pipeEnd * (1.0-sway) + prevEnd * (sway));
+                float4 end = (direction * (1.0-sway) + directionPrev * (sway));
 
-                float adjusted = (length(start.z-end.z) / AdjustedPipeLength);
-                vertex.z *= adjusted*2;
+                float adjusted = (length(end.xz) / pipeLength);
+                vertex.z *= adjusted*1.2;
 
                 float z = length(vertex.z);
-                float endZ = length(start.z-end.z);
-                float a = (end.y + start.y) / (endZ*endZ);
+                float endZ = length(end.xz);
+                float a = (-end.y) / (endZ*endZ);
                 float y = z * z * a;
                 vertex.y += y;
-                //dot product using direction vector?
-                float endX = (start.z-end.z);
-                //vertex.x -= endX*sway;
-                float endZ2 = (start.x-end.x);
-                //vertex.z -= endZ2*sway;
+
+                float ax = (-end.x) / (endZ*endZ);
+                float x = z * z * ax;
+                vertex.x -= x;
 
                 #if !defined(SHADER_API_OPENGL)
                     float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/80),0,0));

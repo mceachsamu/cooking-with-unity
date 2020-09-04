@@ -37,11 +37,10 @@ public class waterPipe : MonoBehaviour
     void Update()
     {
         count++;
-        Vector3 localFall = FallPosition - this.transform.position;
+        Vector3 localFall = FallPosition;
         water.GetComponent<potwater>().AddForceToWater(FallPosition, force);
-        this.GetComponent<Renderer>().material.SetVector("_PipeStart", this.transform.localPosition);
+        this.GetComponent<Renderer>().material.SetVector("_PipeStart", this.transform.position);
         this.GetComponent<Renderer>().material.SetVector("_PipeEnd", localFall);
-
         this.GetComponent<Renderer>().material.SetFloat("_Count", count);
         this.GetComponent<Renderer>().material.SetFloat("_PipeLength", baseLength);
         this.GetComponent<Renderer>().material.SetFloat("_PipeRadius", baseRadius);
@@ -51,12 +50,14 @@ public class waterPipe : MonoBehaviour
         this.GetComponent<Renderer>().material.SetVector("_LightPos", light.transform.position);
         this.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potwater>().primaryCol);
 
-        Vector3 diection = this.transform.rotation * Vector3.up;
-        this.GetComponent<Renderer>().material.SetVector("_Direction", diection);
+        Vector3 direction = this.transform.position - FallPosition;
+        Vector3 directionPrev = this.transform.position - PreviousPoint;
+        this.GetComponent<Renderer>().material.SetVector("_Direction", direction);
+        this.GetComponent<Renderer>().material.SetVector("_DirectionPrev", directionPrev);
 
-        float diffX = localFall.x - PreviousPoint.x;
-        float diffY = localFall.y - PreviousPoint.y;
-        float diffZ = localFall.z - PreviousPoint.z;
+        float diffX = FallPosition.x - PreviousPoint.x;
+        float diffY = FallPosition.y - PreviousPoint.y;
+        float diffZ = FallPosition.z - PreviousPoint.z;
         PreviousPoint.x += diffX * creep;
         PreviousPoint.y += diffY * creep;
         PreviousPoint.z += diffZ * creep;
