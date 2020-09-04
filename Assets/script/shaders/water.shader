@@ -231,7 +231,7 @@ Shader "Unlit/water"
 
                 float4 shading = getShading(i);
                 //render the render texure relative to screen position
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + shading.a/5 - 0.14)/i.screenPos.w);
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + shading.a/10 - 0.07)/i.screenPos.w);
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 col = col*shading +  tex * abs(1.0 - tex.r);
                 col.a = alpha;
