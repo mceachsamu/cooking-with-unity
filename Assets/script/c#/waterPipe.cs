@@ -22,6 +22,8 @@ public class waterPipe : MonoBehaviour
 
     public float creep = 0.05f;
 
+    private float size = 1.0f;
+
     [Range(0.1f, 0.5f)]
     public float force = 0.1f;
     // Start is called before the first frame update
@@ -44,8 +46,10 @@ public class waterPipe : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_Count", count);
         this.GetComponent<Renderer>().material.SetFloat("_PipeLength", baseLength);
         this.GetComponent<Renderer>().material.SetFloat("_PipeRadius", baseRadius);
+        this.GetComponent<Renderer>().material.SetFloat("_PipeSize", this.size);
         this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsRound", numSegmentsRound);
         this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsLong", numSegmentsLong);
+
         this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
         this.GetComponent<Renderer>().material.SetVector("_LightPos", light.transform.position);
         this.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potwater>().primaryCol);
@@ -65,5 +69,10 @@ public class waterPipe : MonoBehaviour
 
     public void SetFallPosition(Vector3 position) {
         FallPosition = position;
+    }
+
+    public void SetSize(float mag) {
+        print(Mathf.Log(mag));
+        this.size = Mathf.Log(mag);
     }
 }

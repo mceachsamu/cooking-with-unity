@@ -556,8 +556,8 @@ MonoBehaviour:
   waterOpaqueness: 1
   speed: 0.024
   numBubbles: 5
-  primaryCol: {r: 0, g: 0.43486932, b: 0.4433962, a: 1}
-  secondaryCol: {r: 0.082013145, g: 0.89386916, b: 0.9150943, a: 1}
+  primaryCol: {r: 0, g: 0.22240777, b: 0.2264151, a: 1}
+  secondaryCol: {r: 0, g: 0.1565949, b: 0.16037738, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}
   neighbourFriction: 0.251
@@ -6303,7 +6303,7 @@ MonoBehaviour:
   light: {fileID: 327739157}
   water: {fileID: 259507576}
   start: {fileID: 247625750}
-  creep: 0.01
+  creep: 0.1
   force: 0.1
 --- !u!65 &1510246518
 BoxCollider:

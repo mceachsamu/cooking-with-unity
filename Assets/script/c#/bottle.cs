@@ -40,6 +40,7 @@ public class bottle : MonoBehaviour
         setShaderProperties();
         Vector3 fallPosition = getWaterFallPosition();
         waterSpout.GetComponent<waterPipe>().SetFallPosition(fallPosition);
+        waterSpout.GetComponent<waterPipe>().SetSize((this.transform.position - fallPosition).magnitude);
     }
 
     void setShaderProperties(){

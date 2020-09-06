@@ -10,6 +10,7 @@
         _Direction("direction", Vector) = (0.0,0.0,0.0,0.0)
         _DirectionPrev("Direction Previous", Vector) = (0.0,0.0,0.0,0.0)
         _Count("timer", float) = 0.0
+        _PipeSize("pipe size", float) = 1.0
         _PipeLength("length", float) = 0.0
         _PipeRadius("radius", float) = 0.0
         _PipeSegmentsRound("number of segments round", float) = 0.0
@@ -82,9 +83,10 @@
             float _PipeRadius;
             float _PipeSegmentsRound;
             float _PipeSegmentsLong;
+            float _PipeSize;
 
             float4 getVertexDistortion(float4 vertex, float2 uv){
-                float mag = vertex.z;
+                float mag = vertex.z * _PipeSize;
                 vertex.xy *= mag;
 
                 float4 start = _PipeStart;
@@ -114,9 +116,9 @@
                 vertex.x -= x;
 
                 #if !defined(SHADER_API_OPENGL)
-                    float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/80),0,0));
+                    float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/60),0,0));
                     float s = (col.r)*(sway);
-                    vertex.x += (s*1.0) - 0.5*sway;
+                    vertex.x += (s*0.5) - 0.5*sway;
                 #endif
                 return vertex;
             }
