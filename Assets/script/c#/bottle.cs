@@ -10,6 +10,8 @@ public class bottle : MonoBehaviour
     Vector3 origin;
     Quaternion rotation;
 
+    Vector3 mousePrev;
+
     public GameObject water;
     public GameObject light;
     public GameObject waterSpout;
@@ -22,6 +24,7 @@ public class bottle : MonoBehaviour
         origin = this.transform.position;
         previousPosition = origin;
         rotation = this.transform.rotation;
+        mousePrev = Input.mousePosition;
     }
 
     // Update is called once per frame
@@ -29,18 +32,18 @@ public class bottle : MonoBehaviour
     {
         if (Input.GetKey("z")){
             Vector3 mousePos = Input.mousePosition;
-            Vector3 flatPosition = new Vector3((mousePos.x-500)/500, this.transform.position.y, mousePos.y/500);
-            transform.localPosition = flatPosition;
-            //transform.rotation = new Quaternion(0.69f, 0.002f, 0.0f,0.72f);
+            float rotAmount = mousePrev.y - mousePos.y;
+            this.transform.Rotate(rotAmount/10.0f, 0.0f, 0.0f, Space.Self);
         }else{
             //when there is no input, bring the spoon back the origin
-            transform.position = origin;
-            transform.rotation = rotation;
+            this.transform.rotation = rotation;
+           // this.transform.position = position;
         }
         setShaderProperties();
         Vector3 fallPosition = getWaterFallPosition();
         waterSpout.GetComponent<waterPipe>().SetFallPosition(fallPosition);
         waterSpout.GetComponent<waterPipe>().SetSize((this.transform.position - fallPosition).magnitude);
+        mousePrev = Input.mousePosition;
     }
 
     void setShaderProperties(){
@@ -57,7 +60,7 @@ public class bottle : MonoBehaviour
         Vector3 position = waterSpout.transform.position;
         //set the y value to the height of the water below this initial position
         position.y = water.GetComponent<potwater>().getHeightAtPosition(position);
-        Vector3 direction = this.transform.rotation * Vector3.up;
+        Vector3 direction = rotation * Vector3.up;
         position = position + direction * spoutAmplitude;
         return position;
     }

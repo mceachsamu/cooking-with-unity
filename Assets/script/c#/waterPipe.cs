@@ -9,6 +9,8 @@ public class waterPipe : MonoBehaviour
     public int numSegmentsRound = 15;
     public int numSegmentsLong = 10;
 
+    public GameObject bottle;
+
     public GameObject light;
     public GameObject water;
 
@@ -38,6 +40,7 @@ public class waterPipe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        this.transform.position = bottle.GetComponent<Transform>().position;
         count++;
         Vector3 localFall = FallPosition;
         water.GetComponent<potwater>().AddForceToWater(FallPosition, force);

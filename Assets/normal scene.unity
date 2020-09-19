@@ -557,7 +557,7 @@ MonoBehaviour:
   speed: 0.024
   numBubbles: 5
   primaryCol: {r: 0, g: 0.22240777, b: 0.2264151, a: 1}
-  secondaryCol: {r: 0, g: 0.1565949, b: 0.16037738, a: 1}
+  secondaryCol: {r: 0, g: 0.49700877, b: 0.509434, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}
   neighbourFriction: 0.251
@@ -6256,14 +6256,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459530035}
-  m_LocalRotation: {x: -0.779278, y: -0.16549283, z: -0.23087054, w: 0.55860263}
-  m_LocalPosition: {x: -0.642, y: 1.423, z: 1.008}
+  m_LocalRotation: {x: -0.6614413, y: -0.33855715, z: -0.47230363, w: 0.47413477}
+  m_LocalPosition: {x: -1.48, y: 1.423, z: -3.01}
   m_LocalScale: {x: 0.3, y: 0.5, z: 0.3}
-  m_Children:
-  - {fileID: 1510246521}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: -108.732, y: -33.005005, z: 0}
+  m_LocalEulerAnglesHint: {x: -108.733, y: -71.05798, z: 0}
 --- !u!1 &1510246516
 GameObject:
   m_ObjectHideFlags: 0
@@ -6300,6 +6299,7 @@ MonoBehaviour:
   baseLength: 5
   numSegmentsRound: 30
   numSegmentsLong: 60
+  bottle: {fileID: 1459530035}
   light: {fileID: 327739157}
   water: {fileID: 259507576}
   start: {fileID: 247625750}
@@ -6374,12 +6374,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510246516}
-  m_LocalRotation: {x: 0.059992224, y: -0.64079076, z: -0.7652815, w: -0.011503366}
-  m_LocalPosition: {x: 0.36999503, y: 0.77002925, z: -0.35002452}
-  m_LocalScale: {x: 2.08659, y: 3.1188831, z: 3.3319838}
+  m_LocalRotation: {x: -0.0075030713, y: -0.83445, z: 0.08674279, w: -0.54416233}
+  m_LocalPosition: {x: -1.130991, y: 1.1999073, z: -3.012427}
+  m_LocalScale: {x: 0.62744343, y: 0.9555422, z: 1.6424153}
   m_Children: []
-  m_Father: {fileID: 1459530040}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -79.158, y: -24.192, z: 198.37}
 --- !u!1 &1703328717 stripped
 GameObject:

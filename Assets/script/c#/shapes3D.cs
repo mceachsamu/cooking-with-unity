@@ -15,6 +15,7 @@ public class shapes3D
         float size = numSegs * segSize;
 
         Vector3[] vs = new Vector3[(int)(numSegs*numSegs)*6];
+        Vector3[] nm = new Vector3[(int)(numSegs*numSegs)*6];
         Vector2[] us = new Vector2[(int)(numSegs*numSegs)*6];
         int[] tri = new int[(int)(numSegs*numSegs)*6];
 
