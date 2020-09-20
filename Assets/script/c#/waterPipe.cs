@@ -24,7 +24,8 @@ public class waterPipe : MonoBehaviour
 
     public float creep = 0.05f;
 
-    private float size = 1.0f;
+    [Range(0.0f, 5.0f)]
+    public float size = 1.0f;
 
     [Range(0.1f, 0.5f)]
     public float force = 0.1f;
