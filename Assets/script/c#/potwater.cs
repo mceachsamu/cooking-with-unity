@@ -156,7 +156,7 @@ public class potwater : MonoBehaviour
     }
     public float getHeightAtPositionAdj(Vector3 position){
         Vector2 closest = getClosestPoint(position);
-        return this.heightMap.GetPixel((int)closest.x, (int)closest.y).r + this.transform.position.y;
+        return  this.transform.position.y;
     }
 
     //get the center point for the pot

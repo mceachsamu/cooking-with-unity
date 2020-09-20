@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class waterParticle : MonoBehaviour
+public class waterParticles : MonoBehaviour
 {
 
 
@@ -12,6 +12,8 @@ public class waterParticle : MonoBehaviour
     public GameObject waterSpout;
 
     public GameObject water;
+
+    Vector3 LastValidPosition = new Vector3(0.0f,0.0f,0.0f);
 
     ParticleSystem system;
     ParticleSystem.Particle[] m_Particles;
@@ -53,14 +55,16 @@ public class waterParticle : MonoBehaviour
                 //we are also going to broadcast to the water spout at what position we hit the water
                 positionSum+=pWpos;
                 count++;
+                //m_Particles[i].remainingLifetime = 0.0f;
+                //customDat[i] = new Vector4(0.0f,0.0f,0.0f,0.0f);
             }
         }
         if (count != 0){
-            waterPipe.SetFallPosition(positionSum/count);
+            LastValidPosition = positionSum/count;
+            waterPipe.SetFallPosition(LastValidPosition);
         }else {
-            waterPipe.SetFallPosition(positionSum);
+            waterPipe.SetFallPosition(LastValidPosition);
         }
-       
 
         system.SetParticles(m_Particles, numParticlesAlive);
 
