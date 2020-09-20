@@ -2,8 +2,12 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-        _NoiseMap ("noise-map", 2D) = "white" {}
+        _HeightMap("heightmap", 2D) = "white" {}
+        _DecayMap ("decay-map", 2D) = "white" {}
+        _DecayAmount ("decay-amount", float) = 0.0
+        _MaxHeight("max height", float) = 0.0
+        _WaterSize("water size", float) = 0.0
+        _PotCenter("center", Vector) = (0.0,0.0,0.0,0.0)
         _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
         _Color("color", Vector) = (1.0,1.0,1.0,0.0)
         _Color2("color2", Vector) = (1.0,1.0,1.0,0.0)
@@ -12,6 +16,7 @@
         center("center", Vector) = (0.0,0.0,0.0,0.0)//center of pot water
         time("time", float) = 0.0 //increasing timer to help with animations
         waterSize("waterSize", float) = 0.0//the size of the water we are rendering on for height purposes
+        _WaterLevel("water level", float) = 0.0
     }
     SubShader
     {
@@ -43,10 +48,17 @@
                 float3 worldNormal : NORMAL;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            sampler2D _NoiseMap;
-            float4 _NoiseMap_ST;
+
+            sampler2D _HeightMap;
+            float4 _HeightMap_ST;
+
+            sampler2D _DecayMap;
+            float4 _DecayMap_ST;
+
+            uniform float4 _PotCenter;
+            uniform float _WaterSize;
+            uniform float _MaxHeight;
+            uniform float _DecayAmount;
             uniform float4 _LightPos;
             uniform float4 _Color;
             uniform float4 _Color2;
@@ -55,6 +67,8 @@
             uniform float time;
             uniform float waterSize;
             uniform float4 center;
+            uniform float _WaterLevel;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -64,7 +78,7 @@
                 float yPos = v.vertex.y;
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv, _DecayMap);
                 o.worldNormal = v.normal;
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
                 o.wpos = worldPos;
@@ -99,6 +113,10 @@
                 return alpha;
             }
 
+            float2 getWaterUV(v2f i){
+                return ((i.wpos.xz - _PotCenter.xz + _WaterSize/2.0)/_WaterSize);
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
@@ -126,6 +144,20 @@
                     col = col2;
                 }
                 col.a = alpha;
+                fixed4 decay = tex2D(_DecayMap, i.uv) + _DecayAmount;
+                if (decay.r < 0.5) {
+                    col.a = 0.0;
+                }
+
+                float2 waterUV = getWaterUV(i);
+                float waterHeight = tex2D(_HeightMap, waterUV);
+
+                float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight ;
+
+                if (i.wpos.y < waterLevel){
+                    col.a = 0.0;
+                }else{
+                }
 
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

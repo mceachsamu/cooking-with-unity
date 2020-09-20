@@ -270,7 +270,9 @@ public class potwater : MonoBehaviour
         bub.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
         bub.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
 
-        bub.GetComponent<Renderer>().material.renderQueue = -1;
+        //render after water
+        bub.GetComponent<Renderer>().material.renderQueue = 3000;
+
         bub.GetComponent<bubble>().scaleIncrease = Random.Range(0.003f,0.006f);
         bub.GetComponent<bubble>().maxScale = Random.Range(0.05f,0.35f);
         bub.GetComponent<bubble>().water = this;
