@@ -556,8 +556,8 @@ MonoBehaviour:
   waterOpaqueness: 1
   speed: 0.024
   numBubbles: 5
-  primaryCol: {r: 0, g: 0.22240777, b: 0.2264151, a: 1}
-  secondaryCol: {r: 0, g: 0.49700877, b: 0.509434, a: 1}
+  primaryCol: {r: 0.754717, g: 0.5582058, b: 0.017799927, a: 1}
+  secondaryCol: {r: 1, g: 0.8769174, b: 0.3160377, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}
   neighbourFriction: 0.251
@@ -641,7 +641,7 @@ GameObject:
   - component: {fileID: 288254478}
   - component: {fileID: 288254477}
   - component: {fileID: 288254476}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1748,7 +1748,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 30
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -5644,6 +5644,7 @@ MonoBehaviour:
   gravity: 0.0015
   waterSpout: {fileID: 1510246516}
   water: {fileID: 259507576}
+  bottleEnd: {fileID: 288254475}
 --- !u!1 &725605855
 GameObject:
   m_ObjectHideFlags: 0
@@ -11229,6 +11230,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   start: {fileID: 247625750}
   creep: 0.05
+  size: 1
   force: 0.1
 --- !u!65 &1510246518
 BoxCollider:
@@ -11299,13 +11301,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510246516}
-  m_LocalRotation: {x: -0, y: 0.73658276, z: -0, w: 0.67634755}
-  m_LocalPosition: {x: -1.130991, y: 1.1999073, z: 0.8775728}
-  m_LocalScale: {x: 0.62744343, y: 0.9555422, z: 1.6424153}
+  m_LocalRotation: {x: 0.000000029802319, y: 0.55407554, z: -0, w: 0.83246636}
+  m_LocalPosition: {x: -1.130991, y: 1.1999073, z: 0.8775727}
+  m_LocalScale: {x: 0.6274435, y: 0.9555423, z: 1.6424154}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 94.882, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 67.294, z: 0}
 --- !u!1 &1703328717 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: dba5bcddd3c376a4d999675cd68ed85c,
