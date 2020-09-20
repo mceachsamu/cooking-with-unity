@@ -75,7 +75,6 @@ public class waterPipe : MonoBehaviour
     }
 
     public void SetSize(float mag) {
-        print(Mathf.Log(mag));
         this.size = Mathf.Log(mag);
     }
 }
