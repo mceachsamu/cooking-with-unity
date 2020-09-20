@@ -13,6 +13,8 @@ public class waterParticles : MonoBehaviour
 
     public GameObject water;
 
+    public GameObject bottleEnd;
+
     Vector3 LastValidPosition = new Vector3(0.0f,0.0f,0.0f);
 
     ParticleSystem system;
@@ -23,6 +25,7 @@ public class waterParticles : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        this.transform.position = bottleEnd.GetComponent<Transform>().position;
         system = this.GetComponent<ParticleSystem>();
         m_Particles = new ParticleSystem.Particle[system.main.maxParticles];
     }
