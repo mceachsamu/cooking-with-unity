@@ -127,7 +127,7 @@
             v2f vert (appdata v)
             {
                 v2f o;
-
+                o.uv.z = v.vertex.z;
                 v.vertex = getVertexDistortion(v.vertex, v.uv);
                 float PI = 3.14159265359;
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
@@ -201,7 +201,7 @@
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 float4 shading = getShading(i);
-                return float4(col.b,col.b,col.b,col.a)/2 + baseColor * shading/2;
+                return float4(col.b,col.b,col.b,col.a)/2 + baseColor * shading/2 - i.uv.z/15;
             }
             ENDCG
         }
