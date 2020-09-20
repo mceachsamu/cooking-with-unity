@@ -102,6 +102,7 @@ public class potwater : MonoBehaviour
     public void AddForceToWater(Vector3 position, float forceAmount){
         //ensures we dont get an out of bounds exception and translates position to water
         Vector2 index = getClosestPoint(position);
+        print(index);
         pointField[(int)index.x,(int)index.y].addForce(-1 * forceAmount);
     }
 
@@ -152,6 +153,10 @@ public class potwater : MonoBehaviour
     public float getHeightAtPosition(Vector3 position){
         Vector2 closest = getClosestPoint(position);
         return this.heightMap.GetPixel((int)closest.x, (int)closest.y).r + this.transform.position.y - maxHeight;
+    }
+    public float getHeightAtPositionAdj(Vector3 position){
+        Vector2 closest = getClosestPoint(position);
+        return this.heightMap.GetPixel((int)closest.x, (int)closest.y).r + this.transform.position.y;
     }
 
     //get the center point for the pot

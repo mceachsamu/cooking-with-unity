@@ -118,7 +118,7 @@
                 #if !defined(SHADER_API_OPENGL)
                     float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/60),0,0));
                     float s = (col.r)*(sway);
-                    vertex.x += (s*0.5) + 0.5*sway;
+                    vertex.x += (s*0.8) + 0.8*sway;
                 #endif
                 return vertex;
             }

@@ -9,6 +9,10 @@ public class waterParticle : MonoBehaviour
     public float gravity = 0.00f;
     private int count = 0;
 
+    public GameObject waterSpout;
+
+    public GameObject water;
+
     ParticleSystem system;
     ParticleSystem.Particle[] m_Particles;
 
@@ -28,6 +32,10 @@ public class waterParticle : MonoBehaviour
         system.GetCustomParticleData(customDat, ParticleSystemCustomData.Custom1);
 
         int numParticlesAlive = system.GetParticles(m_Particles);
+        potwater potwater = water.GetComponent<potwater>();
+        waterPipe waterPipe = waterSpout.GetComponent<waterPipe>();
+        int count = 0;
+        Vector3 positionSum = new Vector3(0.0f,0.0f,0.0f);
         for (int i = 0; i < numParticlesAlive; i++)
         {
             float acceleration = customDat[i].x;
@@ -41,7 +49,18 @@ public class waterParticle : MonoBehaviour
             //increase the accleration using gravity
             acceleration -= gravity;
             customDat[i] = new Vector4(acceleration,0.0f,0.0f,0.0f);
+            if (potwater.getHeightAtPosition(pWpos) >= pWpos.y){
+                //we are also going to broadcast to the water spout at what position we hit the water
+                positionSum+=pWpos;
+                count++;
+            }
         }
+        if (count != 0){
+            waterPipe.SetFallPosition(positionSum/count);
+        }else {
+            waterPipe.SetFallPosition(positionSum);
+        }
+       
 
         system.SetParticles(m_Particles, numParticlesAlive);
 
