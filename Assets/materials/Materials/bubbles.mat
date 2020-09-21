@@ -24,7 +24,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DecayMap:
-        m_Texture: {fileID: 2800000, guid: e7290eb1bc3f945b59a465c946b5527d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 130523f744c927e4ab5533c7c6e702fe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:

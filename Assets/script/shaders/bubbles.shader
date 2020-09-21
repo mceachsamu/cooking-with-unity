@@ -103,7 +103,7 @@
                 //distance the fragmant is from the center of the circle
                 float distFromCenter = length(centerToIntercept);
                 //declare our alpha value so by default the texture is opaque
-                float alpha = 1.0;
+                float alpha = 0.7;
                 //if the distance from the center to the camera vector is greater than the radius
                 //of the circle, make the fragmant invisible.
                 //TODO condider oval shapes (use zRadius)
@@ -144,19 +144,18 @@
                     col = col2;
                 }
                 col.a = alpha;
-                fixed4 decay = tex2D(_DecayMap, i.uv) + _DecayAmount;
-                if (decay.r < 0.5) {
+                fixed4 decay = tex2D(_DecayMap, float2(i.uv.x-0.75,i.uv.y)) + _DecayAmount;
+                if (decay.r < 1.0) {
                     col.a = 0.0;
                 }
 
                 float2 waterUV = getWaterUV(i);
                 float waterHeight = tex2D(_HeightMap, waterUV);
 
-                float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight ;
+                float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight;
 
                 if (i.wpos.y < waterLevel){
                     col.a = 0.0;
-                }else{
                 }
 
                 UNITY_APPLY_FOG(i.fogCoord, col);

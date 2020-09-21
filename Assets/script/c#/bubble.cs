@@ -19,7 +19,7 @@ public class bubble : MonoBehaviour
 
     private float decay = 1.0f;
 
-    private float decayRate = 0.01f;
+    private float decayRate = 0.02f;
     private bool decaying = false;
 
     // Start is called before the first frame update
