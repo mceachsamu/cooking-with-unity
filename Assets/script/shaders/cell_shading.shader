@@ -101,6 +101,10 @@
             {
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
+
+                //reduce overall shaindg when light source is further away
+                float dist = smoothstep(0,1.0,1.0/pow(abs(_LightPos - i.wpos),0.5));
+
                 float3 lightDir = normalize(_LightPos - i.wpos);
                 float NdotL = dot(i.worldNormal, lightDir);
                 float intensity = smoothstep(0, 0.01, NdotL);
@@ -134,7 +138,7 @@
 
 
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return col * (_AmbientColor + overall + specular + rim) ;
+                return col * (_AmbientColor + overall + specular + rim) * dist;
             }
             ENDCG
         }

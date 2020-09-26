@@ -192,6 +192,10 @@ Shader "Unlit/water"
             float4 getShading (v2f i)
             {
                 fixed4 col = baseColor;
+                
+                //reduce overall shaindg when light source is further away
+                float dist = smoothstep(0,1.0,1.0/pow(abs(_LightPos - i.wpos),0.5));
+
                 float3 lightDir = normalize(_LightPos - i.wpos);
                 float NdotL = dot(i.worldNormal , lightDir);
                 float intensity = smoothstep(0, 0.1, NdotL);
@@ -217,7 +221,9 @@ Shader "Unlit/water"
                     overall = 1.0;
                 }
 
-                float4 finalColor = (baseColor + overall + specular + rim);
+                float4 finalColor = (baseColor + overall + specular + rim) * dist;
+                //we arent using the alpha channel for our final shading, so pass
+                //through the NdotL value so we can use it for calculating underwater distortion
                 finalColor.a = NdotL;
                 return finalColor;
             }
