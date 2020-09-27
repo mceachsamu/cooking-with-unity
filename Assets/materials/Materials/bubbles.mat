@@ -74,13 +74,14 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 54.4
     - _GlossyReflections: 1
     - _MaxHeight: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _RimAmount: 0.703
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -93,6 +94,7 @@ Material:
     - xRad: 0
     - zRad: 0
     m_Colors:
+    - _AmbientColor: {r: 0, g: 0, b: 0, a: 1}
     - _CamDir: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color2: {r: 1, g: 1, b: 1, a: 0}
@@ -100,5 +102,7 @@ Material:
     - _LightDir: {r: 0, g: 0, b: 0, a: 0}
     - _LightPos: {r: 0, g: 0, b: 0, a: 0}
     - _PotCenter: {r: 0, g: 0, b: 0, a: 0}
+    - _RimColor: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
+    - _SpecularColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
     - center: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -15,7 +15,5 @@ public class pot : MonoBehaviour
     void Update()
     {
         this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
-        this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
-
     }
 }

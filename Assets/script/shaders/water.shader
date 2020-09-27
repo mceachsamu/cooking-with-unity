@@ -8,7 +8,6 @@ Shader "Unlit/water"
         _RenderTex ("RenderTexture", 2D) = "white" {}
         _Texture ("tex", 2D) = "white" {}
         baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
-        secondaryColor("secondary-color", Vector) = (1.0,0.44,0.0,0.0)
         xRad("xRad", float) = 0.0
         seperation("seperation", float) = 0.0
         totalSize("totalSize", float) = 0.0
@@ -28,7 +27,7 @@ Shader "Unlit/water"
     }
     SubShader
     {
-        Tags {"Queue" = "Transparent" "RenderType"="Transparent" }
+        Tags {"LightMode"="ForwardBase" }
         LOD 200
         ZWrite Off
         Blend SrcAlpha OneMinusSrcAlpha
@@ -42,6 +41,7 @@ Shader "Unlit/water"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
+            #include "cellShading.cginc"
 
             struct appdata
             {
@@ -65,6 +65,7 @@ Shader "Unlit/water"
                 float4 screenPos : TEXCOORD2;
                 float3 worldNormal : NORMAL;
                 float3 viewDir : TEXCOORD3;
+                float4 pos : TEXCOORD4;
             };
 
             sampler2D _Tex;
@@ -85,7 +86,6 @@ Shader "Unlit/water"
             uniform float4 center;
             uniform float4 baseColor;
             uniform float4 _LightPos;
-            uniform float4 secondaryColor;
 
             float _Glossiness;
             float4 _SpecularColor;
@@ -124,6 +124,7 @@ Shader "Unlit/water"
                 //get world position from object position
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
                 o.wpos = worldPos;
+                
                 // sample the texture
                 #if !defined(SHADER_API_OPENGL)
                     float4 height = tex2Dlod (_Tex, float4(float2(v.uv.x,v.uv.y),0,0));
@@ -149,7 +150,7 @@ Shader "Unlit/water"
                     o.worldNormal = (norm1 + norm2 + norm3 + norm4)/4.0;
                 #endif
 
-
+                o.pos = v.vertex;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _Tex);
                 worldPos = mul (unity_ObjectToWorld, v.vertex);
@@ -188,56 +189,15 @@ Shader "Unlit/water"
                 return alpha;
             }
 
-            //based on blinn phong shading
-            float4 getShading (v2f i)
-            {
-                fixed4 col = baseColor;
-                
-                //reduce overall shaindg when light source is further away
-                float dist = smoothstep(0,1.0,1.0/pow(abs(_LightPos - i.wpos),0.5));
-
-                float3 lightDir = normalize(_LightPos - i.wpos);
-                float NdotL = dot(i.worldNormal , lightDir);
-                float intensity = smoothstep(0, 0.1, NdotL);
-                float3 viewDir = i.viewDir;
-
-                float3 H = normalize(_LightPos + viewDir);
-                float NdotH = dot(i.worldNormal, H);
-                float specIntensity = pow(NdotH * intensity, _Glossiness * _Glossiness);
-
-                float specularIntensitySmooth = smoothstep(0.005, 0.01, specIntensity);
-                float4 specular = specularIntensitySmooth * _SpecularColor;
-
-                float4 rimDot = 1 - dot(viewDir, i.worldNormal);
-
-                float rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimDot);
-                float4 rim = rimIntensity * _RimColor;
-                float overall = intensity;
-
-                if (overall < 0.0){
-                    overall = 0.5;
-                }
-                if (overall > 0.0){
-                    overall = 1.0;
-                }
-
-                float4 finalColor = (baseColor + overall + specular + rim) * dist;
-                //we arent using the alpha channel for our final shading, so pass
-                //through the NdotL value so we can use it for calculating underwater distortion
-                finalColor.a = NdotL;
-                return finalColor;
-            }
-
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
                 fixed4 col = baseColor;
                 //check to see if we should render this fragment (if its inside the pot)
                 float alpha = getAlpha(i);
-
-                float4 shading = getShading(i);
+                float4 shading = GetShading(i.wpos, i.vertex, _LightPos, i.worldNormal, i.viewDir, baseColor, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
                 //render the render texure relative to screen position
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + shading.a/10 - 0.07)/i.screenPos.w);
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/2+0.25)/i.screenPos.w);
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 col = col*shading +  tex * abs(1.0 - tex.r);
                 col.a = alpha;

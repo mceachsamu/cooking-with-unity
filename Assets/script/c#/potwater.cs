@@ -4,8 +4,8 @@ using UnityEngine;
 using System.Reflection;
 public class potwater : MonoBehaviour
 {
-    //the prefab for the bubbles
-    public GameObject prefab;
+    //the bubblePrefab for the bubbles
+    public GameObject bubblePrefab;
     //the pot that the water is sitting in
     public GameObject pot;
     //the light source of the scene
@@ -262,13 +262,13 @@ public class potwater : MonoBehaviour
 
         bub.AddComponent<MeshFilter>();
         bub.AddComponent<MeshRenderer>();
-        bub.GetComponent<MeshRenderer>().material = prefab.GetComponent<MeshRenderer>().material;
-        bub.GetComponent<MeshFilter>().mesh = prefab.GetComponent<MeshFilter>().mesh;
+        bub.GetComponent<MeshRenderer>().material = bubblePrefab.GetComponent<MeshRenderer>().material;
+        bub.GetComponent<MeshFilter>().mesh = bubblePrefab.GetComponent<MeshFilter>().mesh;
         bub.AddComponent<bubble>();
         bub.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
         bub.GetComponent<bubble>().center = new Vector3(pot.transform.position.x, lid.transform.position.y, pot.transform.position.z);
-        bub.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
-        bub.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
+        bub.GetComponent<Renderer>().material.SetVector("baseColor", secondaryCol);
+        bub.GetComponent<Renderer>().material.SetVector("secondaryColor", primaryCol);
 
         //render after water
         bub.GetComponent<Renderer>().material.renderQueue = 3000;

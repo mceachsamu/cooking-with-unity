@@ -17,6 +17,14 @@
         time("time", float) = 0.0 //increasing timer to help with animations
         waterSize("waterSize", float) = 0.0//the size of the water we are rendering on for height purposes
         _WaterLevel("water level", float) = 0.0
+
+        [HDR]
+        _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
+        _SpecularColor("Specular Color", Color) = (0.1,0.1,0.1,1)
+        _Glossiness("Glossiness", Range(0, 100)) = 14
+
+        _RimColor("Rim Color", Color) = (1,1,1,1)
+        _RimAmount("Rim Amount", Range(0, 1)) = 1.0
     }
     SubShader
     {
@@ -31,6 +39,7 @@
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
+            #include "cellShading.cginc"
 
             struct appdata
             {
@@ -42,10 +51,10 @@
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
                 float4 wpos : TEXCOORD1;
                 float3 worldNormal : NORMAL;
+                float3 viewDir : TEXCOORD2;
             };
 
 
@@ -69,6 +78,14 @@
             uniform float4 center;
             uniform float _WaterLevel;
 
+
+            float _Glossiness;
+            float4 _SpecularColor;
+            float4 _RimColor;
+            float _RimAmount;
+            float4 _AmbientColor;
+
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -80,9 +97,8 @@
 
                 o.uv = TRANSFORM_TEX(v.uv, _DecayMap);
                 o.worldNormal = v.normal;
-                float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
-                o.wpos = worldPos;
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                o.wpos = mul (unity_ObjectToWorld, v.vertex);
+                o.viewDir = WorldSpaceViewDir(v.vertex);
                 return o;
             }
 
@@ -121,32 +137,14 @@
             {
                 // sample the texture
                 fixed4 col = _Color;
-                fixed4 col2 = _Color2;
+
+                float4 shading = GetShading(i.wpos, i.vertex, _LightPos, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+
                 float alpha = getAlpha(i);
-                float3 lightDir = normalize(_LightPos - i.wpos);
-                float NdotL = dot(i.worldNormal, lightDir);
-                float intensity = saturate(NdotL);
-                float3 camDir = normalize(_WorldSpaceCameraPos - i.wpos);
-
-                float3 H = normalize(lightDir + camDir);
-                float NdotH = dot(i.worldNormal, H);
-                float specIntensity = saturate(NdotH);
-
-                float overall = intensity + specIntensity;
-                // apply fog
-                if(overall < 0.9){
-                    col = col*0.8;
-                }else if(overall < 1.0){
-                    col = col2*0.95;
-                }else if(overall < 2.5){
-                    col = col2* 1.0;
-                }else{
-                    col = col2;
-                }
-                col.a = alpha;
+                shading.a = alpha;
                 fixed4 decay = tex2D(_DecayMap, float2(i.uv.x-0.75,i.uv.y)) + _DecayAmount;
                 if (decay.r < 1.0) {
-                    col.a = 0.0;
+                    shading.a = 0.0;
                 }
 
                 float2 waterUV = getWaterUV(i);
@@ -155,11 +153,10 @@
                 float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight;
 
                 if (i.wpos.y < waterLevel){
-                    col.a = 0.0;
+                    shading.a = 0.0;
                 }
 
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                return shading;
             }
             ENDCG
         }

@@ -72,8 +72,8 @@ public class bubble : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("waterSize", water.segSize * water.numSegs);
         this.GetComponent<Renderer>().material.SetVector("center", water.getCenter());
         this.GetComponent<Renderer>().material.SetVector("_LightPos", water.Light.transform.position);
-        this.GetComponent<Renderer>().material.SetVector("_Color", water.primaryCol);
-        this.GetComponent<Renderer>().material.SetVector("_Color2", water.secondaryCol);
+        this.GetComponent<Renderer>().material.SetVector("_Color2", water.primaryCol);
+        this.GetComponent<Renderer>().material.SetVector("_Color", water.secondaryCol);
         this.GetComponent<Renderer>().material.SetFloat("_DecayAmount", decay);
         this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", water.GetComponent<potwater>().maxHeight);
         this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<Transform>().position.y);
