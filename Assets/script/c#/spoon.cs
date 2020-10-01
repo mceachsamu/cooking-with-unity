@@ -26,7 +26,11 @@ public class spoon : MonoBehaviour
 
     private int count = 0;
 
+    private Quaternion defaultRotation = new Quaternion(0.69f, 0.002f, 0.0f,0.72f);
+
     private Vector3 previousPosition;
+
+    private Vector3 position;
     // Start is called before the first frame update
     void Start()
     {
@@ -51,9 +55,12 @@ public class spoon : MonoBehaviour
         //detect mouse click to move spoon
         if (Input.GetMouseButton(1) && !Input.GetKey("z")){
             Vector3 mousePos = Input.mousePosition;
-            Vector3 flatPosition = new Vector3((mousePos.x-500)/500, this.transform.position.y, mousePos.y/500);
-            transform.localPosition = flatPosition;
-            transform.rotation = new Quaternion(0.69f, 0.002f, 0.0f,0.72f);
+            position.x = (mousePos.x-500)/500;
+            position.y = this.transform.position.y;
+            position.z = mousePos.y/500;
+
+            transform.localPosition = position;
+            transform.rotation = defaultRotation;
         }else{
             //when there is no input, bring the spoon back the origin
             transform.position = origin;

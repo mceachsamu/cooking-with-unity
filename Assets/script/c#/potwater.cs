@@ -108,7 +108,6 @@ public class potwater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         int current = (int)(1f / Time.unscaledDeltaTime);
 
         //count is an internal timer we give to the shader to move the water along with time
@@ -117,7 +116,6 @@ public class potwater : MonoBehaviour
         for (int i = 0; i < numFieldPoints;i++){
             for (int j = 0; j < numFieldPoints;j++){
                 pointField[i,j].move();
-                //points[i,j].GetComponent<Transform>().position = new Vector3(pointField[i,j].x, pointField[i,j].y, pointField[i,j].z);
                 heightMap.SetPixel(i,j, pointField[i,j].GetHeightValue());
             }
         }
@@ -159,10 +157,9 @@ public class potwater : MonoBehaviour
     }
 
     //get the center point for the pot
-    public Vector4 getCenter(){
+    public Vector3 getCenter(){
         Vector3 center = lid.transform.position;
-        Vector4 center4f = new Vector4(center.x,center.y,center.z,0.0f);
-        return center4f;
+        return center;
     }
 
     public float getSize(){
