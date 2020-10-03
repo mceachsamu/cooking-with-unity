@@ -47,9 +47,20 @@ public class waterPipe : MonoBehaviour
     {
         this.transform.position = bottleEnd.GetComponent<Transform>().position;
         
-        float angle = bottle.transform.localRotation.y - this.transform.localRotation.y;
+        float angle = bottle.transform.eulerAngles.y - this.transform.eulerAngles.y;
+        // this.transform.RotateAround(this.transform.position, Vector3.up, angle-adjust);
         
-        this.transform.RotateAround(this.transform.position, Vector3.up, angle-adjust);
+        Vector3 toPosition = FallPosition;
+        toPosition.y = this.transform.position.y;
+
+        print(angle);
+
+       // this.transform.Rotate(new Vector3(0.0f,angle,0.0f), Space.World);
+
+        // float angle2 = bottle.transform.localRotation.z - this.transform.localRotation.z;
+        // this.transform.RotateAround(this.transform.position, Vector3.up, angle2-adjust);
+
+
 
         count++;
         water.GetComponent<potwater>().AddForceToWater(FallPosition, force);
