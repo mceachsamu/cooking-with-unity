@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -555,9 +555,9 @@ MonoBehaviour:
   segSize: 0.07
   waterOpaqueness: 1
   speed: 0.07
-  numBubbles: 5
-  primaryCol: {r: 0.754717, g: 0.5582058, b: 0.017799927, a: 1}
-  secondaryCol: {r: 0.6509434, g: 0.48826566, b: 0.009211446, a: 1}
+  numBubbles: 20
+  primaryCol: {r: 0.5849056, g: 0.07108103, b: 0, a: 1}
+  secondaryCol: {r: 0.7169812, g: 0.060492, b: 0, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}
   neighbourFriction: 0.251
@@ -831,7 +831,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 552307239}
   serializedVersion: 6
-  lengthInSec: 2
+  lengthInSec: 0.3
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -5549,7 +5549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f1a66523d844731a47e89f1a44e59b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 0.0015
+  gravity: 0.003
   waterSpout: {fileID: 1510246516}
   water: {fileID: 259507576}
   bottleEnd: {fileID: 288254475}
@@ -10977,7 +10977,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1423288916
 GameObject:
@@ -11180,15 +11180,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459530035}
-  m_LocalRotation: {x: -0.6614413, y: -0.33855715, z: -0.47230363, w: 0.47413477}
-  m_LocalPosition: {x: -1.48, y: 1.423, z: 0.88}
+  m_LocalRotation: {x: -0.7152641, y: -0.25925788, z: -0.33284253, w: 0.5571342}
+  m_LocalPosition: {x: -0.55, y: 1.4324025, z: 0.807}
   m_LocalScale: {x: 0.3, y: 0.5, z: 0.3}
   m_Children:
   - {fileID: 552307240}
   - {fileID: 288254479}
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: -108.733, y: -71.05798, z: 0}
+  m_LocalEulerAnglesHint: {x: -104.168, y: -49.908997, z: 0}
 --- !u!1 &1510246516
 GameObject:
   m_ObjectHideFlags: 0
@@ -11225,10 +11225,12 @@ MonoBehaviour:
   baseLength: 5
   numSegmentsRound: 30
   numSegmentsLong: 60
+  bottle: {fileID: 1459530035}
   bottleEnd: {fileID: 288254475}
   light: {fileID: 1240708328}
   water: {fileID: 259507576}
   start: {fileID: 247625750}
+  adjust: -0.8
   creep: 0.05
   size: 1
   force: 0.1
@@ -11301,13 +11303,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510246516}
-  m_LocalRotation: {x: 0.000000029802319, y: 0.55407554, z: -0, w: 0.83246636}
-  m_LocalPosition: {x: -1.130991, y: 1.1999073, z: 0.8775727}
-  m_LocalScale: {x: 0.6274435, y: 0.9555423, z: 1.6424154}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.130991, y: 1.1999073, z: 0.87757266}
+  m_LocalScale: {x: 0.62744445, y: 0.9555409, z: 1.6424148}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 67.294, z: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1703328717 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: dba5bcddd3c376a4d999675cd68ed85c,

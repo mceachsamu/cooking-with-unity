@@ -9,6 +9,8 @@ public class waterPipe : MonoBehaviour
     public int numSegmentsRound = 15;
     public int numSegmentsLong = 10;
 
+    public GameObject bottle;
+
     public GameObject bottleEnd;
 
     public GameObject light;
@@ -21,6 +23,8 @@ public class waterPipe : MonoBehaviour
     private Vector3 FallPosition = new Vector3(0.0f,0.0f,0.0f);
 
     private int count = 0;
+
+    public float adjust = 0.0f;
 
     public float creep = 0.05f;
 
@@ -42,9 +46,14 @@ public class waterPipe : MonoBehaviour
     void Update()
     {
         this.transform.position = bottleEnd.GetComponent<Transform>().position;
+        
+        float angle = bottle.transform.localRotation.y - this.transform.localRotation.y;
+        
+        this.transform.RotateAround(this.transform.position, Vector3.up, angle-adjust);
+
         count++;
         water.GetComponent<potwater>().AddForceToWater(FallPosition, force);
-        this.GetComponent<Renderer>().material.SetVector("_PipeStart", this.transform.position);
+        this.GetComponent<Renderer>().material.SetVector("_PipeStart", bottleEnd.transform.position);
         this.GetComponent<Renderer>().material.SetVector("_PipeEnd", FallPosition);
         this.GetComponent<Renderer>().material.SetFloat("_Count", count);
         this.GetComponent<Renderer>().material.SetFloat("_PipeLength", baseLength);
