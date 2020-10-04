@@ -24,12 +24,20 @@ public class waterPipe : MonoBehaviour
 
     private int count = 0;
 
-    public float adjust = 0.0f;
+    [Range(-50.0f, 50.0f)]
+    public float adjustX = 0.0f;
+    [Range(-180.0f, 180.0f)]
+    public float adjustY = 0.0f;
+    [Range(-50.0f, 50.0f)]
+    public float adjustZ = 0.0f;
 
     public float creep = 0.05f;
 
     [Range(0.0f, 5.0f)]
     public float size = 1.0f;
+
+
+    float smooth = 5.0f;
 
     [Range(0.1f, 0.5f)]
     public float force = 0.1f;
@@ -46,21 +54,23 @@ public class waterPipe : MonoBehaviour
     void Update()
     {
         this.transform.position = bottleEnd.GetComponent<Transform>().position;
-        
-        float angle = bottle.transform.eulerAngles.y - this.transform.eulerAngles.y;
-        // this.transform.RotateAround(this.transform.position, Vector3.up, angle-adjust);
-        
-        Vector3 toPosition = FallPosition;
-        toPosition.y = this.transform.position.y;
-
-        print(angle);
-
-       // this.transform.Rotate(new Vector3(0.0f,angle,0.0f), Space.World);
-
-        // float angle2 = bottle.transform.localRotation.z - this.transform.localRotation.z;
-        // this.transform.RotateAround(this.transform.position, Vector3.up, angle2-adjust);
 
 
+        Vector3 ForwardDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position ;
+        ForwardDir.y = 0.0f;
+        ForwardDir = ForwardDir * 10.0f;
+
+        Color dColor = new Color(1.0f,0.0f,0.0f);
+        Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + ForwardDir, dColor);
+
+        dColor = new Color(0.0f,1.0f,0.0f);
+        Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + bottle.GetComponent<Transform>().up, dColor);
+
+        this.transform.forward = ForwardDir;
+
+        Quaternion target = Quaternion.Euler(adjustX, adjustY, adjustZ);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
 
         count++;
         water.GetComponent<potwater>().AddForceToWater(FallPosition, force);

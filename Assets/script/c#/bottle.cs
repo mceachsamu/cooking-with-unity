@@ -32,8 +32,9 @@ public class bottle : MonoBehaviour
     {
         if (Input.GetKey("z")){
             Vector3 mousePos = Input.mousePosition;
-            float rotAmount = mousePrev.y - mousePos.y;
-            this.transform.Rotate(rotAmount/10.0f, 0.0f, 0.0f, Space.Self);
+            float rotAmountY = mousePrev.y - mousePos.y;
+            float rotAmountX = mousePrev.x - mousePos.x;
+            this.transform.Rotate(rotAmountY/10.0f,rotAmountX/10.0f, 0.0f, Space.World);
         }else{
             //when there is no input, bring the spoon back the origin
             this.transform.rotation = rotation;

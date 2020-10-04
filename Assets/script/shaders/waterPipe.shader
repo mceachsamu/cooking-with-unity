@@ -99,7 +99,6 @@
 
                 float sway = (vertex.z / pipeLength);
 
-
                 float4 end = (direction * (1.0-sway) + directionPrev * (sway));
 
                 float adjusted = (length(end.xz) / pipeLength);
@@ -108,6 +107,7 @@
                 float z = length(vertex.z);
                 float endZ = length(end.xz);
                 float a = (-end.y) / (endZ*endZ);
+
                 float y = z * z * a;
                 vertex.y += y;
 
