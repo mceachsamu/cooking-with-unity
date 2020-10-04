@@ -70,14 +70,14 @@ public class bubble : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("zRad", water.getXRadius());
         this.GetComponent<Renderer>().material.SetFloat("time", water.getCount());
         this.GetComponent<Renderer>().material.SetFloat("waterSize", water.segSize * water.numSegs);
-        this.GetComponent<Renderer>().material.SetVector("center", water.getCenter());
+        this.GetComponent<Renderer>().material.SetVector("center", water.GetCenter());
         this.GetComponent<Renderer>().material.SetVector("_LightPos", water.Light.transform.position);
         this.GetComponent<Renderer>().material.SetVector("_Color2", water.primaryCol);
         this.GetComponent<Renderer>().material.SetVector("_Color", water.secondaryCol);
         this.GetComponent<Renderer>().material.SetFloat("_DecayAmount", decay);
         this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", water.GetComponent<potwater>().maxHeight);
         this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<Transform>().position.y);
-        this.GetComponent<Renderer>().material.SetVector("_PotCenter", water.GetComponent<potwater>().getCenter());
+        this.GetComponent<Renderer>().material.SetVector("_PotCenter", water.GetComponent<potwater>().GetCenter());
         this.GetComponent<Renderer>().material.SetTexture("_HeightMap", water.GetComponent<potwater>().heightMap);
         this.GetComponent<Renderer>().material.SetFloat("_WaterSize", water.GetComponent<potwater>().getSize());
 

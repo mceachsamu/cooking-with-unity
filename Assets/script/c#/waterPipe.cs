@@ -47,7 +47,7 @@ public class waterPipe : MonoBehaviour
         shapes3D shapeGen = new shapes3D();
         Mesh mesh = shapeGen.CreateCylandar(baseRadius,baseLength,numSegmentsRound,numSegmentsLong);
         this.GetComponent<MeshFilter>().mesh = mesh;
-        PreviousPoint = water.GetComponent<potwater>().getCenter();
+        PreviousPoint = water.GetComponent<potwater>().GetCenter();
     }
 
     // Update is called once per frame
@@ -65,9 +65,6 @@ public class waterPipe : MonoBehaviour
 
         Color dColor = new Color(1.0f,0.0f,0.0f);
         Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + ForwardDir, dColor);
-
-        dColor = new Color(0.0f,1.0f,0.0f);
-        Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + bottle.GetComponent<Transform>().up, dColor);
 
         this.transform.forward = ForwardDir;
         count++;

@@ -50,6 +50,20 @@ public class spoon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+        Vector3 dir =  this.transform.position - water.GetComponent<potwater>().GetCenter();
+
+        dir.y = 0.0f;
+
+        Vector3 dir2 = Vector3.Cross(dir, this.transform.forward);
+
+
+
+        Color dColor = new Color(0.0f,1.0f,0.0f);
+        Debug.DrawLine(this.transform.position, this.transform.position + dir, dColor);
+
+
         //add a force to water each frame
         this.addForceToWater();
         //detect mouse click to move spoon
@@ -60,7 +74,8 @@ public class spoon : MonoBehaviour
             position.z = mousePos.y/500;
 
             transform.localPosition = position;
-            transform.rotation = defaultRotation;
+            //transform.rotation = defaultRotation;
+            transform.right = dir;
         }else{
             //when there is no input, bring the spoon back the origin
             transform.position = origin;

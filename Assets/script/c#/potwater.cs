@@ -133,7 +133,7 @@ public class potwater : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("totalSize", getSize());
         this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", maxHeight);
 
-        this.GetComponent<Renderer>().material.SetVector("center", getCenter());
+        this.GetComponent<Renderer>().material.SetVector("center", GetCenter());
         this.GetComponent<Renderer>().material.SetTexture("_Tex", heightMap);
         this.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
         this.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
@@ -143,7 +143,7 @@ public class potwater : MonoBehaviour
         pot.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", this.waterOpaqueness);
         pot.GetComponent<Renderer>().material.SetFloat("_WaterSize", this.getSize());
         pot.GetComponent<Renderer>().material.SetTexture("_HeightMap", this.heightMap);
-        pot.GetComponent<Renderer>().material.SetVector("_PotCenter", this.getCenter());
+        pot.GetComponent<Renderer>().material.SetVector("_PotCenter", this.GetCenter());
         pot.GetComponent<Renderer>().material.SetFloat("_WaterLevel", this.GetComponent<Transform>().position.y);
     }
 
@@ -157,7 +157,7 @@ public class potwater : MonoBehaviour
     }
 
     //get the center point for the pot
-    public Vector3 getCenter(){
+    public Vector3 GetCenter(){
         Vector3 center = lid.transform.position;
         return center;
     }
