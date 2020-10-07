@@ -33,14 +33,14 @@ public class waterPipe : MonoBehaviour
 
     public float creep = 0.05f;
 
-    [Range(0.0f, 5.0f)]
-    public float size = 1.0f;
+    [Range(0.0f, 1.0f)]
+    private float size = 1.0f;
 
 
     public float smooth = 5.0f;
 
     [Range(0.1f, 0.5f)]
-    public float force = 0.1f;
+    private float force = 0.1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,16 +55,38 @@ public class waterPipe : MonoBehaviour
     {
         this.transform.position = bottleEnd.GetComponent<Transform>().position;
 
-
+        //we want to create a vector that represents the bottles direction but without tilt on the x axis
         Vector3 ForwardDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position ;
         ForwardDir.y = 0.0f;
+
+        //helps see direction on debug if we make it longer
         ForwardDir = ForwardDir * 10.0f;
+
+        //adjust the vector using manual adjustments
         ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.up, adjustY, 0.0f);
         ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.right, adjustX, 0.0f);
         ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.forward, adjustZ, 0.0f);
 
+        //draw the vector to help debug
         Color dColor = new Color(1.0f,0.0f,0.0f);
         Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + ForwardDir, dColor);
+
+        //now we just want the bottle direction
+        Vector3 bottleDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position;
+
+        dColor = new Color(0.0f,1.0f,0.0f);
+        Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + bottleDir, dColor);
+
+        bottleDir = bottleDir.normalized;
+
+        size =((bottleDir.y*-1) + 0.5f);
+        print(size);
+        size = Mathf.Clamp(size, 0.0f,1.0f);
+        if (size < 0.1f){
+            size = size * 0.3f;
+        }
+
+        force = size*0.5f;
 
         this.transform.forward = ForwardDir;
         count++;
