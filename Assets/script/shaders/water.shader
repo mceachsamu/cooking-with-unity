@@ -37,9 +37,11 @@ Shader "Unlit/water"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
+            #include "AutoLight.cginc"
+
+            #include "Lighting.cginc"
+            #pragma multi_compile_fwdbase
             #include "UnityCG.cginc"
             #include "cellShading.cginc"
 
@@ -158,7 +160,6 @@ Shader "Unlit/water"
                 o.wpos = worldPos;
 				o.screenPos = ComputeScreenPos(o.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
 
@@ -199,6 +200,7 @@ Shader "Unlit/water"
                 //render the render texure relative to screen position
                 fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/2+0.25)/i.screenPos.w);
                 UNITY_APPLY_FOG(i.fogCoord, col);
+
                 col = col*shading +  tex * abs(1.0 - tex.r);
                 col.a = alpha;
                 return col;

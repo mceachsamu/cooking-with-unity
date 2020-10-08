@@ -86,8 +86,8 @@
             float _PipeSize;
 
             float4 getVertexDistortion(float4 vertex, float2 uv){
-                float mag = vertex.z * _PipeSize;
-                vertex.xy *= mag;
+                float mag = clamp(vertex.z,0.5,5.0);
+                vertex.xy *= mag * _PipeSize;
 
                 float4 start = _PipeStart;
                 float4 pipeEnd = _PipeEnd;
@@ -118,8 +118,8 @@
                 #if !defined(SHADER_API_OPENGL)
                     float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/60),0,0));
                     float s = (col.r)*(sway);
-                    vertex.x += (s*0.2*mag);
-                    vertex.z += (s*0.1*mag);
+                    vertex.x += (s*0.8*_PipeSize);
+                    vertex.z += (s*0.8*_PipeSize);
                 #endif
                 return vertex;
             }

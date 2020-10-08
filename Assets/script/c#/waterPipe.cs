@@ -80,13 +80,9 @@ public class waterPipe : MonoBehaviour
         bottleDir = bottleDir.normalized;
 
         size =((bottleDir.y*-1) + 0.5f);
-        print(size);
         size = Mathf.Clamp(size, 0.0f,1.0f);
-        if (size < 0.1f){
-            size = size * 0.3f;
-        }
 
-        force = size*0.5f;
+        force = size*0.3f;
 
         this.transform.forward = ForwardDir;
         count++;
