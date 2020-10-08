@@ -142,7 +142,7 @@
 
                 float alpha = getAlpha(i);
                 shading.a = alpha;
-                fixed4 decay = tex2D(_DecayMap, float2(i.uv.x-0.75,i.uv.y)) + _DecayAmount;
+                fixed4 decay = tex2D(_DecayMap, float2(i.uv.x-0.75,i.uv.y+0.1)) + _DecayAmount;
                 if (decay.r < 1.0) {
                     shading.a = 0.0;
                 }
