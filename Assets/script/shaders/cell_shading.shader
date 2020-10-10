@@ -15,21 +15,19 @@
     SubShader
     {
         Tags {
-            "LightMode" = "ForwardBase"
-	        "PassFlags" = "OnlyDirectional"
+            "LightMode" = "ForwardAdd"
         }
-        LOD 100
+        LOD 200
 
         Pass
         {
             CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
             #include "cellShading.cginc"
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fwdadd
 
             struct appdata
             {
@@ -75,7 +73,7 @@
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
 
-                float4 shading = GetShading(i.wpos, i.vertex, _LightPos, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 return col * shading;
             }

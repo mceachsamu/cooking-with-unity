@@ -27,7 +27,9 @@ Shader "Unlit/water"
     }
     SubShader
     {
-        Tags {"LightMode"="ForwardBase" }
+        Tags {"RenderType"="Opaque"
+            "LightMode"="ForwardAdd" }
+        Lighting On
         LOD 200
         ZWrite Off
         Blend SrcAlpha OneMinusSrcAlpha
@@ -37,13 +39,15 @@ Shader "Unlit/water"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
+            #pragma multi_compile_fwdadd
+            #pragma nolightmap nodirlightmap nodynlightmap novertexlight
+            
             #include "AutoLight.cginc"
-
             #include "Lighting.cginc"
-            #pragma multi_compile_fwdbase
             #include "UnityCG.cginc"
             #include "cellShading.cginc"
+            #include "UnityStandardBRDF.cginc" // for shader lighting info and some utils
+            #include "UnityStandardUtils.cginc" // for energy conservation
 
             struct appdata
             {
@@ -61,13 +65,14 @@ Shader "Unlit/water"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                SHADOW_COORDS(1) // put shadows data into TEXCOORD1
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
-                float4 wpos : TEXCOORD1;
-                float4 screenPos : TEXCOORD2;
+                float4 wpos : TEXCOORD2;
+                float4 screenPos : TEXCOORD3;
                 float3 worldNormal : NORMAL;
-                float3 viewDir : TEXCOORD3;
-                float4 pos : TEXCOORD4;
+                float3 viewDir : TEXCOORD4;
+                float4 pos : TEXCOORD5;
             };
 
             sampler2D _Tex;
@@ -160,6 +165,7 @@ Shader "Unlit/water"
                 o.wpos = worldPos;
 				o.screenPos = ComputeScreenPos(o.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
+                TRANSFER_SHADOW(o);
                 return o;
             }
 
@@ -196,16 +202,19 @@ Shader "Unlit/water"
                 fixed4 col = baseColor;
                 //check to see if we should render this fragment (if its inside the pot)
                 float alpha = getAlpha(i);
-                float4 shading = GetShading(i.wpos, i.vertex, _LightPos, i.worldNormal, i.viewDir, baseColor, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, baseColor, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
                 //render the render texure relative to screen position
                 fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/2+0.25)/i.screenPos.w);
-                UNITY_APPLY_FOG(i.fogCoord, col);
 
-                col = col*shading +  tex * abs(1.0 - tex.r);
+                fixed shadow = SHADOW_ATTENUATION(i);
+                col = col*shading + tex * abs(1.0 - tex.r);
                 col.a = alpha;
-                return col;
+                return col * shadow;
             }
             ENDCG
         }
+
+         // shadow casting support
+        UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
     }
 }

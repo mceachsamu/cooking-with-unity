@@ -4,7 +4,7 @@ inline float4 GetShading (float4 wpos, float4 opos, float4 lightPos, float3 wNor
 {
     float4 col = baseColor;
 
-    float4 _LightPos = lightPos;
+    float4 _LightPos =  lightPos;
 
     //reduce overall shading when light source is further away
     float dist = smoothstep(0,1.0,1.0/pow(length(_LightPos - wpos),0.5));

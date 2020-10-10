@@ -47,7 +47,6 @@ public class bottle : MonoBehaviour
     }
 
     void setShaderProperties(){
-        this.GetComponent<Renderer>().material.SetVector("_LightPos", light.transform.position);
         this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", water.GetComponent<potwater>().waterOpaqueness);
         this.GetComponent<Renderer>().material.SetFloat("_WaterSize", water.GetComponent<potwater>().getSize());
         this.GetComponent<Renderer>().material.SetTexture("_HeightMap", water.GetComponent<potwater>().heightMap);

@@ -29,14 +29,16 @@
     SubShader
     {
         Blend SrcAlpha OneMinusSrcAlpha
-
+        Tags {
+            "LightMode" = "ForwardAdd"
+        }
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
+            #pragma multi_compile_fwdadd
+
 
             #include "UnityCG.cginc"
             #include "cellShading.cginc"
@@ -138,7 +140,7 @@
                 // sample the texture
                 fixed4 col = _Color;
 
-                float4 shading = GetShading(i.wpos, i.vertex, _LightPos, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 float alpha = getAlpha(i);
                 shading.a = alpha;

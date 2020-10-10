@@ -81,17 +81,12 @@ public class spoon : MonoBehaviour
             transform.position = origin;
             transform.rotation = rotation;
         }
-        setShaderProperties();
         //only sample the position every 2 frames
         //if we dont do this, we wont get a big enough difference is spacing to sample a distance
         if (count % 2 == 0) {
             previousPosition = this.transform.position;
         }
         count++;
-    }
-
-    private void setShaderProperties(){
-        this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
     }
 
 }

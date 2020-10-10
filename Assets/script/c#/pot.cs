@@ -14,6 +14,5 @@ public class pot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
     }
 }

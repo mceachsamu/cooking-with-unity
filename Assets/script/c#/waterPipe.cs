@@ -60,7 +60,9 @@ public class waterPipe : MonoBehaviour
         ForwardDir.y = 0.0f;
 
         //helps see direction on debug if we make it longer
-        ForwardDir = ForwardDir * 10.0f;
+        ForwardDir = ForwardDir;
+        Color dColor = new Color(1.0f,0.0f,0.0f);
+        Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + ForwardDir, dColor);
 
         //adjust the vector using manual adjustments
         ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.up, adjustY, 0.0f);
@@ -68,8 +70,6 @@ public class waterPipe : MonoBehaviour
         ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.forward, adjustZ, 0.0f);
 
         //draw the vector to help debug
-        Color dColor = new Color(1.0f,0.0f,0.0f);
-        Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + ForwardDir, dColor);
 
         //now we just want the bottle direction
         Vector3 bottleDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position;
