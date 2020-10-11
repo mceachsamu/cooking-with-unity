@@ -14,7 +14,7 @@
     {
         Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" "PreviewType"="Plane" }
         Blend SrcAlpha OneMinusSrcAlpha
-        ColorMask RGB
+        ColorMask RGBA
         Cull Off Lighting Off ZWrite Off
 
         Pass
@@ -88,9 +88,10 @@
 
                 // if the fragment is above the water surface, dont render
                 if (i.wpos.y < waterLevel){
-                    col.r = abs(i.wpos.y - _WaterLevel) * _WaterOpaqueness;
-                    col.g = abs(i.wpos.y - _WaterLevel) * _WaterOpaqueness;
-                    col.b = abs(i.wpos.y - _WaterLevel) * _WaterOpaqueness;
+                    //dont want to change alpha if it is already 0 (0.1 to be safe)
+                    if (col.a > 0.1){
+                        col.a =  2.0 - pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness;
+                    }
                 }else{
                     col.a = 0.0 ;
                 }
