@@ -16,14 +16,13 @@
         Tags {"Queue" = "Transparent" "RenderType"="Transparent" }
         LOD 200
         Blend SrcAlpha OneMinusSrcAlpha
-        ColorMask RGB
+        ColorMask RGBA
+
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
 
@@ -114,10 +113,7 @@
                 float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight ;
 
                 if (i.wpos.y < waterLevel + 0.05){
-                    col.r = pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness;
-                    col.g = pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness;
-                    col.b = pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness;
-                    col.a = 1.0;
+                    col.a =  2.0 - pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness;
                 }else{
                     col.a = 0.0;
                 }

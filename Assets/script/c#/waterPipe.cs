@@ -53,7 +53,6 @@ public class waterPipe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = bottleEnd.GetComponent<Transform>().position;
 
         //we want to create a vector that represents the bottles direction but without tilt on the x axis
         Vector3 ForwardDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position ;
@@ -73,6 +72,8 @@ public class waterPipe : MonoBehaviour
 
         //now we just want the bottle direction
         Vector3 bottleDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position;
+
+        this.transform.position = bottleEnd.GetComponent<Transform>().position - bottleDir*0.2f;
 
         dColor = new Color(0.0f,1.0f,0.0f);
         Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + bottleDir, dColor);
