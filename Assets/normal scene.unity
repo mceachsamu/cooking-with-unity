@@ -569,11 +569,11 @@ MonoBehaviour:
   zRadConst: 0
   numSegs: 40
   segSize: 0.07
-  waterOpaqueness: 1
+  waterOpaqueness: 1.37
   speed: 0.07
   numBubbles: 20
-  primaryCol: {r: 0.7058824, g: 0, b: 0.2977618, a: 1}
-  secondaryCol: {r: 0.49019608, g: 0, b: 0.1948983, a: 1}
+  primaryCol: {r: 0.764151, g: 0.3796157, b: 0, a: 1}
+  secondaryCol: {r: 0.6792453, g: 0.31367192, b: 0.016019935, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}
   neighbourFriction: 0.251
@@ -11247,7 +11247,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   start: {fileID: 247625750}
   adjustX: -2.8
-  adjustY: -0.31
+  adjustY: 0.35
   adjustZ: -2.67
   creep: 0.05
   smooth: 5

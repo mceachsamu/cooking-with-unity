@@ -139,7 +139,6 @@
             {
                 // sample the texture
                 fixed4 col = _Color;
-
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 float alpha = getAlpha(i);
@@ -158,7 +157,7 @@
                     shading.a = 0.0;
                 }
 
-                return shading;
+                return shading * pow(col, 0.5);
             }
             ENDCG
         }
