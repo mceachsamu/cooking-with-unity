@@ -207,7 +207,7 @@ Shader "Unlit/water"
                 fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/2+0.25)/i.screenPos.w);
 
                 fixed shadow = SHADOW_ATTENUATION(i);
-                col = col*shading - tex * abs(1.0 - tex.a) * 0.5;
+                col = col*shading - tex * abs(1.0 - tex.a) * 1.0;
                 col.a = alpha;
                 return col * shadow;
             }

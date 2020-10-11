@@ -6,16 +6,22 @@
         _HeightMap("heightmap", 2D) = "white" {}
         _MaxHeight("max height", float) = 0.0
         _WaterSize("water size", float) = 0.0
-        _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
         _PotCenter("center", Vector) = (0.0,0.0,0.0,0.0)
         _WaterOpaqueness("water opaqueness", float) = 0.0
         _WaterLevel("water level", float) = 0.0
+
+        [HDR]
+        _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
+        _SpecularColor("Specular Color", Color) = (0.0,0.0,0.0,1)
+        _Glossiness("Glossiness", Range(0, 100)) = 14
+
+        _RimColor("Rim Color", Color) = (1,1,1,1)
+        _RimAmount("Rim Amount", Range(0, 1)) = 1.0
     }
     SubShader
     {
-        Tags {"Queue" = "Transparent" "RenderType"="Transparent" }
+        Tags {"Queue" = "Transparent" "RenderType"="Transparent" "LightMode" = "ForwardAdd"}
         LOD 200
-        Blend SrcAlpha OneMinusSrcAlpha
         ColorMask RGBA
 
         Pass
@@ -25,6 +31,8 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            #include "cellShading.cginc"
+            #pragma multi_compile_fwdadd
 
             struct appdata
             {
@@ -36,10 +44,10 @@
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
                 float4 wpos : TEXCOORD1;
                 float3 worldNormal : NORMAL;
+                float3 viewDir : TEXCOORD2;
             };
 
             sampler2D _MainTex;
@@ -54,27 +62,22 @@
             uniform float _WaterLevel;
 
             uniform float4 _PotCenter;
-            uniform float4 _LightPos;
+
+            float _Glossiness;
+            float4 _SpecularColor;
+            float4 _RimColor;
+            float _RimAmount;
+            float4 _AmbientColor;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
-                float2 uv = ((worldPos.xz - _PotCenter.xz - _WaterSize/2.0)/_WaterSize);
-                #if !defined(SHADER_API_OPENGL)
-                    float4 height = tex2Dlod (_HeightMap, float4(float2(uv.x,uv.y),0,0));
-                    //v.vertex.z = v.vertex.z + height.r/100.0;
-                #endif
 
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                //o.vertex.x = o.vertex.x + sin(o.vertex.x*10 + time)/10;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.worldNormal = v.normal;
-                worldPos = mul (unity_ObjectToWorld, v.vertex);
-                o.wpos = worldPos;
-                UNITY_TRANSFER_FOG(o,o.vertex);
-                //o.vertex = o.vertex * noise.y;
+                o.wpos = mul(unity_ObjectToWorld, v.vertex);
+                o.viewDir = WorldSpaceViewDir(v.vertex);
                 return o;
             }
 
@@ -86,29 +89,12 @@
             {
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
-                float3 lightDir = normalize(_LightPos - i.wpos);
-                float NdotL = dot(i.worldNormal, lightDir);
-                float intensity = saturate(NdotL);
-                float3 camDir = normalize(_WorldSpaceCameraPos - i.wpos);
 
-                float3 H = normalize(lightDir + camDir);
-                float NdotH = dot(i.worldNormal, H);
-                float specIntensity = saturate(NdotH);
+                //get shading
+                float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 float2 waterUV = getWaterUV(i);
                 float waterHeight = tex2D(_HeightMap, waterUV);
-
-                float overall = intensity + specIntensity;
-                // apply fog
-                if(overall < 0.2){
-                    col = col*0.4;
-                }
-                if(overall < 0.6){
-                    col = col*0.5;
-                }
-                if(overall < 1.0){
-                    col = col* 1.0;
-                }
 
                 float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight ;
 
@@ -117,8 +103,9 @@
                 }else{
                     col.a = 0.0;
                 }
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+
+
+                return col * pow(shading,0.1);
             }
             ENDCG
         }

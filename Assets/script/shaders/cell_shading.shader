@@ -3,7 +3,6 @@
     Properties
     {
         _MainTex("Texture", 2D) = "white" {}
-        _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
         _SpecularColor("Specular Color", Color) = (0.0,0.0,0.0,1)
@@ -47,7 +46,6 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            uniform float4 _LightPos;
 
             float _Glossiness;
             float4 _SpecularColor;
