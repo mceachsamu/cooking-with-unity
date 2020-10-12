@@ -17,13 +17,15 @@
 
         _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimAmount("Rim Amount", Range(0, 1)) = 1.0
+        
+        adjust("Adjust", Range(-1, 1)) = 0.0
     }
     SubShader
     {
         Tags {"Queue" = "Transparent" "RenderType"="Transparent" "LightMode" = "ForwardAdd"}
         LOD 200
         ColorMask RGBA
-
+        Blend SrcAlpha OneMinusSrcAlpha
         Pass
         {
             CGPROGRAM
@@ -69,6 +71,8 @@
             float _RimAmount;
             float4 _AmbientColor;
 
+            float adjust;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -93,19 +97,20 @@
                 //get shading
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
+                col = shading;
+
                 float2 waterUV = getWaterUV(i);
                 float waterHeight = tex2D(_HeightMap, waterUV);
 
-                float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight ;
+                float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight;
 
-                if (i.wpos.y < waterLevel + 0.05){
-                    col.a =  2.0 - pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness;
+                if (i.wpos.y < waterLevel + adjust){
+                    col.a = 2.0 - pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness;
                 }else{
                     col.a = 0.0;
                 }
 
-
-                return col * pow(shading,0.1);
+                return col ;
             }
             ENDCG
         }

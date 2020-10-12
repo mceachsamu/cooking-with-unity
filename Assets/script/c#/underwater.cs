@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class underwater : MonoBehaviour
 {
-
-    public GameObject Light;
-
     public GameObject water;
 
     // Start is called before the first frame update
@@ -22,7 +19,6 @@ public class underwater : MonoBehaviour
     }
 
     private void setShaderProperties(){
-        this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
         this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", water.GetComponent<potwater>().waterOpaqueness);
         this.GetComponent<Renderer>().material.SetFloat("_WaterSize", water.GetComponent<potwater>().getSize());
         this.GetComponent<Renderer>().material.SetTexture("_HeightMap", water.GetComponent<potwater>().heightMap);
