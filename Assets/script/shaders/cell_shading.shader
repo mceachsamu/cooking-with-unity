@@ -13,20 +13,26 @@
     }
     SubShader
     {
-        Tags {
-            "LightMode" = "ForwardAdd"
-        }
-        LOD 200
-
         Pass
         {
+            Name "FORWARD_DELTA"
+            Tags {
+            "LightMode" = "ForwardAdd"
+            }
+            ZWrite On
+            ZTest LEqual
             CGPROGRAM
+            #pragma target 2.0
 
-            #include "UnityCG.cginc"
             #include "cellShading.cginc"
+
+            #pragma multi_compile_shadowcaster
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fwdadd
+            #include "UnityCG.cginc"
+            #pragma multi_compile_fwdadd_fullshadows
+            #include "AutoLight.cginc"
+
 
             struct appdata
             {
@@ -42,6 +48,7 @@
                 float4 wpos : TEXCOORD1;
                 float3 worldNormal : NORMAL;
                 float3 viewDir : TEXCOORD2;
+                SHADOW_COORDS(3)
             };
 
             sampler2D _MainTex;
@@ -62,7 +69,7 @@
                 o.worldNormal = v.normal;
                 o.wpos = mul (unity_ObjectToWorld, v.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
-
+                TRANSFER_SHADOW(o);
                 return o;
             }
 
@@ -73,10 +80,12 @@
 
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
-                return col * shading;
+                float shadow = UNITY_SHADOW_ATTENUATION(i, i.wpos);
+                //fixed4 c = atten;
+                return col * shading * shadow;
             }
             ENDCG
         }
-        UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
+
     }
 }
