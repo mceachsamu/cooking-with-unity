@@ -19,10 +19,8 @@
             Tags {
             "LightMode" = "ForwardAdd"
             }
-            ZWrite On
-            ZTest LEqual
             CGPROGRAM
-            #pragma target 2.0
+            #pragma target 3.0
 
             #include "cellShading.cginc"
 
@@ -80,12 +78,31 @@
 
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
-                float shadow = UNITY_SHADOW_ATTENUATION(i, i.wpos);
+                float shadow = SHADOW_ATTENUATION(i);
                 //fixed4 c = atten;
                 return col * shading * shadow;
             }
             ENDCG
         }
+
+        Pass {
+			Tags {
+				"LightMode" = "ShadowCaster"
+			}
+
+			CGPROGRAM
+
+			#pragma target 3.0
+
+			#pragma multi_compile_shadowcaster
+
+			#pragma vertex MyShadowVertexProgram
+			#pragma fragment MyShadowFragmentProgram
+
+			#include "My Shadows.cginc"
+
+			ENDCG
+		}
 
     }
 }

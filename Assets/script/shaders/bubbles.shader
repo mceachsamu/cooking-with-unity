@@ -161,5 +161,23 @@
             }
             ENDCG
         }
+        Pass {
+			Tags {
+				"LightMode" = "ShadowCaster"
+			}
+
+			CGPROGRAM
+
+			#pragma target 3.0
+
+			#pragma multi_compile_shadowcaster
+
+			#pragma vertex MyShadowVertexProgram
+			#pragma fragment MyShadowFragmentProgram
+
+			#include "My Shadows.cginc"
+
+			ENDCG
+		}
     }
 }

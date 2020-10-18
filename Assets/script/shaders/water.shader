@@ -128,11 +128,10 @@ Shader "Unlit/water"
                 //get world position from object position
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
                 o.wpos = worldPos;
-                
+
                 // sample the texture
                 #if !defined(SHADER_API_OPENGL)
                     float4 height = tex2Dlod (_Tex, float4(float2(v.uv.x,v.uv.y),0,0));
-                    float4 height2 = tex2Dlod (_Texture, float4(float2(v.uv.x,v.uv.y),0,0));
                     v.vertex.y += height.r - _MaxHeight;
 
                     normcalc n;
@@ -204,12 +203,32 @@ Shader "Unlit/water"
                 fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/1.5+0.33)/i.screenPos.w);
 
                 fixed shadow = SHADOW_ATTENUATION(i);
-                col = col*shading - tex * clamp(1.0 - tex.a,0.0,1.0) * 2.0;
+                col = col*shading - tex * clamp(1.0 - tex.a,0.0,1.0) * 0.4;
                 col.a = alpha;
                 return  col * shadow;
             }
             ENDCG
         }
+
+        Pass {
+			Tags {
+				"LightMode" = "ShadowCaster"
+			}
+
+			CGPROGRAM
+
+			#pragma target 3.0
+
+			#pragma multi_compile_shadowcaster
+
+			#pragma vertex MyShadowVertexProgram
+			#pragma fragment MyShadowFragmentProgram
+
+			#include "My Shadows water.cginc"
+
+
+			ENDCG
+		}
 
     }
 }
