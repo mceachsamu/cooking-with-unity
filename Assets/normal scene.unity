@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -211,13 +211,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 44562578}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.00013727289, y: 0.0010625318, z: -0.0013089002, w: 0.9999986}
   m_LocalPosition: {x: 5.71, y: -0.79771304, z: 0.011693001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.016, y: 0.122, z: -0.15}
 --- !u!1 &122744734 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: dba5bcddd3c376a4d999675cd68ed85c,
@@ -569,11 +569,11 @@ MonoBehaviour:
   zRadConst: 0
   numSegs: 40
   segSize: 0.07
-  waterOpaqueness: 1.37
+  waterOpaqueness: 1.01
   speed: 0.07
   numBubbles: 20
-  primaryCol: {r: 0.764151, g: 0.3796157, b: 0, a: 1}
-  secondaryCol: {r: 0.6792453, g: 0.31367192, b: 0.016019935, a: 1}
+  primaryCol: {r: 0, g: 0.7735849, b: 0.60287386, a: 1}
+  secondaryCol: {r: 0.026432883, g: 0.6226415, b: 0.48741898, a: 1}
   numFieldPoints: 20
   heightMap: {fileID: 0}
   neighbourFriction: 0.251
@@ -10573,6 +10573,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: de84331754b9c474b86440570d5588fa, type: 2}
+    - target: {fileID: 2300000, guid: dba5bcddd3c376a4d999675cd68ed85c, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: dba5bcddd3c376a4d999675cd68ed85c, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dba5bcddd3c376a4d999675cd68ed85c, type: 3}
 --- !u!1 &1000261384
@@ -10745,6 +10753,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: de84331754b9c474b86440570d5588fa, type: 2}
+    - target: {fileID: 2300002, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300002, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38f445fa4b15a2e45ab663675d1c7ca4, type: 3}
 --- !u!1001 &1108835626
@@ -10938,7 +10954,7 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 3
     m_CustomResolution: -1
     m_Strength: 0.326
     m_Bias: 0.475
@@ -11246,7 +11262,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   start: {fileID: 247625750}
   adjustX: -2.8
-  adjustY: 0.35
+  adjustY: 0.15
   adjustZ: -2.67
   creep: 0.05
   smooth: 5
