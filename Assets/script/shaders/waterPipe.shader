@@ -40,23 +40,25 @@
             // make fog work
             #pragma multi_compile_fog
 
+            #include "cellShading.cginc"
+
             #include "UnityCG.cginc"
 
             struct appdata
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float3 normal : NORMAL;
             };
 
             struct v2f
             {
                 float4 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
-                float4 normal : NORMAL;
                 float4 wpos : TEXCOORD1;
                 float3 viewDir : TEXCOORD2;
                 float4 screenPos : TEXCOORD3;
+                float3 normal : NORMAL;
             };
 
             sampler2D _MainTex;
@@ -144,11 +146,11 @@
                 float4 next3 = float4(start.x + x, start.y + y, start.z + zstep, start.w);
                 float4 next4 = float4(start.x - x, start.y - y, start.z + zstep, start.w);
 
-                // next = normalize(getVertexDistortion(next, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y)));
-                // next2 = normalize(getVertexDistortion(next2, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y)));
-
-                // next3 = normalize(getVertexDistortion(next3, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
-                // next4 = normalize(getVertexDistortion(next4, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
+                //next = normalize(getVertexDistortion(next, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y)));
+                //next2 = normalize(getVertexDistortion(next2, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y)));
+//
+                //next3 = normalize(getVertexDistortion(next3, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
+                //next4 = normalize(getVertexDistortion(next4, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
 
                 float normal = cross(next-next3,next-next4);
 
@@ -159,50 +161,18 @@
                 o.uv.xy = TRANSFORM_TEX(v.uv.xy, _MainTex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
                 o.screenPos = ComputeScreenPos(o.vertex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                o.viewDir = WorldSpaceViewDir(v.vertex);
                 return o;
-            }
-
-            //based on blinn phong shading
-            float4 getShading (v2f i)
-            {
-                fixed4 col = baseColor;
-                float3 lightDir = normalize(_LightPos - i.wpos);
-                float NdotL = dot(i.normal, lightDir);
-                float intensity =   smoothstep(0, 0.1, NdotL);
-                float3 viewDir = i.viewDir;
-
-                float3 H = normalize(_LightPos + viewDir);
-                float NdotH = dot(i.normal, H);
-                float specIntensity = pow(NdotH * intensity, _Glossiness * _Glossiness);
-
-                float specularIntensitySmooth = smoothstep(0.005, 0.01, specIntensity);
-                float4 specular = specularIntensitySmooth * _SpecularColor;
-
-                float4 rimDot = 1 - dot(viewDir, i.normal);
-
-                float rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimDot);
-                float4 rim = rimIntensity * _RimColor;
-                float overall = intensity * 0.5;
-
-                if (overall < 0.0){
-                    overall = 0.5;
-                }
-                if (overall > 0.0){
-                    overall = 1.0;
-                }
-
-                return (baseColor + overall + specular + rim);
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, float2(i.screenPos.x , i.screenPos.y)/i.screenPos.w);
-                // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                float4 shading = getShading(i);
-                return float4(col.b,col.b,col.b,col.a)/2 + baseColor  - i.uv.z/15;
+
+                float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+
+                return shading * col;
             }
             ENDCG
         }
