@@ -82,8 +82,6 @@ public class potwater : MonoBehaviour
     [Range(0.6f, 1.0f)]
     public float rotationalFriction = 0.8f;
 
-    public GameObject dummy;
-
     public Quaternion startRotation;
 
     void Start()
@@ -161,22 +159,20 @@ public class potwater : MonoBehaviour
     }
 
     public void AddForceToWater(Vector3 position, float forceAmount, float rotationAdd){
+        //first rotate the input position to match the rotation of the water
+        Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -angle);
         //ensures we dont get an out of bounds exception and translates position to water
-        Transform t = dummy.transform;
-        t.position = position;
-        Vector3 adjustedPosition = RotateAround(t, this.transform.position, Vector3.up, -angle);
         Vector2 index = getClosestPoint(adjustedPosition);
         pointField[(int)index.x,(int)index.y].addForce(-1 * forceAmount);
         print(rotationAdd);
+        //add rotation to the water
         angleDiff += rotationAdd;
     }
 
     public float getHeightAtPosition(Vector3 position){
-        Transform t = dummy.transform;
-        t.position = position;
-        Vector3 adjustedPosition = RotateAround(t, this.transform.position, Vector3.up, -angle);
+        Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -angle);
         Vector2 closest = getClosestPoint(adjustedPosition);
-        return this.heightMap.GetPixel((int)closest.x, (int)closest.y).r + this.transform.position.y - maxHeight;
+        return (this.heightMap.GetPixel((int)closest.x, (int)closest.y).r - maxHeight);
     }
 
     //get the center point for the pot
@@ -185,9 +181,9 @@ public class potwater : MonoBehaviour
         return center;
     }
 
-    public Vector3 RotateAround(Transform t, Vector3 point, Vector3 axis, float angle)
+    public Vector3 RotateAround(Vector3 position, Vector3 point, Vector3 axis, float angle)
     {
-        Vector3 pos = t.position;
+        Vector3 pos = position;
         Quaternion rotation = Quaternion.AngleAxis(angle * 0.0174532924f, axis);
         Vector3 dir = pos - point;
         dir = rotation * dir;
