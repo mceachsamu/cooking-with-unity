@@ -75,6 +75,17 @@ public class potwater : MonoBehaviour
     [Range(0.01f, 0.3f)]
     public float damping = 0.1f;
 
+    private float angle = 0.0f;
+
+    private float angleDiff = 0.0f;
+
+    [Range(0.6f, 1.0f)]
+    public float rotationalFriction = 0.8f;
+
+    public GameObject dummy;
+
+    public Quaternion startRotation;
+
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -97,13 +108,10 @@ public class potwater : MonoBehaviour
         };
         //initialize our height map texture to be the same dimensions as our field points
         heightMap = new Texture2D(numFieldPoints, numFieldPoints);
+
+        startRotation = this.transform.rotation;
     }
 
-    public void AddForceToWater(Vector3 position, float forceAmount){
-        //ensures we dont get an out of bounds exception and translates position to water
-        Vector2 index = getClosestPoint(position);
-        pointField[(int)index.x,(int)index.y].addForce(-1 * forceAmount);
-    }
 
     // Update is called once per frame
     void Update()
@@ -145,15 +153,30 @@ public class potwater : MonoBehaviour
         pot.GetComponent<Renderer>().material.SetTexture("_HeightMap", this.heightMap);
         pot.GetComponent<Renderer>().material.SetVector("_PotCenter", this.GetCenter());
         pot.GetComponent<Renderer>().material.SetFloat("_WaterLevel", this.GetComponent<Transform>().position.y);
+
+        angle += angleDiff;
+        angle *= rotationalFriction;
+        this.transform.rotation = startRotation;
+        Quaternion q = RotateAroundQ(this.transform, Vector3.up, angle);
+    }
+
+    public void AddForceToWater(Vector3 position, float forceAmount, float rotationAdd){
+        //ensures we dont get an out of bounds exception and translates position to water
+        Transform t = dummy.transform;
+        t.position = position;
+        Vector3 adjustedPosition = RotateAround(t, this.transform.position, Vector3.up, -angle);
+        Vector2 index = getClosestPoint(adjustedPosition);
+        pointField[(int)index.x,(int)index.y].addForce(-1 * forceAmount);
+        print(rotationAdd);
+        angleDiff += rotationAdd;
     }
 
     public float getHeightAtPosition(Vector3 position){
-        Vector2 closest = getClosestPoint(position);
+        Transform t = dummy.transform;
+        t.position = position;
+        Vector3 adjustedPosition = RotateAround(t, this.transform.position, Vector3.up, -angle);
+        Vector2 closest = getClosestPoint(adjustedPosition);
         return this.heightMap.GetPixel((int)closest.x, (int)closest.y).r + this.transform.position.y - maxHeight;
-    }
-    public float getHeightAtPositionAdj(Vector3 position){
-        Vector2 closest = getClosestPoint(position);
-        return  this.transform.position.y;
     }
 
     //get the center point for the pot
@@ -161,6 +184,23 @@ public class potwater : MonoBehaviour
         Vector3 center = lid.transform.position;
         return center;
     }
+
+    public Vector3 RotateAround(Transform t, Vector3 point, Vector3 axis, float angle)
+    {
+        Vector3 pos = t.position;
+        Quaternion rotation = Quaternion.AngleAxis(angle * 0.0174532924f, axis);
+        Vector3 dir = pos - point;
+        dir = rotation * dir;
+        pos = point + dir;
+        return pos;
+    }
+
+    public Quaternion RotateAroundQ(Transform t, Vector3 axis, float angle)
+    {
+        Quaternion q = Quaternion.AngleAxis(angle * 0.0174532924f, axis);
+        return t.rotation *= q;
+    }
+
 
     public float getSize(){
         return segSize * numSegs;

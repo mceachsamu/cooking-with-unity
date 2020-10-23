@@ -115,7 +115,7 @@
 
                 float ax = (end.xz) / (endZ*endZ);
                 float x = z * z * ax;
-                //vertex.x += x;
+                vertex.x += x;
 
                 #if !defined(SHADER_API_OPENGL)
                     float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/60),0,0));

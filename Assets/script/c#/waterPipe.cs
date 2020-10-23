@@ -87,7 +87,7 @@ public class waterPipe : MonoBehaviour
 
         this.transform.forward = ForwardDir;
         count++;
-        water.GetComponent<potwater>().AddForceToWater(FallPosition, force);
+        water.GetComponent<potwater>().AddForceToWater(FallPosition, force,0.0f);
         this.GetComponent<Renderer>().material.SetVector("_PipeStart", bottleEnd.transform.position);
         this.GetComponent<Renderer>().material.SetVector("_PipeEnd", FallPosition);
         this.GetComponent<Renderer>().material.SetFloat("_Count", count);

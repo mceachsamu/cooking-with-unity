@@ -24,6 +24,9 @@ public class spoon : MonoBehaviour
 
     public float maxForce = 0.7f;
 
+    [Range(0.0f, 1000.0f)]
+    public float stirForce = 1.0f;
+
     private int count = 0;
 
     private Quaternion defaultRotation = new Quaternion(0.69f, 0.002f, 0.0f,0.72f);
@@ -40,11 +43,15 @@ public class spoon : MonoBehaviour
     }
 
     private void addForceToWater(){
+        Vector3 center = water.GetComponent<potwater>().GetCenter();
         float force = (this.transform.position - previousPosition).magnitude;
-        if (force > maxForce){
-            force = maxForce;
-        }
-        water.GetComponent<potwater>().AddForceToWater(this.transform.position, force * forceMultiplier);
+        Vector3 p1 = this.transform.position;
+        Vector3 p2 = previousPosition;
+        Vector3 ac = center - p1;
+        Vector3 bc = p2 - center;
+        float x = -1.0f * (ac.x*bc.z-ac.z*bc.x);
+        //if x positive, then clockwise, otherwise anti clockwise
+        water.GetComponent<potwater>().AddForceToWater(this.transform.position, force * forceMultiplier, x * stirForce);
     }
 
     // Update is called once per frame
@@ -58,11 +65,8 @@ public class spoon : MonoBehaviour
 
         Vector3 dir2 = Vector3.Cross(dir, this.transform.forward);
 
-
-
         Color dColor = new Color(0.0f,1.0f,0.0f);
         Debug.DrawLine(this.transform.position, this.transform.position + dir, dColor);
-
 
         //add a force to water each frame
         this.addForceToWater();

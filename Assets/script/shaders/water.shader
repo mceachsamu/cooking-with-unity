@@ -69,7 +69,7 @@ Shader "Unlit/water"
                 float3 worldNormal : NORMAL;
                 float3 viewDir : TEXCOORD3;
                 float4 pos : TEXCOORD4;
-                LIGHTING_COORDS(5,6)
+                SHADOW_COORDS(5)
             };
 
             sampler2D _Tex;
@@ -161,7 +161,7 @@ Shader "Unlit/water"
                 o.wpos = worldPos;
 				o.screenPos = ComputeScreenPos(o.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
-                TRANSFER_VERTEX_TO_FRAGMENT(o);
+                TRANSFER_SHADOW(o);
                 return o;
             }
 

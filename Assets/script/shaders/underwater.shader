@@ -106,7 +106,7 @@
 
                 col = col * pow(shading,0.4);
 
-                if (i.wpos.y < waterLevel + 0.05){
+                if (true){//i.wpos.y < waterLevel + 0.05){
                     col.a = (2.0 - pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness);
                 }else{
                     col.a = 0.0;
