@@ -54,39 +54,10 @@ public class waterPipe : MonoBehaviour
     void Update()
     {
 
-        //we want to create a vector that represents the bottles direction but without tilt on the x axis
-        Vector3 ForwardDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position ;
-        ForwardDir.y = 0.0f;
-
-        //helps see direction on debug if we make it longer
-        Color dColor = new Color(1.0f,0.0f,0.0f);
-        Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + ForwardDir, dColor);
-
-        //adjust the vector using manual adjustments
-        ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.up, adjustY, 0.0f);
-        ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.right, adjustX, 0.0f);
-        ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.forward, adjustZ, 0.0f);
-
-        //draw the vector to help debug
-
-        //now we just want the bottle direction
-        Vector3 bottleDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position;
-
-        this.transform.position = bottleEnd.GetComponent<Transform>().position - bottleDir*0.2f;
-
-        dColor = new Color(0.0f,1.0f,0.0f);
-        Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + bottleDir, dColor);
-
-        bottleDir = bottleDir.normalized;
-
-        size =((bottleDir.y*-1) + 0.5f);
-        size = Mathf.Clamp(size, 0.0f,1.0f);
-
-        force = size*0.3f;
-
-        this.transform.forward = ForwardDir;
+        float exponential = setSpoutDirection();
         count++;
 
+        force = size*0.3f;
         water.GetComponent<potwater>().AddForceToWater(FallPosition, force, 0.0f);
         water.GetComponent<potwater>().AddLiquidToWater(0.01f * force, new Color(0.0f,0.0f,0.0f,0.0f));
 
@@ -98,6 +69,7 @@ public class waterPipe : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_PipeSize", this.size);
         this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsRound", numSegmentsRound);
         this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsLong", numSegmentsLong);
+        this.GetComponent<Renderer>().material.SetFloat("_Exponent", exponential);
 
         this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
         this.GetComponent<Renderer>().material.SetVector("_LightPos", light.transform.position);
@@ -114,6 +86,38 @@ public class waterPipe : MonoBehaviour
         PreviousPoint.x += diffX * creep;
         PreviousPoint.y += diffY * creep;
         PreviousPoint.z += diffZ * creep;
+    }
+
+    private float setSpoutDirection(){
+         //we want to create a vector that represents the bottles direction but without tilt on the x axis
+        Vector3 ForwardDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position ;
+        ForwardDir.y = 0.0f;
+
+        //adjust the vector using manual adjustments
+        ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.up, adjustY, 0.0f);
+        ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.right, adjustX, 0.0f);
+        ForwardDir = Vector3.RotateTowards(ForwardDir, Vector3.forward, adjustZ, 0.0f);
+
+        //now we just want the bottle direction
+        Vector3 bottleDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position;
+
+        this.transform.position = bottleEnd.GetComponent<Transform>().position - bottleDir*0.2f;
+
+        bottleDir = bottleDir.normalized;
+
+        size =((bottleDir.y*-1) + 0.5f);
+        size = Mathf.Clamp(size, 0.0f,1.0f);
+
+        this.transform.forward = ForwardDir;
+
+        float exp = GetSpoutExponential(bottleDir);
+        print(exp);
+        //return the exponential value to be used by the shader
+        return exp;
+    }
+
+    private float GetSpoutExponential(Vector3 bottleDir) {
+        return (bottleDir.y + 3.0f);
     }
 
     public void SetFallPosition(Vector3 position) {

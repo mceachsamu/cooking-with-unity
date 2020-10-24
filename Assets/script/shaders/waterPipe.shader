@@ -15,6 +15,7 @@
         _PipeRadius("radius", float) = 0.0
         _PipeSegmentsRound("number of segments round", float) = 0.0
         _PipeSegmentsLong("number of segments long", float) = 0.0
+        _Exponent("exonential - spout curvature", float) = 0.0
 
         baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
 
@@ -86,6 +87,7 @@
             float _PipeSegmentsRound;
             float _PipeSegmentsLong;
             float _PipeSize;
+            float _Exponent;
 
             float4 getVertexDistortion(float4 vertex, float2 uv){
                 float mag = clamp(vertex.z,0.5,5.0);
@@ -108,9 +110,9 @@
 
                 float z = length(vertex.z);
                 float endZ = length(end.xz);
-                float a = (-end.y) / (endZ*endZ);
+                float a = (-end.y) / pow(endZ,_Exponent);
 
-                float y = z * z * z* a;
+                float y = pow(z,_Exponent) * a;
                 vertex.y += y;
 
                 float ax = (end.xz) / (endZ*endZ);
