@@ -105,8 +105,8 @@
 
                 float4 end = (direction * (1.0-sway) + directionPrev * (sway));
 
-                float adjusted = (length(end.xz) / pipeLength);
-                vertex.z *= adjusted*2.8;
+                float adjusted = (length(end) / pipeLength);
+                vertex.z *= adjusted*0.5;
 
                 float z = length(vertex.z);
                 float endZ = length(end.xz);
