@@ -82,7 +82,9 @@ public class potwater : MonoBehaviour
     [Range(0.6f, 1.0f)]
     public float rotationalFriction = 0.8f;
 
-    public Quaternion startRotation;
+    private Quaternion startRotation;
+
+    private float totalVolume = 0.001f;
 
     void Start()
     {
@@ -114,8 +116,6 @@ public class potwater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int current = (int)(1f / Time.unscaledDeltaTime);
-
         //count is an internal timer we give to the shader to move the water along with time
         count = count + speed;
         //this loop applies the physics model for each point in our field an updates the heightmap accordingly
@@ -152,10 +152,26 @@ public class potwater : MonoBehaviour
         pot.GetComponent<Renderer>().material.SetVector("_PotCenter", this.GetCenter());
         pot.GetComponent<Renderer>().material.SetFloat("_WaterLevel", this.GetComponent<Transform>().position.y);
 
+        //rotate the water
         angle += angleDiff;
         angle *= rotationalFriction;
         this.transform.rotation = startRotation;
         Quaternion q = RotateAroundQ(this.transform, Vector3.up, angle);
+
+        applyWaterHeight();
+    }
+
+    //calculates what the height of the water should be based on water volume
+    private void applyWaterHeight(){
+        Vector3 pos = this.transform.position;
+        float newHeight = Mathf.Log(totalVolume, 20);
+        print(newHeight);
+        pos.y = newHeight;
+        this.transform.position = pos;
+    }
+
+    public void AddLiquidToWater(float amount, Color color) {
+        totalVolume += amount;
     }
 
     public void AddForceToWater(Vector3 position, float forceAmount, float rotationAdd){
@@ -164,10 +180,10 @@ public class potwater : MonoBehaviour
         //ensures we dont get an out of bounds exception and translates position to water
         Vector2 index = getClosestPoint(adjustedPosition);
         pointField[(int)index.x,(int)index.y].addForce(-1 * forceAmount);
-        print(rotationAdd);
         //add rotation to the water
         angleDiff += rotationAdd;
     }
+
 
     public float getHeightAtPosition(Vector3 position){
         Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -angle);

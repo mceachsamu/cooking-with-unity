@@ -59,7 +59,6 @@ public class waterPipe : MonoBehaviour
         ForwardDir.y = 0.0f;
 
         //helps see direction on debug if we make it longer
-        ForwardDir = ForwardDir;
         Color dColor = new Color(1.0f,0.0f,0.0f);
         Debug.DrawLine(bottleEnd.GetComponent<Transform>().position, bottleEnd.GetComponent<Transform>().position + ForwardDir, dColor);
 
@@ -87,7 +86,10 @@ public class waterPipe : MonoBehaviour
 
         this.transform.forward = ForwardDir;
         count++;
-        water.GetComponent<potwater>().AddForceToWater(FallPosition, force,0.0f);
+
+        water.GetComponent<potwater>().AddForceToWater(FallPosition, force, 0.0f);
+        water.GetComponent<potwater>().AddLiquidToWater(0.01f * force, new Color(0.0f,0.0f,0.0f,0.0f));
+
         this.GetComponent<Renderer>().material.SetVector("_PipeStart", bottleEnd.transform.position);
         this.GetComponent<Renderer>().material.SetVector("_PipeEnd", FallPosition);
         this.GetComponent<Renderer>().material.SetFloat("_Count", count);
