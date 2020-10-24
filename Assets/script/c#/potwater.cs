@@ -164,8 +164,8 @@ public class potwater : MonoBehaviour
     //calculates what the height of the water should be based on water volume
     private void applyWaterHeight(){
         Vector3 pos = this.transform.position;
-        float newHeight = Mathf.Log(totalVolume, 20);
-        print(newHeight);
+
+        float newHeight = Mathf.Log(totalVolume+0.5f, 2);
         pos.y = newHeight;
         this.transform.position = pos;
     }
