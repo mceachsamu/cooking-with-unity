@@ -592,7 +592,7 @@ MonoBehaviour:
   friction: 0.9286
   drag: 0.9634
   maxHeight: 0.95
-  mass: 4.74
+  mass: 6.59
   deceleration: -0.0807
   damping: 0.287
   rotationalFriction: 0.991
