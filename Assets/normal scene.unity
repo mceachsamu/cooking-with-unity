@@ -670,7 +670,7 @@ GameObject:
   - component: {fileID: 288254478}
   - component: {fileID: 288254477}
   - component: {fileID: 288254476}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -747,7 +747,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 288254475}
   m_LocalRotation: {x: 0.6614413, y: 0.33855715, z: 0.47230363, w: 0.47413477}
-  m_LocalPosition: {x: 0.021, y: 0.969, z: -0.014}
+  m_LocalPosition: {x: 0.06, y: 1.031, z: 0.02}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 1459530040}
@@ -11276,9 +11276,9 @@ MonoBehaviour:
   water: {fileID: 259507576}
   start: {fileID: 247625750}
   adjustX: -2.8
-  adjustY: 0.15
+  adjustY: 0.5
   adjustZ: -2.67
-  creep: 0.05
+  creep: 0.01
   smooth: 5
 --- !u!65 &1510246518
 BoxCollider:
@@ -11404,7 +11404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75104480f42c6342b050e50ce5460ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lidXradius: 0.0115
+  lidXradius: 0.0116
   lidZradius: 0.0115
 --- !u!4 &1763447007
 Transform:
@@ -11414,7 +11414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763447005}
   m_LocalRotation: {x: 0.7071068, y: -0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: -0, z: 0.0099}
+  m_LocalPosition: {x: 0, y: -0, z: 0.01}
   m_LocalScale: {x: 0.01, y: 0.009999998, z: 0.009999998}
   m_Children: []
   m_Father: {fileID: 122744735}

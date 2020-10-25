@@ -35,14 +35,16 @@
         Pass
         {
             CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma multi_compile_fwdadd
+            #pragma target 3.0
 
-
-            #include "UnityCG.cginc"
             #include "cellShading.cginc"
 
+            #pragma multi_compile_shadowcaster
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+            #pragma multi_compile_fwdadd_fullshadows
+            #include "AutoLight.cginc"
             struct appdata
             {
                 float4 vertex : POSITION;
