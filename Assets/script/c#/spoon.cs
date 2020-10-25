@@ -8,17 +8,9 @@ public class spoon : MonoBehaviour
     Vector3 origin;
     Quaternion rotation;
 
-    public GameObject lid;
-
     //reference the water we are currently stirring
     public GameObject water;
 
-    //the dimensions of the lid
-    Vector3 center;
-
-    public GameObject Light;
-    float xRad;
-    float zRad;
     //the multiplier for the force this spoon exhubits on water
     public float forceMultiplier = 2.0f;
 
@@ -27,13 +19,11 @@ public class spoon : MonoBehaviour
     [Range(0.0f, 1000.0f)]
     public float stirForce = 1.0f;
 
-    private int count = 0;
-
-    private Quaternion defaultRotation = new Quaternion(0.69f, 0.002f, 0.0f,0.72f);
-
     private Vector3 previousPosition;
 
     private Vector3 position;
+
+    private int count;
     // Start is called before the first frame update
     void Start()
     {
@@ -60,13 +50,7 @@ public class spoon : MonoBehaviour
 
 
         Vector3 dir =  this.transform.position - water.GetComponent<potwater>().GetCenter();
-
         dir.y = 0.0f;
-
-        Vector3 dir2 = Vector3.Cross(dir, this.transform.forward);
-
-        Color dColor = new Color(0.0f,1.0f,0.0f);
-        Debug.DrawLine(this.transform.position, this.transform.position + dir, dColor);
 
         //add a force to water each frame
         this.addForceToWater();
@@ -78,7 +62,6 @@ public class spoon : MonoBehaviour
             position.z = mousePos.y/500;
 
             transform.localPosition = position;
-            //transform.rotation = defaultRotation;
             transform.right = dir;
         }else{
             //when there is no input, bring the spoon back the origin
