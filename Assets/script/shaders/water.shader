@@ -200,7 +200,7 @@ Shader "Unlit/water"
                 float alpha = getAlpha(i);
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, baseColor, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
                 //render the render texure relative to screen position
-                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/1.5+0.33)/i.screenPos.w);
+                fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/1.5+0.3)/i.screenPos.w);
 
                 fixed shadow = SHADOW_ATTENUATION(i);
                 col = col*shading - tex * clamp(1.0 - tex.a,0.0,1.0) * 0.4;

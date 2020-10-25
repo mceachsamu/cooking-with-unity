@@ -48,7 +48,6 @@ public class spoon : MonoBehaviour
     void Update()
     {
 
-
         Vector3 dir =  this.transform.position - water.GetComponent<potwater>().GetCenter();
         dir.y = 0.0f;
 

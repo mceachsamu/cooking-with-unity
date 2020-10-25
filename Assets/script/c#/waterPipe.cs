@@ -111,7 +111,6 @@ public class waterPipe : MonoBehaviour
         this.transform.forward = ForwardDir;
 
         float exp = GetSpoutExponential(bottleDir);
-        print(exp);
         //return the exponential value to be used by the shader
         return exp;
     }
