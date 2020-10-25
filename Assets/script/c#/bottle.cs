@@ -16,8 +16,7 @@ public class bottle : MonoBehaviour
     public GameObject light;
     public GameObject waterSpout;
     private Vector3 previousPosition;
-    [Range(0.0f, 2.0f)]
-    public float spoutAmplitude = 1.0f;
+    public GameObject bottom;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,15 +33,15 @@ public class bottle : MonoBehaviour
             Vector3 mousePos = Input.mousePosition;
             float rotAmountY = mousePrev.y - mousePos.y;
             float rotAmountX = mousePrev.x - mousePos.x;
-            this.transform.Rotate(rotAmountY/2.0f,rotAmountX/2.0f, 0.0f, Space.World);
+            this.transform.RotateAround(bottom.transform.position, Vector3.up, rotAmountX/2.0f);
+            this.transform.RotateAround(bottom.transform.position, this.transform.right, rotAmountY/2.0f);
+            //this.transform.Rotate(rotAmountY/2.0f,rotAmountX/2.0f, 0.0f, Space.World);
         }else{
             //when there is no input, bring the spoon back the origin
             this.transform.rotation = rotation;
-           // this.transform.position = position;
+            this.transform.position = origin;
         }
         setShaderProperties();
-        Vector3 fallPosition = getWaterFallPosition();
-        //waterSpout.GetComponent<waterPipe>().SetFallPosition(fallPosition);
         mousePrev = Input.mousePosition;
     }
 
@@ -54,13 +53,4 @@ public class bottle : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<Transform>().position.y);
     }
 
-    //get where on the water surface the water spout should land
-    private Vector3 getWaterFallPosition(){
-        Vector3 position = waterSpout.transform.position;
-        //set the y value to the height of the water below this initial position
-        position.y = water.GetComponent<potwater>().getHeightAtPosition(position);
-        Vector3 direction = rotation * Vector3.up;
-        position = position + direction * spoutAmplitude;
-        return position;
-    }
 }

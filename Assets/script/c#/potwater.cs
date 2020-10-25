@@ -8,17 +8,9 @@ public class potwater : MonoBehaviour
     public GameObject bubblePrefab;
     //the pot that the water is sitting in
     public GameObject pot;
-    //the light source of the scene
-    //TODO implement multiple light sources
-    public GameObject Light;
+
     //the object who's transformation defines where the water can be seen through
     public GameObject lid;
-
-    //radius of the potlid on bot x and z directions
-    //TODO implement zRadius to allow oval lids
-    //the radius of the lid that we render inside
-    public float xRadConst;
-    public float zRadConst;
 
     //the number of segments the plane is made up from
     public int numSegs = 10;
@@ -29,6 +21,7 @@ public class potwater : MonoBehaviour
     [Range(0.0f, 3.0f)]
     public float waterOpaqueness = 1.0f;
 
+    //a counter to be used with bubbles
     float count = 0.0f;
 
     //the speed the bubbles pop
@@ -43,7 +36,7 @@ public class potwater : MonoBehaviour
     public Color primaryCol = new Color(155.0f/255,0.0f/255.0f,28.0f/255.0f);
     //the shading color of the water
     public Color secondaryCol = new Color(247.0f/255.0f,111.0f/255.0f,135.0f/255.0f);
-    //the number of points defining the phsyical water mesh (complexity of (numFieldPoints ^ 2)* 4)
+    //the number of points defining the phsyical water mesh (complexity of (numFieldPoints ^ 2) * 4)
     public int numFieldPoints = 10;
     //the physical water mesh points, these define the y positions of the water surface
     private point[,] pointField;
@@ -80,6 +73,7 @@ public class potwater : MonoBehaviour
     private float angleDiff = 0.0f;
 
     [Range(0.6f, 1.0f)]
+
     public float rotationalFriction = 0.8f;
 
     private Quaternion startRotation;
@@ -89,10 +83,6 @@ public class potwater : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-       // ClearLog();
-        //get the radius of our pot lid
-        xRadConst = lid.GetComponent<lid>().lidXradius;
-        zRadConst = lid.GetComponent<lid>().lidZradius;
         //set the same as xradius for now
         //create a new 2d plane mesh for this object
         shapes3D shapeGen = new shapes3D();
@@ -125,15 +115,24 @@ public class potwater : MonoBehaviour
                 heightMap.SetPixel(i,j, pointField[i,j].GetHeightValue());
             }
         }
-
         heightMap.Apply();
 
+        setShaderProperties();
+
+        //rotate the water
+        angle += angleDiff;
+        angle *= rotationalFriction;
+        this.transform.rotation = startRotation;
+        Quaternion q = RotateAroundQ(this.transform, Vector3.up, angle);
+
+        //find out what the hieght should be given the volume and move the water to that height
+        applyWaterHeight();
+    }
+
+    private void setShaderProperties(){
         //radius of the shape will be the mesh size * the scaling of the object
-        
-        xRadConst = lid.GetComponent<lid>().lidXradius;
-        zRadConst = lid.GetComponent<lid>().lidZradius;
-        float xRad = pot.transform.localScale.x * xRadConst;
-        float zRad = pot.transform.localScale.z * zRadConst;
+        float xRad = pot.transform.localScale.x * lid.GetComponent<lid>().lidXradius;
+        float zRad = pot.transform.localScale.z * lid.GetComponent<lid>().lidZradius;
 
         //give these values to our shader
         this.GetComponent<Renderer>().material.SetFloat("xRad", xRad);
@@ -146,22 +145,6 @@ public class potwater : MonoBehaviour
         this.GetComponent<Renderer>().material.SetTexture("_Tex", heightMap);
         this.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
         this.GetComponent<Renderer>().material.SetVector("secondaryColor", secondaryCol);
-        this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
-
-        pot.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
-        pot.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", this.waterOpaqueness);
-        pot.GetComponent<Renderer>().material.SetFloat("_WaterSize", this.getSize());
-        pot.GetComponent<Renderer>().material.SetTexture("_HeightMap", this.heightMap);
-        pot.GetComponent<Renderer>().material.SetVector("_PotCenter", this.GetCenter());
-        pot.GetComponent<Renderer>().material.SetFloat("_WaterLevel", this.GetComponent<Transform>().position.y);
-
-        //rotate the water
-        angle += angleDiff;
-        angle *= rotationalFriction;
-        this.transform.rotation = startRotation;
-        Quaternion q = RotateAroundQ(this.transform, Vector3.up, angle);
-
-        applyWaterHeight();
     }
 
     //calculates what the height of the water should be based on water volume
@@ -226,11 +209,11 @@ public class potwater : MonoBehaviour
     }
 
     public float getXRadius(){
-        return pot.transform.localScale.x * xRadConst;
+        return pot.transform.localScale.x * lid.GetComponent<lid>().lidXradius;
     }
 
     public float getZRadius(){
-        return pot.transform.localScale.z * zRadConst;
+        return pot.transform.localScale.z * lid.GetComponent<lid>().lidZradius;
     }
 
     public float getSpeed(){
@@ -324,7 +307,6 @@ public class potwater : MonoBehaviour
 
         //render after water
         bub.GetComponent<Renderer>().material.renderQueue = 3000;
-
         bub.GetComponent<bubble>().scaleIncrease = Random.Range(0.003f,0.006f);
         bub.GetComponent<bubble>().maxScale = Random.Range(0.05f,0.35f);
         bub.GetComponent<bubble>().water = this;

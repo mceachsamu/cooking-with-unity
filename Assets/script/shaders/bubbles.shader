@@ -143,18 +143,20 @@
                 fixed4 col = _Color;
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
+                //dont render bubbles outside of pot
                 float alpha = getAlpha(i);
                 shading.a = alpha;
+
+                //give bubble popping effect
                 fixed4 decay = tex2D(_DecayMap, float2(i.uv.x-0.75,i.uv.y+0.1)) + _DecayAmount;
                 if (decay.r < 1.0) {
                     shading.a = 0.0;
                 }
 
+                //dont render bubble underwater
                 float2 waterUV = getWaterUV(i);
                 float waterHeight = tex2D(_HeightMap, waterUV);
-
                 float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight;
-
                 if (i.wpos.y < waterLevel){
                     shading.a = 0.0;
                 }

@@ -19,7 +19,6 @@
 
         baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
 
-        _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
         _SpecularColor("Specular Color", Color) = (0.0,0.0,0.0,1)
@@ -28,6 +27,7 @@
         _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimAmount("Rim Amount", Range(0, 1)) = 1.0
     }
+
     SubShader
     {
         Tags { "RenderType"="Opaque" }
@@ -72,8 +72,6 @@
             float4 _Direction;
             float4 _DirectionPrev;
 
-            float4 _LightPos;
-
             float4 baseColor;
             float _Glossiness;
             float4 _SpecularColor;
@@ -106,7 +104,7 @@
                 float4 end = (direction * (1.0-sway) + directionPrev * (sway));
 
                 float adjusted = (length(end) / pipeLength);
-                vertex.z *= adjusted*0.5;
+                vertex.z *= adjusted/3;
 
                 float z = length(vertex.z);
                 float endZ = length(end.xz);
