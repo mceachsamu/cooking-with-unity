@@ -129,6 +129,9 @@ public class potwater : MonoBehaviour
         heightMap.Apply();
 
         //radius of the shape will be the mesh size * the scaling of the object
+        
+        xRadConst = lid.GetComponent<lid>().lidXradius;
+        zRadConst = lid.GetComponent<lid>().lidZradius;
         float xRad = pot.transform.localScale.x * xRadConst;
         float zRad = pot.transform.localScale.z * zRadConst;
 
