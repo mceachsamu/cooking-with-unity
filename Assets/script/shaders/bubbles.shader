@@ -100,7 +100,7 @@
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
                 o.uv = TRANSFORM_TEX(v.uv, _DecayMap);
-                o.worldNormal = v.normal;
+                o.worldNormal = (unity_ObjectToWorld, v.normal);
                 o.wpos = mul (unity_ObjectToWorld, v.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
                 return o;

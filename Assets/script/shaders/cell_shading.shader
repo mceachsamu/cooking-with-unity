@@ -64,8 +64,8 @@
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                o.worldNormal = v.normal;
-                o.wpos = mul (unity_ObjectToWorld, v.vertex);
+                o.worldNormal =  mul(unity_ObjectToWorld,v.normal);
+                o.wpos = mul(unity_ObjectToWorld, v.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
                 TRANSFER_SHADOW(o);
                 return o;
