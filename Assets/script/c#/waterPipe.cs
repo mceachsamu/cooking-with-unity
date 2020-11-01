@@ -74,7 +74,6 @@ public class waterPipe : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_Exponent", exponential);
 
         this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
-        this.GetComponent<Renderer>().material.SetVector("_LightPos", light.transform.position);
         this.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potwater>().primaryCol);
 
         Vector3 direction = this.transform.position - FallPosition;
@@ -88,6 +87,8 @@ public class waterPipe : MonoBehaviour
         PreviousPoint.x += diffX * creep;
         PreviousPoint.y += diffY * creep;
         PreviousPoint.z += diffZ * creep;
+
+        print(PreviousPoint);
     }
 
     private float setSpoutDirection(){

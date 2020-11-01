@@ -103,19 +103,19 @@
 
                 float4 end = (direction * (1.0-sway) + directionPrev * (sway));
 
-                float adjusted = (length(end) / pipeLength);
-                vertex.z *= adjusted/3;
+                float adjusted = (length(end.xz) / pipeLength);
+                vertex.z *= adjusted*1.4;
 
                 float z = length(vertex.z);
                 float endZ = length(end.xz);
-                float a = (-end.y) / pow(endZ,_Exponent);
+                float a = (-end.y) / pow(endZ, _Exponent);
 
-                float y = pow(z,_Exponent) * a;
+                float y = pow(z, _Exponent) * a;
                 vertex.y += y;
 
                 float ax = (end.xz) / (endZ*endZ);
                 float x = z * z * ax;
-                vertex.x += x;
+                //vertex.x += x;
 
                 #if !defined(SHADER_API_OPENGL)
                     float4 col = tex2Dlod (_NoiseMap, float4(float2(uv.x + _Count/500,uv.y - _Count/60),0,0));
