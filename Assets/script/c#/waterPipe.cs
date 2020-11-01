@@ -33,7 +33,9 @@ public class waterPipe : MonoBehaviour
 
     public float creep = 0.05f;
 
-    [Range(0.0f, 1.0f)]
+    [Range(0.0f, 5.0f)]
+
+    public float sizeAdd = 1.0f;
     private float size = 1.0f;
 
 
@@ -66,7 +68,7 @@ public class waterPipe : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_Count", count);
         this.GetComponent<Renderer>().material.SetFloat("_PipeLength", baseLength);
         this.GetComponent<Renderer>().material.SetFloat("_PipeRadius", baseRadius);
-        this.GetComponent<Renderer>().material.SetFloat("_PipeSize", this.size);
+        this.GetComponent<Renderer>().material.SetFloat("_PipeSize", this.size * sizeAdd);
         this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsRound", numSegmentsRound);
         this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsLong", numSegmentsLong);
         this.GetComponent<Renderer>().material.SetFloat("_Exponent", exponential);
