@@ -11,6 +11,7 @@
 
         _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimAmount("Rim Amount", Range(0, 1)) = 1.0
+        _UseNormalMap("Use normal map", int) = 0.0
     }
     SubShader
     {
@@ -55,6 +56,7 @@
             float4 _RimColor;
             float _RimAmount;
             float4 _AmbientColor;
+            int _UseNormalMap;
 
             v2f vert (appdata_tan v)
             {
@@ -89,7 +91,10 @@
                 worldNormal.y = dot(i.tspace1, tnormal);
                 worldNormal.z = dot(i.tspace2, tnormal);
                 
-
+                //check if we should disabled normal mapping
+                if (!_UseNormalMap){
+                    worldNormal = i.worldNormal;
+                }
 
                 fixed4 col = tex2D(_MainTex, i.uv);
 
