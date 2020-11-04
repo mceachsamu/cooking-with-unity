@@ -12,6 +12,7 @@
         _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimAmount("Rim Amount", Range(0, 1)) = 1.0
         _UseNormalMap("Use normal map", int) = 0.0
+        _Saturation("Saturation", range(0,1)) = 1.0
     }
     SubShader
     {
@@ -57,6 +58,7 @@
             float _RimAmount;
             float4 _AmbientColor;
             int _UseNormalMap;
+            float _Saturation;
 
             v2f vert (appdata_tan v)
             {
@@ -97,6 +99,9 @@
                 }
 
                 fixed4 col = tex2D(_MainTex, i.uv);
+
+                //apply saturation
+                col.rgb = col.rgb * _Saturation;
 
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
