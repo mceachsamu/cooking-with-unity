@@ -6,10 +6,24 @@ public class underwater : MonoBehaviour
 {
     public GameObject water;
 
+    public ParticleSystem prefab;
+    public bool hasRipples = true;
+
+    [Range(0.0f, 5.0f)]
+    public float RippleMagnitude = 1.0f;
+
     // Start is called before the first frame update
     void Start()
     {
+        //set the render queue for underwater objects
         this.GetComponent<Renderer>().material.renderQueue = 2;
+        
+        //create ripple effect if we hasRipples is true
+        if (hasRipples){
+            ParticleSystem ripple = Instantiate(prefab, this.transform.position, this.transform.rotation);
+            ripple.GetComponent<particleRipples>().SetAttachedObject(this.gameObject);
+        }
+        
     }
 
     // Update is called once per frame

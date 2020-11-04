@@ -102,7 +102,7 @@
                 float2 waterUV = getWaterUV(i);
                 float waterHeight = tex2D(_HeightMap, waterUV);
 
-                float waterLevel = 1.0 * waterHeight + _WaterLevel - _MaxHeight;
+                float waterLevel = waterHeight + _WaterLevel - _MaxHeight;
 
                 col = col * pow(shading,0.4);
 
