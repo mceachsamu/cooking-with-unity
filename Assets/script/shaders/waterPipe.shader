@@ -172,7 +172,7 @@
 
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
-                return shading * col;
+                return  baseColor - i.uv.z/10;
             }
             ENDCG
         }
