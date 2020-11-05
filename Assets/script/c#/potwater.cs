@@ -100,12 +100,15 @@ public class potwater : MonoBehaviour
         heightMap = new Texture2D(numFieldPoints, numFieldPoints);
 
         startRotation = this.transform.rotation;
+
     }
 
 
     // Update is called once per frame
     void Update()
     {
+
+        secondaryCol = primaryCol;
         //count is an internal timer we give to the shader to move the water along with time
         count = count + speed;
         //this loop applies the physics model for each point in our field an updates the heightmap accordingly
