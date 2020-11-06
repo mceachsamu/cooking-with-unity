@@ -100,7 +100,7 @@
                 float heightDiff = clamp(waterLevel - _ItemWorldPosition.y,0.0,1.0)*5;
 
 
-                float dist = sin(length(_Position - i.wpos) * 50 + noise.r*3 - _Counter/10.0) + heightDiff + noise2.r * 3.5 * (1 - col.a);
+                float dist = sin(length(_Position - i.wpos) * 40 + noise.r*3 - _Counter/10.0) + heightDiff + noise2.r * 6 * (1 - col.a);
                 dist = dist / pow(length(_Position - i.wpos),8);
                 col = clamp(col - dist ,0.0,1.0);
                 if (col.r > 0.5){
