@@ -8,6 +8,8 @@ public class underwater : MonoBehaviour
 
     public ParticleSystem prefab;
     public bool hasRipples = true;
+    //if true, will not render fragments above water surface
+    public int cullAboveWater = 1;
 
     [Range(0.0f, 5.0f)]
     public float RippleMagnitude = 1.0f;
@@ -39,6 +41,7 @@ public class underwater : MonoBehaviour
         this.GetComponent<Renderer>().material.SetVector("_PotCenter", water.GetComponent<potwater>().GetCenter());
         this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<Transform>().position.y);
         this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", water.GetComponent<potwater>().maxHeight);
+        this.GetComponent<Renderer>().material.SetInt("_CullAboveWater", cullAboveWater);
     }
 
 }

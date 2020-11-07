@@ -1069,6 +1069,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   prefab: {fileID: 1714731035}
   hasRipples: 1
+  cullAboveWater: 1
   RippleMagnitude: 1.47
 --- !u!1001 &510845413
 PrefabInstance:
@@ -1180,6 +1181,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   prefab: {fileID: 1714731035}
   hasRipples: 1
+  cullAboveWater: 1
   RippleMagnitude: 1.09
 --- !u!1 &552307239
 GameObject:
@@ -10911,6 +10913,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   prefab: {fileID: 1714731035}
   hasRipples: 0
+  cullAboveWater: 1
   RippleMagnitude: 1.63
 --- !u!1 &810073313
 GameObject:
@@ -11540,6 +11543,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   prefab: {fileID: 1714731035}
   hasRipples: 0
+  cullAboveWater: 0
   RippleMagnitude: 1
 --- !u!850595691 &1143782768
 LightingSettings:
@@ -17078,6 +17082,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   prefab: {fileID: 1714731035}
   hasRipples: 1
+  cullAboveWater: 1
   RippleMagnitude: 1.73
 --- !u!1 &2070862504 stripped
 GameObject:

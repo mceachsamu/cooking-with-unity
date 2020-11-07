@@ -9,6 +9,7 @@
         _PotCenter("center", Vector) = (0.0,0.0,0.0,0.0)
         _WaterOpaqueness("water opaqueness", float) = 0.0
         _WaterLevel("water level", float) = 0.0
+        _CullAboveWater("cull above water", int) = 0
 
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
@@ -72,6 +73,7 @@
             float4 _AmbientColor;
 
             float adjust;
+            int _CullAboveWater;
 
             v2f vert (appdata v)
             {
@@ -106,7 +108,9 @@
 
                 col = col * pow(shading,0.4);
 
-                if (true){//i.wpos.y < waterLevel + 0.05){
+                if (i.wpos.y < waterLevel+0.05){
+                    col.a = (2.0 - pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness);
+                }else if (_CullAboveWater == 0){
                     col.a = (2.0 - pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness);
                 }else{
                     col.a = 0.0;
