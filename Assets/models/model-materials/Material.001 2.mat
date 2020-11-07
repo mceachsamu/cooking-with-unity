@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Material.001 1
+  m_Name: Material.001 2
   m_Shader: {fileID: 4800000, guid: 3162d0bfe9dd7418aaf63efb85bfc786, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -39,12 +39,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _HeightMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8c3194ab6e7e9499cbbba3ee075d08ae, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4af42a1d0c962458faf8210536151cdc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -52,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: eef24a108447f401792db892e8a7373d, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -71,28 +67,22 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
-    - _MaxHeight: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimAmount: 1
-    - _Saturation: 0.88
+    - _Saturation: 0.67
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _UseNormalMap: 1
-    - _WaterLevel: 0
-    - _WaterOpaqueness: 0
-    - _WaterSize: 0
+    - _UseNormalMap: 0
     - _ZWrite: 1
-    - adjust: 0
     m_Colors:
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _PotCenter: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
