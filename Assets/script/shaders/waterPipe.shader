@@ -88,7 +88,7 @@
             float _Exponent;
 
             float4 getVertexDistortion(float4 vertex, float2 uv){
-                float mag = clamp(vertex.z,0.5,5.0);
+                float mag = clamp(vertex.z,0,5.0);
                 vertex.xy *= mag * _PipeSize;
 
                 float4 start = _PipeStart;

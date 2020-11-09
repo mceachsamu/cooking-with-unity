@@ -16,8 +16,6 @@ public class waterPipe : MonoBehaviour
     public GameObject light;
     public GameObject water;
 
-    public GameObject start;
-
     private Vector3 PreviousPoint;
 
     private Vector3 FallPosition = new Vector3(0.0f,0.0f,0.0f);
@@ -38,8 +36,6 @@ public class waterPipe : MonoBehaviour
     public float sizeAdd = 1.0f;
     private float size = 1.0f;
 
-
-    public float smooth = 5.0f;
 
     [Range(0.1f, 0.5f)]
     private float force = 0.1f;
