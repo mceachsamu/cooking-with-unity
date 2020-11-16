@@ -146,15 +146,15 @@
                 float4 next3 = float4(start.x + x, start.y + y, start.z + zstep, start.w);
                 float4 next4 = float4(start.x - x, start.y - y, start.z + zstep, start.w);
 
-                //next = normalize(getVertexDistortion(next, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y)));
-                //next2 = normalize(getVertexDistortion(next2, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y)));
-//
-                //next3 = normalize(getVertexDistortion(next3, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
-                //next4 = normalize(getVertexDistortion(next4, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
+                next = normalize(getVertexDistortion(next, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y)));
+                next2 = normalize(getVertexDistortion(next2, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y)));
+
+                next3 = normalize(getVertexDistortion(next3, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
+                next4 = normalize(getVertexDistortion(next4, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
 
                 float normal = cross(next-next3,next-next4);
 
-                o.normal = normal;
+                o.normal =  normal;//UnityObjectToWorldNormal(normal);;
                 o.wpos = worldPos;
                 //v.vertex.x += sin(_Count/2 * v.vertex.y)/100;
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -172,7 +172,7 @@
 
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
-                return  baseColor - i.uv.z/10;
+                return  shading  - i.uv.z/10;
             }
             ENDCG
         }

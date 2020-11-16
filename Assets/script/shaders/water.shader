@@ -14,7 +14,6 @@ Shader "Unlit/water"
         _MaxHeight("max height", float) = 0.0
         zRad("zRad", float) = 0.0//to do --use to implement oval pots
         center("center", Vector) = (0.0,0.0,0.0,0.0)//center of pot water
-        _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
 
 
         [HDR]
@@ -89,7 +88,6 @@ Shader "Unlit/water"
 
             uniform float4 center;
             uniform float4 baseColor;
-            uniform float4 _LightPos;
 
             float _Glossiness;
             float4 _SpecularColor;
@@ -138,6 +136,9 @@ Shader "Unlit/water"
                     n.texStep = seperation / totalSize;
                     n.step = n.texStep;
 
+                    n.uv = float2(v.uv.x, v.uv.y);
+                    float3 norm = getNormal(n);
+
                     n.uv = float2(v.uv.x + n.step, v.uv.y);
                     float3 norm1 = getNormal(n);
 
@@ -150,7 +151,7 @@ Shader "Unlit/water"
                     n.uv = float2(v.uv.x, v.uv.y - n.step);
                     float3 norm4 = getNormal(n);
 
-                    o.worldNormal = (norm1 + norm2 + norm3 + norm4)/4.0;
+                    o.worldNormal = (norm + norm1 + norm2 + norm3 + norm4)/5.0;
                 #endif
 
                 o.pos = v.vertex;
