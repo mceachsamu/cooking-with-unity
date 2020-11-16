@@ -9,6 +9,12 @@ public class ingredient : MonoBehaviour
 
     private Vector3 force = new Vector3(0.0f,10.0f,0.0f);
 
+    private float health = 100.0f;
+
+    public float dissolve = 1.0f;
+
+    public GameObject[] DissolvedParts;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,5 +29,11 @@ public class ingredient : MonoBehaviour
         if (this.transform.position.y < (waterHeight + water.transform.position.y)){
             this.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);
         }
+        health -= dissolve;
+
+        if (health < 0.0f){
+
+        }
     }
+
 }

@@ -6066,6 +6066,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   water: {fileID: 259507576}
+  dissolve: 1
+  DissolvedParts: []
 --- !u!1 &725605855
 GameObject:
   m_ObjectHideFlags: 0
@@ -10913,7 +10915,7 @@ MonoBehaviour:
   water: {fileID: 259507576}
   prefab: {fileID: 1714731035}
   hasRipples: 0
-  cullAboveWater: 1
+  cullAboveWater: 0
   RippleMagnitude: 1.63
 --- !u!1 &810073313
 GameObject:
@@ -11055,8 +11057,8 @@ MonoBehaviour:
       colorBlindnessType: 0
       colorBlindnessStrength: 1
   m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
+  m_ShowToolkit: 1
+  m_ShowCustomSorter: 1
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
@@ -11755,7 +11757,6 @@ MonoBehaviour:
   forceMultiplier: 20
   maxForce: 0.5
   stirForce: 20
-  StirSpeed: 3.4
 --- !u!4 &1166588551 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400004, guid: 38f445fa4b15a2e45ab663675d1c7ca4,
@@ -11775,22 +11776,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.4946825, y: 1.828871, z: 0.08821358}
   m_Center: {x: 0.0004900396, y: 0.0030173063, z: 0.012771115}
---- !u!54 &1166588553
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1166588547}
-  serializedVersion: 2
-  m_Mass: 5
-  m_Drag: 0.5
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 2
 --- !u!1 &1187711199
 GameObject:
   m_ObjectHideFlags: 0
@@ -12176,7 +12161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseRadius: 0.06
-  baseLength: 5
+  baseLength: 1
   numSegmentsRound: 30
   numSegmentsLong: 60
   bottle: {fileID: 2070862504}
@@ -12187,7 +12172,7 @@ MonoBehaviour:
   adjustY: 0.5
   adjustZ: -2.67
   creep: 0.01
-  sizeAdd: 1.27
+  sizeAdd: 1.83
 --- !u!65 &1510246518
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17199,6 +17184,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   water: {fileID: 259507576}
+  dissolve: 1
+  DissolvedParts:
+  - {fileID: 0}
 --- !u!65 &2020324950
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17317,6 +17305,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   water: {fileID: 259507576}
+  dissolve: 1
+  DissolvedParts: []
 --- !u!1 &2136882471
 GameObject:
   m_ObjectHideFlags: 0
