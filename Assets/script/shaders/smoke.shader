@@ -44,7 +44,7 @@
             v2f vert (appdata v)
             {
                 v2f o;
-                v.vertex.x += sin(v.vertex.z*1600 - _Count/20.0)/2000;// -  v.vertex.z;
+                v.vertex.x -= sin(v.vertex.z*1600 - _Count/20.0)/5000;// -  v.vertex.z;
                 o.vertex = UnityObjectToClipPos(v.vertex);
 				o.screenPos = ComputeScreenPos(o.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _NoiseMap);
@@ -54,9 +54,9 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 NoiseMap = tex2D(_NoiseMap, float2(i.uv.x, i.uv.y));
-
+                
                 fixed4 col = _Color;
-                col.a = clamp(i.vertex.y/2000 - NoiseMap.r,0,1)*0.4;
+                col.a = clamp(i.vertex.y/2000 - NoiseMap.r , 0, 1)*0.0;
                 return col;
             }
             ENDCG
