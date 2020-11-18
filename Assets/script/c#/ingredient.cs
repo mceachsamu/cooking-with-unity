@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class ingredient : MonoBehaviour
 {
-
-    public GameObject water;
+ 
+    public GameObject waterController;
 
     private Vector3 force = new Vector3(0.0f,10.0f,0.0f);
-
-    private float health = 100.0f;
-
-    public float dissolve = 1.0f;
 
     public GameObject[] DissolvedParts;
 
@@ -25,14 +21,9 @@ public class ingredient : MonoBehaviour
     void Update()
     {
         force.y = this.GetComponent<Rigidbody>().mass * 9.81f;
-        float waterHeight = water.GetComponent<potwater>().getHeightAtPosition(this.transform.position);
-        if (this.transform.position.y < (waterHeight + water.transform.position.y)){
+        float waterHeight = waterController.GetComponent<potController>().GetWaterHeightAtPosition(this.transform.position);
+        if (this.transform.position.y < (waterHeight + waterController.GetComponent<potController>().GetWaterPosition().y)){
             this.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);
-        }
-        health -= dissolve;
-
-        if (health < 0.0f){
-
         }
     }
 

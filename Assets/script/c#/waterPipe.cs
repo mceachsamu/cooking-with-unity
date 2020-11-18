@@ -45,7 +45,7 @@ public class waterPipe : MonoBehaviour
         shapes3D shapeGen = new shapes3D();
         Mesh mesh = shapeGen.CreateCylandar(baseRadius,baseLength,numSegmentsRound,numSegmentsLong);
         this.GetComponent<MeshFilter>().mesh = mesh;
-        PreviousPoint = water.GetComponent<potwater>().GetCenter();
+        PreviousPoint = water.GetComponent<potController>().GetCenter();
     }
 
     // Update is called once per frame
@@ -56,8 +56,8 @@ public class waterPipe : MonoBehaviour
         count++;
 
         force = size*0.3f;
-        water.GetComponent<potwater>().AddForceToWater(FallPosition, force, 0.0f);
-        water.GetComponent<potwater>().AddLiquidToWater(0.01f * force, new Color(0.0f,0.0f,0.0f,0.0f));
+        water.GetComponent<potController>().AddForceToWater(FallPosition, force, 0.0f);
+        water.GetComponent<potController>().AddLiquidToWater(0.01f * force, new Color(0.0f,0.0f,0.0f,0.0f));
 
         this.GetComponent<Renderer>().material.SetVector("_PipeStart", bottleEnd.transform.position);
         this.GetComponent<Renderer>().material.SetVector("_PipeEnd", FallPosition);
@@ -70,7 +70,7 @@ public class waterPipe : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_Exponent", exponential);
 
         this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
-        this.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potwater>().primaryCol);
+        this.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potController>().GetColor());
 
         Vector3 direction = this.transform.position - FallPosition;
         Vector3 directionPrev = this.transform.position - PreviousPoint;
