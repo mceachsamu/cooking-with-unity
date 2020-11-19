@@ -44,6 +44,7 @@
             v2f vert (appdata v)
             {
                 v2f o;
+                //v.vertex.xy *= 1.0/(v.vertex.z*100000);
                 v.vertex.x += sin(v.vertex.z*1600 - _Count/20.0)/2000;// -  v.vertex.z;
                 o.vertex = UnityObjectToClipPos(v.vertex);
 				o.screenPos = ComputeScreenPos(o.vertex);
