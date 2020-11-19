@@ -56,7 +56,7 @@
                 fixed4 NoiseMap = tex2D(_NoiseMap, float2(i.uv.x, i.uv.y));
                 
                 fixed4 col = _Color;
-                col.a = clamp(i.vertex.y/2000 - NoiseMap.r , 0, 1)*0.0;
+                col.a = clamp(i.vertex.y/2000 - NoiseMap.r , 0, 1)*0.5;
                 return col;
             }
             ENDCG
