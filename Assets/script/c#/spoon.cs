@@ -33,7 +33,7 @@ public class spoon : MonoBehaviour
     }
 
     private void addForceToWater(){
-        Vector3 center = water.GetComponent<potwater>().GetCenter();
+        Vector3 center = water.GetComponent<potController>().GetCenter();
         float force = (this.transform.position - previousPosition).magnitude;
         Vector3 p1 = this.transform.position;
         Vector3 p2 = previousPosition;
@@ -41,14 +41,14 @@ public class spoon : MonoBehaviour
         Vector3 bc = p2 - center;
         float x = -1.0f * (ac.x*bc.z-ac.z*bc.x);
         //if x positive, then clockwise, otherwise anti clockwise
-        water.GetComponent<potwater>().AddForceToWater(this.transform.position, force * forceMultiplier, x * stirForce);
+        water.GetComponent<potController>().AddForceToWater(this.transform.position, force * forceMultiplier, x * stirForce);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        Vector3 dir =  this.transform.position - water.GetComponent<potwater>().GetCenter();
+        Vector3 dir =  this.transform.position - water.GetComponent<potController>().GetCenter();
         dir.y = 0.0f;
 
         //add a force to water each frame
