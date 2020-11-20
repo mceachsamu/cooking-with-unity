@@ -23,7 +23,6 @@ public class smoke : MonoBehaviour
     }
 
     private void SetShaderProperties(){
-
         this.GetComponent<Renderer>().material.SetInt("_Count", count);
         this.GetComponent<Renderer>().material.SetVector("_Color", water.GetComponent<potController>().GetColor());
     }

@@ -139,7 +139,7 @@ public class potwater : MonoBehaviour
     public float GetWaterHeightAtPosition(Vector3 position){
         Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -angle);
         Vector2 closest = GetClosestPoint(adjustedPosition);
-        return (this.heightMap.GetPixel((int)closest.x, (int)closest.y).r - maxHeight);
+        return (this.heightMap.GetPixel((int)closest.x, (int)closest.y).r) - maxHeight;
     }
 
 
