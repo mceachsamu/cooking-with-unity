@@ -4,6 +4,8 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         _NoiseMap ("noise map", 2D) = "white" {}
+        _Color ("Color", Color) = (0.0,0.0,0.0,0.0)
+
         _PipeStart("pipe start", Vector) = (0.0,0.0,0.0,0.0)
         _PipeEnd("pipe end", Vector) = (0.0,0.0,0.0,0.0)
         _PreviousEnd("pipe end previous", Vector) = (0.0,0.0,0.0,0.0)
@@ -62,30 +64,32 @@
                 float3 normal : NORMAL;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            sampler2D _NoiseMap;
-            float4 _NoiseMap_ST;
-            float4 _PipeStart;
-            float4 _PipeEnd;
-            float4 _PreviousEnd;
-            float4 _Direction;
-            float4 _DirectionPrev;
+            uniform sampler2D _MainTex;
+            uniform float4 _MainTex_ST;
+            uniform sampler2D _NoiseMap;
+            uniform float4 _NoiseMap_ST;
 
-            float4 baseColor;
-            float _Glossiness;
-            float4 _SpecularColor;
-            float4 _RimColor;
-            float _RimAmount;
-            float4 _AmbientColor;
+            uniform float4 _Color;
+            uniform float4 _PipeStart;
+            uniform float4 _PipeEnd;
+            uniform float4 _PreviousEnd;
+            uniform float4 _Direction;
+            uniform float4 _DirectionPrev;
 
-            float _Count;
-            float _PipeLength;
-            float _PipeRadius;
-            float _PipeSegmentsRound;
-            float _PipeSegmentsLong;
-            float _PipeSize;
-            float _Exponent;
+            uniform float4 baseColor;
+            uniform float _Glossiness;
+            uniform float4 _SpecularColor;
+            uniform float4 _RimColor;
+            uniform float _RimAmount;
+            uniform float4 _AmbientColor;
+
+            uniform float _Count;
+            uniform float _PipeLength;
+            uniform float _PipeRadius;
+            uniform float _PipeSegmentsRound;
+            uniform float _PipeSegmentsLong;
+            uniform float _PipeSize;
+            uniform float _Exponent;
 
             float4 getVertexDistortion(float4 vertex, float2 uv){
                 float mag = clamp(vertex.z,0,5.0);
@@ -120,8 +124,8 @@
                 #if !defined(SHADER_API_OPENGL)
                     float4 col = tex2Dlod(_NoiseMap, float4(float2(uv.x + _Count/90,uv.y - _Count/60),0,0));
                     float s = (col.r)*(sway);
-                    vertex.x += ((s)*0.3*_PipeSize);
-                    vertex.z += (s*0.3*_PipeSize);
+                     vertex.x += ((s)*0.1*_PipeSize);
+                     vertex.z += (s*0.05*_PipeSize);
                 #endif
                 return vertex;
             }
@@ -154,7 +158,7 @@
 
                 float normal = cross(next-next3,next-next4);
 
-                o.normal =  normal;//UnityObjectToWorldNormal(normal);;
+                o.normal = UnityObjectToWorldNormal(v.normal);
                 o.wpos = worldPos;
                 //v.vertex.x += sin(_Count/2 * v.vertex.y)/100;
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -168,11 +172,11 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, float2(i.screenPos.x , i.screenPos.y)/i.screenPos.w);
+                fixed4 col = tex2D(_MainTex, float2(i.uv.x, i.uv.y - _Count / 40.0 )/2);
 
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
-                return  shading  - i.uv.z/10;
+                return _Color + col.r;// - i.uv.z/10;
             }
             ENDCG
         }
