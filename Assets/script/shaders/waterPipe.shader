@@ -172,7 +172,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, float2(i.uv.x, i.uv.y - _Count / 40.0 )/2);
+                fixed4 col = tex2D(_MainTex, float2(i.uv.x/2.0, i.uv.y - _Count / 40.0 )/2);
 
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 

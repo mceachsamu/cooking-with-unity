@@ -59,6 +59,7 @@
                 float4 wpos : TEXCOORD1;
                 float3 worldNormal : NORMAL;
                 float3 viewDir : TEXCOORD2;
+                SHADOW_COORDS(3)
             };
 
 
@@ -96,13 +97,13 @@
 
                 v.vertex.x = v.vertex.x + sin(v.vertex.x*10 + time*3)/20;
                 v.vertex.z = v.vertex.z + sin(v.vertex.z*10 + time*3)/20;
-                float yPos = v.vertex.y;
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
                 o.uv = TRANSFORM_TEX(v.uv, _DecayMap);
                 o.worldNormal = (unity_ObjectToWorld, v.normal);
                 o.wpos = mul (unity_ObjectToWorld, v.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
+                TRANSFER_SHADOW(o);
                 return o;
             }
 
@@ -123,7 +124,7 @@
                 //distance the fragmant is from the center of the circle
                 float distFromCenter = length(centerToIntercept);
                 //declare our alpha value so by default the texture is opaque
-                float alpha = 0.7;
+                float alpha = 1.0;
                 //if the distance from the center to the camera vector is greater than the radius
                 //of the circle, make the fragmant invisible.
                 //TODO condider oval shapes (use zRadius)
@@ -150,7 +151,7 @@
                 //give bubble popping effect
                 fixed4 decay = tex2D(_DecayMap, float2(i.uv.x-0.75,i.uv.y+0.1)) + _DecayAmount;
                 if (decay.r < 1.0) {
-                    shading.a = 0.0;
+                    //shading.a = 0.0;
                 }
 
                 //dont render bubble underwater
@@ -161,7 +162,9 @@
                     shading.a = 0.0;
                 }
 
-                return shading * pow(col, 0.5);
+                float shadow = SHADOW_ATTENUATION(i);
+                col *= shadow;
+                return shading * pow(col, 1.0);
             }
             ENDCG
         }
@@ -176,12 +179,74 @@
 
 			#pragma multi_compile_shadowcaster
 
-			#pragma vertex MyShadowVertexProgram
-			#pragma fragment MyShadowFragmentProgram
+			#pragma vertex vert
+			#pragma fragment frag
 
-			#include "My Shadows.cginc"
+            #if !defined(MY_SHADOWS_INCLUDED)
+            #define MY_SHADOWS_INCLUDED
 
+            #include "UnityCG.cginc"
+
+
+            sampler2D _HeightMap;
+            float4 _HeightMap_ST;
+
+            sampler2D _DecayMap;
+            float4 _DecayMap_ST;
+
+            uniform float4 _PotCenter;
+            uniform float _WaterSize;
+            uniform float _MaxHeight;
+            uniform float _DecayAmount;
+            uniform float4 _LightPos;
+            uniform float4 _Color;
+            uniform float4 _Color2;
+            uniform float xRad;
+            uniform float zRad;
+            uniform float time;
+            uniform float waterSize;
+            uniform float4 center;
+            uniform float _WaterLevel;
+            struct VertexData {
+                float4 position : POSITION;
+                float3 normal : NORMAL;
+            };
+
+            #if defined(SHADOWS_CUBE)
+                struct Interpolators {
+                    float4 position : SV_POSITION;
+                    float3 lightVec : TEXCOORD0;
+                };
+
+                Interpolators vert (VertexData v) {
+                    Interpolators i;
+                    v.position.x = v.position.x + sin(v.position.x*10 + time*3)/20;
+                    v.position.z = v.position.z + sin(v.position.z*10 + time*3)/20;
+                    i.position = UnityObjectToClipPos(v.position);
+                    i.lightVec = mul(unity_ObjectToWorld, i.position).xyz - _LightPositionRange.xyz;
+                    return i;
+                }
+
+                float4 frag (Interpolators i) : SV_TARGET {
+                    float depth = length(i.lightVec) + unity_LightShadowBias.x;
+                    depth *= _LightPositionRange.w;
+                    return UnityEncodeCubeShadowDepth(depth);
+                }
+            #else
+                float4 vert (VertexData v) : SV_POSITION {
+                    float4 position =
+                        UnityClipSpaceShadowCasterPos(v.position.xyz, v.normal);
+                    return UnityApplyLinearShadowBias(position);
+                }
+
+                half4 frag () : SV_TARGET {
+                    return 0;
+                }
+            #endif
+
+            #endif
 			ENDCG
 		}
+
     }
 }

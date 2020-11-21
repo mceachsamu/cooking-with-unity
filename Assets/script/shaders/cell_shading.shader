@@ -112,7 +112,8 @@
 
                 float shadow = SHADOW_ATTENUATION(i);
                 //fixed4 c = atten;
-                return col * shading * shadow;
+                col.xyz *= shadow;
+                return col * shading;
             }
             ENDCG
         }
@@ -157,6 +158,9 @@
                 float4 frag (Interpolators i) : SV_TARGET {
                     float depth = length(i.lightVec) + unity_LightShadowBias.x;
                     depth *= _LightPositionRange.w;
+                    if (i.position.x > 0.5){
+                        return 0.0;
+                    }
                     return UnityEncodeCubeShadowDepth(depth);
                 }
             #else

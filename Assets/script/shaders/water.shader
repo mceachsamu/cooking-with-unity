@@ -206,7 +206,8 @@ Shader "Unlit/water"
                 fixed shadow = SHADOW_ATTENUATION(i);
                 col = col*shading - tex * clamp(1.0 - tex.a,0.0,1.0) * 0.4;
                 col.a = alpha;
-                return  col * shadow;
+                col.xyz *= shadow;
+                return  col;
             }
             ENDCG
         }
