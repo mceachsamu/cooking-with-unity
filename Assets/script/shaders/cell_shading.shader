@@ -112,7 +112,7 @@
 
                 float shadow = SHADOW_ATTENUATION(i);
                 //fixed4 c = atten;
-                return col * shading * shadow + paint.r/6.0;
+                return col * shading * shadow;
             }
             ENDCG
         }
