@@ -45,22 +45,21 @@ public class waterParticles : MonoBehaviour
         {
             float acceleration = customDat[i].x;
             //add the acceleration to the velocity
-            //we first need to transform the position of the paricle into world space
-            Vector3 pWpos = this.transform.TransformPoint(m_Particles[i].position);
-            //we can adjust this position to tend towards the ground at a rate of its acceleration
-            pWpos += Vector3.up*acceleration;
-            //transform the position back to local space and set the paricles position
-            m_Particles[i].position = this.transform.InverseTransformPoint(pWpos);
+            m_Particles[i].position += Vector3.up*acceleration;
             //increase the accleration using gravity
             acceleration -= gravity;
-            customDat[i] = new Vector4(acceleration,0.0f,0.0f,0.0f);
-            if (controller.GetWaterHeightAtPosition(pWpos) >= pWpos.y){
+            float underwater = customDat[i].y;
+            if (controller.GetWaterMaxHeight() + 
+                controller.GetWaterPosition().y >= m_Particles[i].position.y
+                && underwater == 0.0f){
                 //we are also going to broadcast to the water spout at what position we hit the water
-                positionSum+=pWpos;
+                positionSum+=m_Particles[i].position;
                 count++;
-                //m_Particles[i].remainingLifetime = 0.0f;
-                //customDat[i] = new Vector4(0.0f,0.0f,0.0f,0.0f);
+                underwater = 1.0f;
             }
+
+            //store the acceleration and underwater status of the particle
+            customDat[i] = new Vector4(acceleration,underwater,0.0f,0.0f);
         }
         if (count != 0){
             LastValidPosition = positionSum/count;

@@ -56,6 +56,9 @@ public class waterPipe : MonoBehaviour
         count++;
 
         force = size*0.3f;
+        
+        FallPosition.y = water.GetComponent<potController>().GetWaterHeightAtPosition(FallPosition);
+
         water.GetComponent<potController>().AddForceToWater(FallPosition, force, 0.0f);
         water.GetComponent<potController>().AddLiquidToWater(0.01f * force, new Color(0.0f,0.0f,0.0f,0.0f));
 
@@ -83,8 +86,10 @@ public class waterPipe : MonoBehaviour
         PreviousPoint.x += diffX * creep;
         PreviousPoint.y += diffY * creep;
         PreviousPoint.z += diffZ * creep;
-
-        print(PreviousPoint);
+        
+        Vector3 drawbug = FallPosition;
+        drawbug.y = 5.0f;
+        Debug.DrawLine(FallPosition, drawbug, Color.blue);
     }
 
     private float setSpoutDirection(){
