@@ -37,6 +37,7 @@ public class underwater : MonoBehaviour
     private void setShaderProperties(){
         this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", water.GetComponent<potController>().GetWaterOpaqueness());
         this.GetComponent<Renderer>().material.SetFloat("_WaterSize", water.GetComponent<potController>().GetWaterSize());
+        this.GetComponent<Renderer>().material.SetFloat("_Count", water.GetComponent<potController>().GetCount());
         this.GetComponent<Renderer>().material.SetTexture("_HeightMap", water.GetComponent<potController>().GetWaterHeightMap());
         this.GetComponent<Renderer>().material.SetVector("_PotCenter", water.GetComponent<potController>().GetCenter());
         this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<potController>().GetWaterPosition().y);

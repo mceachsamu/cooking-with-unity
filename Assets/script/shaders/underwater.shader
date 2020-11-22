@@ -4,12 +4,16 @@
     {
         _MainTex("Texture", 2D) = "white" {}
         _HeightMap("heightmap", 2D) = "white" {}
+        _Caustics("caustics", 2D) = "white" {}
+        _NoiseMap("noise map", 2D) = "white" {}
+        
         _MaxHeight("max height", float) = 0.0
         _WaterSize("water size", float) = 0.0
         _PotCenter("center", Vector) = (0.0,0.0,0.0,0.0)
         _WaterOpaqueness("water opaqueness", float) = 0.0
         _WaterLevel("water level", float) = 0.0
         _CullAboveWater("cull above water", int) = 0
+        _Count("count", float) = 0.0
 
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
@@ -30,12 +34,14 @@
         Pass
         {
             CGPROGRAM
+            #pragma target 3.0
             #pragma vertex vert
             #pragma fragment frag
 
             #include "UnityCG.cginc"
             #include "cellShading.cginc"
-            #pragma multi_compile_fwdadd
+            #pragma multi_compile_fwdadd_fullshadows
+            #include "AutoLight.cginc"
 
             struct appdata
             {
@@ -51,6 +57,7 @@
                 float4 wpos : TEXCOORD1;
                 float3 worldNormal : NORMAL;
                 float3 viewDir : TEXCOORD2;
+                SHADOW_COORDS(3)
             };
 
             sampler2D _MainTex;
@@ -59,12 +66,20 @@
             sampler2D _HeightMap;
             float4 _HeightMap_ST;
 
+            sampler2D _Caustics;
+            float4 _Caustics_ST;
+
+            sampler2D _NoiseMap;
+            float4 _NoiseMap_ST;
+
             uniform float _WaterSize;
             uniform float _MaxHeight;
             uniform float _WaterOpaqueness;
             uniform float _WaterLevel;
 
             uniform float4 _PotCenter;
+
+            uniform float _Count;
 
             float _Glossiness;
             float4 _SpecularColor;
@@ -84,6 +99,7 @@
                 o.worldNormal = v.normal;
                 o.wpos = mul(unity_ObjectToWorld, v.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
+                TRANSFER_SHADOW(o);
                 return o;
             }
 
@@ -96,13 +112,19 @@
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
 
+                float2 waterUV = getWaterUV(i);
+                float waterHeight = tex2D(_HeightMap, waterUV);
+
+                fixed4 noise = tex2D(_NoiseMap, float2(i.uv.x, i.uv.y - _Count / 300.0));
+
+                fixed4 caustic1 = tex2D(_Caustics, float2(i.uv.x+ noise.r/15.0 + waterHeight / 6.0,i.uv.y + noise.r/5.0 - _Count / 300.0 + waterHeight.r/4.0 )*3.0);
+                fixed4 caustic2 = tex2D(_Caustics, float2(i.uv.x+ noise.r/15.0  + waterHeight / 6.0,i.uv.y + noise.r/4.0 + _Count / 350.0  + waterHeight.r/4.0)*2.0);
+
                 //get shading
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 col = shading;
 
-                float2 waterUV = getWaterUV(i);
-                float waterHeight = tex2D(_HeightMap, waterUV);
 
                 float waterLevel = waterHeight + _WaterLevel - _MaxHeight;
 
@@ -116,7 +138,9 @@
                     col.a = 0.0;
                 }
 
-                return col;
+                float shadow = SHADOW_ATTENUATION(i);
+                col.xyz *= shadow;
+                return col + (caustic1.r + caustic2.r)/2.0 * (1.0-col.a);
             }
             ENDCG
         }
