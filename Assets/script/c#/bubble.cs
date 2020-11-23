@@ -8,7 +8,7 @@ public class bubble : MonoBehaviour
     public float initialScale = 0.0f;
 
     public float scaleIncrease = 0.02f;
-    public float maxScale = 0.3f;
+    public float maxScale = 0.1f;
 
     public potController water;
 
@@ -19,7 +19,7 @@ public class bubble : MonoBehaviour
 
     private float decay = 1.0f;
 
-    private float decayRate = 0.02f;
+    private float decayRate = 0.01f;
     private bool decaying = false;
 
     // Start is called before the first frame update
@@ -54,12 +54,12 @@ public class bubble : MonoBehaviour
             decaying = false;
         }
 
+        
         setShaderProperties();
     }
 
     void setShaderProperties(){
         float bubbleHeight = water.GetWaterHeightAtPosition(this.transform.position);
-       
         this.transform.position.Set(this.transform.position.x, water.GetWaterPosition().y + bubbleHeight, this.transform.position.z);
 
         this.GetComponent<Renderer>().material.SetTexture("_MainTex", water.GetWaterHeightMap());

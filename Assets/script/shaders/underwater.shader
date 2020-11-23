@@ -35,11 +35,13 @@
         {
             CGPROGRAM
             #pragma target 3.0
+
+            #include "cellShading.cginc"
+
+            #pragma multi_compile_shadowcaster
             #pragma vertex vert
             #pragma fragment frag
-
             #include "UnityCG.cginc"
-            #include "cellShading.cginc"
             #pragma multi_compile_fwdadd_fullshadows
             #include "AutoLight.cginc"
 
@@ -81,14 +83,14 @@
 
             uniform float _Count;
 
-            float _Glossiness;
-            float4 _SpecularColor;
-            float4 _RimColor;
-            float _RimAmount;
-            float4 _AmbientColor;
+            uniform float _Glossiness;
+            uniform float4 _SpecularColor;
+            uniform float4 _RimColor;
+            uniform float _RimAmount;
+            uniform float4 _AmbientColor;
 
-            float adjust;
-            int _CullAboveWater;
+            uniform float adjust;
+            uniform int _CullAboveWater;
 
             v2f vert (appdata v)
             {
@@ -125,7 +127,6 @@
 
                 col = shading;
 
-
                 float waterLevel = waterHeight + _WaterLevel - _MaxHeight;
 
                 col = col * pow(shading,0.4);
@@ -139,10 +140,70 @@
                 }
 
                 float shadow = SHADOW_ATTENUATION(i);
-                col.xyz *= shadow;
+                col.xyz /= shadow;
                 return col + (caustic1.r + caustic2.r)/2.0 * (col.a);
             }
             ENDCG
         }
+                Pass {
+			Tags {
+				"LightMode" = "ShadowCaster"
+			}
+
+			CGPROGRAM
+
+			#pragma target 3.0
+
+			#pragma multi_compile_shadowcaster
+
+			#pragma vertex vert
+			#pragma fragment frag
+
+            #if !defined(MY_SHADOWS_INCLUDED)
+            #define MY_SHADOWS_INCLUDED
+
+            #include "UnityCG.cginc"
+
+            struct VertexData {
+                float4 position : POSITION;
+                float3 normal : NORMAL;
+            };
+
+            #if defined(SHADOWS_CUBE)
+                struct Interpolators {
+                    float4 position : SV_POSITION;
+                    float3 lightVec : TEXCOORD0;
+                };
+
+                Interpolators vert (VertexData v) {
+                    Interpolators i;
+                    i.position = UnityObjectToClipPos(v.position);
+                    i.lightVec = mul(unity_ObjectToWorld, i.position).xyz - _LightPositionRange.xyz;
+                    return i;
+                }
+
+                float4 frag (Interpolators i) : SV_TARGET {
+                    float depth = length(i.lightVec) + unity_LightShadowBias.x;
+                    depth *= _LightPositionRange.w;
+                    if (i.position.x > 0.5){
+                        return 0.0;
+                    }
+                    return UnityEncodeCubeShadowDepth(depth);
+                }
+            #else
+                float4 vert (VertexData v) : SV_POSITION {
+                    float4 position =
+                        UnityClipSpaceShadowCasterPos(v.position.xyz, v.normal);
+                    return UnityApplyLinearShadowBias(position);
+                }
+
+                half4 frag () : SV_TARGET {
+                    return 0;
+                }
+            #endif
+
+            #endif
+			ENDCG
+		}
     }
 }

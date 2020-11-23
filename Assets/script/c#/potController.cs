@@ -108,7 +108,7 @@ public class potController : MonoBehaviour
 
         //render after water
         bub.GetComponent<bubble>().scaleIncrease = Random.Range(0.003f,0.006f);
-        bub.GetComponent<bubble>().maxScale = Random.Range(0.05f,0.35f);
+        bub.GetComponent<bubble>().maxScale = Random.Range(0.05f,0.1f);
         bub.GetComponent<bubble>().water = this;
         bub.GetComponent<Transform>().parent = water.GetComponent<Transform>();
         

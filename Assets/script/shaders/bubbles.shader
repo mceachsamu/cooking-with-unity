@@ -150,7 +150,7 @@
 
                 //give bubble popping effect
                 fixed4 decay = tex2D(_DecayMap, float2(i.uv.x-0.75,i.uv.y+0.1)) + _DecayAmount;
-                if (decay.r < 1.0) {
+                if (decay.r < 0.5) {
                     //shading.a = 0.0;
                 }
 
@@ -220,8 +220,7 @@
 
                 Interpolators vert (VertexData v) {
                     Interpolators i;
-                    v.position.x = v.position.x + sin(v.position.x*10 + time*3)/20;
-                    v.position.z = v.position.z + sin(v.position.z*10 + time*3)/20;
+
                     i.position = UnityObjectToClipPos(v.position);
                     i.lightVec = mul(unity_ObjectToWorld, i.position).xyz - _LightPositionRange.xyz;
                     return i;
@@ -230,6 +229,7 @@
                 float4 frag (Interpolators i) : SV_TARGET {
                     float depth = length(i.lightVec) + unity_LightShadowBias.x;
                     depth *= _LightPositionRange.w;
+                    //return float4(0.0,0.0,0.0,0.0);
                     return UnityEncodeCubeShadowDepth(depth);
                 }
             #else
@@ -240,7 +240,7 @@
                 }
 
                 half4 frag () : SV_TARGET {
-                    return 0;
+                    return 1;
                 }
             #endif
 

@@ -5958,7 +5958,7 @@ MonoBehaviour:
   numSegs: 40
   segSize: 0.07
   waterOpaqueness: 1.53
-  primaryCol: {r: 0.6975347, g: 0.8802022, b: 0.8962264, a: 1}
+  primaryCol: {r: 0.8980392, g: 0.7813747, b: 0.69803923, a: 1}
   numFieldPoints: 50
   neighbourFriction: 0.3
   friction: 0.9286
@@ -6710,11 +6710,11 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 1
-    m_Resolution: 2
+    m_Resolution: 1
     m_CustomResolution: -1
-    m_Strength: 0.753
-    m_Bias: 0.05
-    m_NormalBias: 0.4
+    m_Strength: 0.587
+    m_Bias: 0
+    m_NormalBias: 0.35
     m_NearPlane: 0.2
     m_CullingMatrixOverride:
       e00: 1

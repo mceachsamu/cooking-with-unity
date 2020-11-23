@@ -153,8 +153,10 @@ public class potwater : MonoBehaviour
 
     //get the center point for the pot
     public Vector3 GetCenter(){
-        Vector3 center = lid.transform.position;
-        return center;
+        if (lid != null){
+            return lid.transform.position;
+        }
+        return new Vector3(0.0f,0.0f,0.0f);
     }
 
     public float GetSize(){
