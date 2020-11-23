@@ -125,6 +125,10 @@ public class potController : MonoBehaviour
         return water.GetComponent<potwater>().maxHeight;
     }
 
+    public float GetWaterAngle(){
+        return water.GetComponent<potwater>().GetAngle();
+    }
+
     public Color GetColor(){
         return water.GetComponent<potwater>().GetColor();
     }

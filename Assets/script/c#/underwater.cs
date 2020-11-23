@@ -43,6 +43,8 @@ public class underwater : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<potController>().GetWaterPosition().y);
         this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", water.GetComponent<potController>().GetWaterMaxHeight());
         this.GetComponent<Renderer>().material.SetInt("_CullAboveWater", cullAboveWater);
+
+        this.GetComponent<Renderer>().material.SetFloat("_Angle", water.GetComponent<potController>().GetWaterAngle());
     }
 
 }

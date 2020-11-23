@@ -14,6 +14,7 @@
         _WaterLevel("water level", float) = 0.0
         _CullAboveWater("cull above water", int) = 0
         _Count("count", float) = 0.0
+        _Angle("angle", float) = 0.0
 
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
@@ -91,6 +92,7 @@
 
             uniform float adjust;
             uniform int _CullAboveWater;
+            uniform float _Angle;
 
             v2f vert (appdata v)
             {
@@ -119,8 +121,8 @@
 
                 fixed4 noise = tex2D(_NoiseMap, float2(i.uv.x, i.uv.y - _Count / 300.0));
 
-                fixed4 caustic1 = tex2D(_Caustics, float2(i.uv.x+ noise.r/15.0 + waterHeight / 6.0,i.uv.y + noise.r/5.0 - _Count / 300.0 + waterHeight.r/4.0 )*3.0);
-                fixed4 caustic2 = tex2D(_Caustics, float2(i.uv.x+ noise.r/15.0  + waterHeight / 6.0,i.uv.y + noise.r/4.0 + _Count / 350.0  + waterHeight.r/4.0)*2.0);
+                fixed4 caustic1 = tex2D(_Caustics, float2(i.uv.x+ noise.r/15.0 + waterHeight / 6.0 + _Angle / 50000.0,i.uv.y + noise.r/5.0 - _Count / 300.0 + waterHeight.r/4.0 )*3.0);
+                fixed4 caustic2 = tex2D(_Caustics, float2(i.uv.x+ noise.r/15.0  + waterHeight / 6.0+ _Angle / 50000.0,i.uv.y + noise.r/4.0 + _Count / 350.0  + waterHeight.r/4.0)*2.0);
 
                 //get shading
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
@@ -141,7 +143,7 @@
 
                 float shadow = SHADOW_ATTENUATION(i);
                 col.xyz /= shadow;
-                return col + (caustic1.r + caustic2.r)/2.0 * (col.a);
+                return col + (caustic1.r + caustic2.r)/1.0 * (col.a);
             }
             ENDCG
         }
