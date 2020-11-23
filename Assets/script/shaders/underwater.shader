@@ -134,16 +134,16 @@
                 col = col * pow(shading,0.4);
 
                 if (i.wpos.y < waterLevel+0.05){
-                    col.a = (2.0 - pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness);
+                    col.a = (1.5 - pow(abs(i.wpos.y - _WaterLevel),0.2) * _WaterOpaqueness);
                 }else if (_CullAboveWater == 0){
-                    col.a = (2.0 - pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness);
+                    col.a = (1.5 - pow(abs(i.wpos.y - _WaterLevel),0.2) * _WaterOpaqueness);
                 }else{
                     col.a = 0.0;
                 }
 
                 float shadow = SHADOW_ATTENUATION(i);
-                col.xyz /= shadow;
-                return col + (caustic1.r + caustic2.r)/1.0 * (col.a);
+                col.xyz -= shadow;
+                return col + (caustic1.r + caustic2.r)/2.0 * ((col.a));
             }
             ENDCG
         }
