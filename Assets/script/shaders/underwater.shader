@@ -108,7 +108,7 @@
             }
 
             float2 getWaterUV(v2f i){
-                return ((i.wpos.xz - _PotCenter.xz + _WaterSize/2.0)/_WaterSize);
+                return ((i.wpos.xz - _PotCenter.xz + _WaterSize*2.0)/_WaterSize);
             }
 
             fixed4 frag (v2f i) : SV_Target
