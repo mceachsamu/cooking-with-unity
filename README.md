@@ -22,3 +22,7 @@ Make sure you have the same unity version.
 
 step 3: 
 Open up the file using unity hub using the recommended version.
+
+# controls
+right mouse button - move spoon
+z - tilt bottle
