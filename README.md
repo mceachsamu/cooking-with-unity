@@ -4,7 +4,7 @@ This is a unity project for demonstrating some visual effects based on a potion 
 
 ![alt text][logo]
 
-[logo]: https://github.com/mceachsamu/cooking-with-unity/blob/master/pot2.gif "Logo Title Text 1"
+[logo]: https://github.com/mceachsamu/cooking-with-unity/blob/master/pot.gif "Logo Title Text 1"
 
 # references
 shading - https://roystan.net/articles/toon-shader.html
@@ -22,3 +22,8 @@ Make sure you have the same unity version.
 
 step 3: 
 Open up the file using unity hub using the recommended version.
+
+# controls
+right mouse button - move spoon
+
+z - tilt bottle
