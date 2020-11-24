@@ -44,6 +44,7 @@ Shader "Unlit/water"
             #include "UnityCG.cginc"
             #include "AutoLight.cginc"
             #include "cellShading.cginc"
+            #include "pot-cull.cginc"
             #pragma multi_compile_fwdadd_fullshadows
 
             struct appdata
@@ -166,39 +167,15 @@ Shader "Unlit/water"
                 return o;
             }
 
-            float getAlpha (v2f i)
-            {
-                //get the distance between this fragment and this center of the pot
-                float worldCenterDistance = length(i.wpos.xz - center.xz);
-                //t is a constant we need to calculate to get the equation
-                //fot the vector that goes from the camera to the fragment
-                float t = (center.y - _WorldSpaceCameraPos.y) / (i.wpos.y - _WorldSpaceCameraPos.y);
-                //use this constant to calculate the intercept between a vector going from the center to the
-                //pot to the vector going from the camera to the fragment
-                float x = _WorldSpaceCameraPos.x + t*(i.wpos.x - _WorldSpaceCameraPos.x);
-                float z = _WorldSpaceCameraPos.z + t*(i.wpos.z - _WorldSpaceCameraPos.z);
-                float3 intercept = float3(x, center.y,z);
-                float3 centerToIntercept = center.xyz - intercept;
-                //get the distance for this vector
-                //distance the fragmant is from the center of the circle
-                float distFromCenter = length(centerToIntercept);
-                //declare our alpha value so by default the texture is opaque
-                float alpha = 1.0;
-                //if the distance from the center to the camera vector is greater than the radius
-                //of the circle, make the fragmant invisible.
-                //TODO condider oval shapes (use zRadius)
-                if (distFromCenter > xRad){
-                    alpha = 0.0;
-                }
-                return alpha;
-            }
+            
 
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
                 fixed4 col = baseColor;
                 //check to see if we should render this fragment (if its inside the pot)
-                float alpha = getAlpha(i);
+                float alpha = getAlpha(i.wpos, center, xRad);
+
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, baseColor, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
                 //render the render texure relative to screen position
                 fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/1.5+0.3)/i.screenPos.w);

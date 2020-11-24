@@ -38,6 +38,8 @@
             #pragma target 3.0
 
             #include "cellShading.cginc"
+            #include "pot-cull.cginc"
+            
 
             #pragma multi_compile_shadowcaster
             #pragma vertex vert
@@ -107,33 +109,6 @@
                 return o;
             }
 
-            float getAlpha (v2f i)
-            {
-                //get the distance between this fragment and this center of the pot
-                float worldCenterDistance = length(i.wpos.xz - center.xz);
-                //t is a constant we need to calculate to get the equation
-                //fot the vector that goes from the camera to the fragment
-                float t = (center.y - _WorldSpaceCameraPos.y) / (i.wpos.y - _WorldSpaceCameraPos.y);
-                //use this constant to calculate the intercept between a vector going from the center to the
-                //pot to the vector going from the camera to the fragment
-                float x = _WorldSpaceCameraPos.x + t*(i.wpos.x - _WorldSpaceCameraPos.x);
-                float z = _WorldSpaceCameraPos.z + t*(i.wpos.z - _WorldSpaceCameraPos.z);
-                float3 intercept = float3(x, center.y,z);
-                float3 centerToIntercept = center.xyz - intercept;
-                //get the distance for this vector
-                //distance the fragmant is from the center of the circle
-                float distFromCenter = length(centerToIntercept);
-                //declare our alpha value so by default the texture is opaque
-                float alpha = 1.0;
-                //if the distance from the center to the camera vector is greater than the radius
-                //of the circle, make the fragmant invisible.
-                //TODO condider oval shapes (use zRadius)
-                if (distFromCenter > xRad){
-                    alpha = 0.0;
-                }
-                return alpha;
-            }
-
             float2 getWaterUV(v2f i){
                 return ((i.wpos.xz - _PotCenter.xz + _WaterSize/2.0)/_WaterSize);
             }
@@ -145,12 +120,13 @@
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 //dont render bubbles outside of pot
-                float alpha = getAlpha(i);
+                float alpha = getAlpha(i.wpos, center, xRad);
                 shading.a = alpha;
 
                 //give bubble popping effect
                 fixed4 decay = tex2D(_DecayMap, float2(i.uv.x-0.75,i.uv.y+0.1)) + _DecayAmount;
                 if (decay.r < 0.5) {
+                    //decaying bubbles make the shadows look really bad right, so disable for now
                     //shading.a = 0.0;
                 }
 
