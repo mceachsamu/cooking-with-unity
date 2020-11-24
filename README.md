@@ -25,4 +25,5 @@ Open up the file using unity hub using the recommended version.
 
 # controls
 right mouse button - move spoon
+
 z - tilt bottle
