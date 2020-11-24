@@ -16,15 +16,24 @@
         _Count("count", float) = 0.0
         _Angle("angle", float) = 0.0
 
+        _CausticNoiseScroll("caustic noise scroll speed", float) = 600.0
+        _CausticXDistortNoise("caustic distort x noise", float) = 15
+        _CausticYDistortNoise("caustic distort y noise", float) = 15
+        _CausticXWaterDistortion("caustic x water distortion", float) = 6.0
+        _CausticYWaterDistortion("caustic y water distortion", float) = 4.0
+        _CausticRotationSpeed("caustic rotation speed", float) = 50000
+        _CausticScrollSpeed("caustic scroll speed", float) = 600
+        _Caustic1Frequency("caustic 1 frequency", float) = 3.0
+        _Caustic2Frequency("caustic 2 frequency", float) = 2.0
+
+
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
         _SpecularColor("Specular Color", Color) = (0.0,0.0,0.0,1)
         _Glossiness("Glossiness", Range(0, 100)) = 14
-
         _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimAmount("Rim Amount", Range(0, 1)) = 1.0
         
-        adjust("Adjust", Range(-1, 1)) = 0.0
     }
     SubShader
     {
@@ -63,26 +72,36 @@
                 SHADOW_COORDS(3)
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            uniform sampler2D _MainTex;
+            uniform float4 _MainTex_ST;
 
-            sampler2D _HeightMap;
-            float4 _HeightMap_ST;
+            uniform sampler2D _HeightMap;
+            uniform float4 _HeightMap_ST;
 
-            sampler2D _Caustics;
-            float4 _Caustics_ST;
+            uniform sampler2D _Caustics;
+            uniform float4 _Caustics_ST;
 
-            sampler2D _NoiseMap;
-            float4 _NoiseMap_ST;
+            uniform sampler2D _NoiseMap;
+            uniform float4 _NoiseMap_ST;
 
-            uniform float _WaterSize;
             uniform float _MaxHeight;
+            uniform float _WaterSize;
+            uniform float4 _PotCenter;
             uniform float _WaterOpaqueness;
             uniform float _WaterLevel;
-
-            uniform float4 _PotCenter;
-
+            uniform int _CullAboveWater;
             uniform float _Count;
+            uniform float _Angle;
+
+            uniform float _CausticNoiseScroll;
+            uniform float _CausticXDistortNoise;
+            uniform float _CausticYDistortNoise;
+            uniform float _CausticXWaterDistortion;
+            uniform float _CausticYWaterDistortion;
+            uniform float _CausticRotationSpeed;
+            uniform float _CausticScrollSpeed;
+            uniform float _Caustic1Frequency;
+            uniform float _Caustic2Frequency;
 
             uniform float _Glossiness;
             uniform float4 _SpecularColor;
@@ -90,19 +109,15 @@
             uniform float _RimAmount;
             uniform float4 _AmbientColor;
 
-            uniform float adjust;
-            uniform int _CullAboveWater;
-            uniform float _Angle;
-
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.worldNormal = v.normal;
                 o.wpos = mul(unity_ObjectToWorld, v.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
+
                 TRANSFER_SHADOW(o);
                 return o;
             }
@@ -116,21 +131,26 @@
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
 
+                //get the uv coordinates of this fragment in relation to the water surface
                 float2 waterUV = getWaterUV(i);
+
+                //get the height of the water at this fragment
                 float waterHeight = tex2D(_HeightMap, waterUV);
 
-                fixed4 noise = tex2D(_NoiseMap, float2(i.uv.x, i.uv.y - _Count / 300.0));
+                fixed4 noise = tex2D(_NoiseMap, float2(i.uv.x, i.uv.y - _Count / _CausticNoiseScroll));
 
-                fixed4 caustic1 = tex2D(_Caustics, float2(i.uv.x+ noise.r/15.0 + waterHeight / 6.0 + _Angle / 50000.0,i.uv.y + noise.r/5.0 - _Count / 300.0 + waterHeight.r/4.0 )*3.0);
-                fixed4 caustic2 = tex2D(_Caustics, float2(i.uv.x+ noise.r/15.0  + waterHeight / 6.0+ _Angle / 50000.0,i.uv.y + noise.r/4.0 + _Count / 350.0  + waterHeight.r/4.0)*2.0);
 
-                //get shading
+                //calculate the caustic distortion
+                float uvxDistortion = i.uv.x + waterHeight.r / _CausticXWaterDistortion + noise.r / _CausticXDistortNoise + _Angle / _CausticRotationSpeed;
+                float uvyDistortion = i.uv.y + waterHeight.r / _CausticYWaterDistortion + noise.r / _CausticYDistortNoise - _Count / _CausticScrollSpeed;
+                fixed4 caustic1 = tex2D(_Caustics, float2(uvxDistortion, uvyDistortion) * _Caustic1Frequency);
+                fixed4 caustic2 = tex2D(_Caustics, float2(uvxDistortion, uvyDistortion) * _Caustic2Frequency);
+
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
-
                 col = shading;
 
+                //calculate the world height of the water
                 float waterLevel = waterHeight + _WaterLevel - _MaxHeight;
-
                 col = col * shading;
 
                 if (i.wpos.y < waterLevel+0.05){
@@ -143,7 +163,7 @@
 
                 float shadow = SHADOW_ATTENUATION(i);
                 col.xyz -= shadow;
-                return col + (caustic1.r + caustic2.r)/3.0 * ((col.a));
+                return col + (caustic1.r + caustic2.r)/3.0 * (col.a);
             }
             ENDCG
         }
