@@ -95,23 +95,23 @@
                 float mag = clamp(vertex.z,0,5.0);
                 vertex.xy *= mag * _PipeSize;
 
-                float4 start = _PipeStart;
-                float4 pipeEnd = _PipeEnd;
-                float4 prevEnd = _PreviousEnd;
+                float4 start = mul(unity_WorldToObject,_PipeStart);
+                float4 pipeEnd = mul(unity_WorldToObject,_PipeEnd);
+                float4 prevEnd = mul(unity_WorldToObject,_PreviousEnd);
                 float pipeLength = _PipeLength;
 
-                float4 direction = normalize(start - _PipeEnd);
-                float4 directionPrev = normalize(start - _PreviousEnd);
+                float4 direction = normalize(start - pipeEnd);
+                float4 directionPrev = normalize(start - prevEnd);
 
                 float sway = (vertex.z / pipeLength);
 
                 float4 end = (direction * (1.0-sway) + directionPrev * (sway));
 
-                float adjusted = (length(end.xz) / pipeLength);
+                float adjusted = (length(end.z) / pipeLength);
                 vertex.z *= adjusted*1.4;
 
                 float z = length(vertex.z);
-                float endZ = length(end.xz);
+                float endZ = length(end.z);
                 float a = (-end.y) / pow(endZ, _Exponent);
 
                 float y = pow(z, _Exponent) * a;
@@ -119,7 +119,7 @@
 
                 float ax = (end.xz) / (endZ*endZ);
                 float x = z * z * ax;
-                //vertex.x += x;
+                vertex.x -= x;
 
                 #if !defined(SHADER_API_OPENGL)
                     float4 col = tex2Dlod(_NoiseMap, float4(float2(uv.x + _Count/90,uv.y - _Count/60),0,0));

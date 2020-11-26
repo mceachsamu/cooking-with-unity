@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseMap:
-        m_Texture: {fileID: 2800000, guid: 20d8a6678a42586429c2b89b85dbf428, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1d9b1742f3a6f4a5db10f1caa75e8725, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -70,6 +70,16 @@ Material:
     m_Floats:
     - _Angle: 0
     - _BumpScale: 1
+    - _Caustic1Frequency: 3
+    - _Caustic2Frequency: 2
+    - _CausticNoiseScroll: 300
+    - _CausticRotationSpeed: 50000
+    - _CausticScrollSpeed: 300
+    - _CausticXDistortNoise: 15
+    - _CausticXDistortNoiseDiv: 15
+    - _CausticXWaterDistortion: 6
+    - _CausticYDistortNoise: 15
+    - _CausticYWaterDistortion: 4
     - _Count: 0
     - _CullAboveWater: 0
     - _Cutoff: 0.5
@@ -81,6 +91,7 @@ Material:
     - _MaxHeight: 0
     - _Metallic: 0
     - _Mode: 0
+    - _NoiseScroll: 300
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimAmount: 1
@@ -92,6 +103,7 @@ Material:
     - _WaterOpaqueness: 0
     - _WaterSize: 0
     - _ZWrite: 1
+    - _xDistortNoiseDiv: 15
     - adjust: 0
     m_Colors:
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 1}
