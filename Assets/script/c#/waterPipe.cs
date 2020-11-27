@@ -13,8 +13,9 @@ public class waterPipe : MonoBehaviour
 
     public GameObject bottleEnd;
 
-    public GameObject light;
     public GameObject water;
+
+    public ParticleSystem particles;
 
     private Vector3 PreviousPoint;
 
@@ -52,7 +53,7 @@ public class waterPipe : MonoBehaviour
     void Update()
     {
 
-        float exponential = setSpoutDirection();
+        float exponential = SetSpoutDirection();
         count++;
 
         force = size*0.3f;
@@ -89,10 +90,12 @@ public class waterPipe : MonoBehaviour
         
         Vector3 drawbug = FallPosition;
         drawbug.y = 5.0f;
-        Debug.DrawLine(FallPosition, drawbug, Color.blue);
+        Vector3 Fall = FallPosition;
+        Fall.y = water.GetComponent<potController>().GetWaterHeightAtPosition(FallPosition) + water.GetComponent<potController>().GetWaterPosition().y ;
+        Debug.DrawLine(Fall, drawbug, Color.green);
     }
 
-    private float setSpoutDirection(){
+    private float SetSpoutDirection(){
          //we want to create a vector that represents the bottles direction but without tilt on the x axis
         Vector3 ForwardDir = bottleEnd.GetComponent<Transform>().position-bottle.GetComponent<Transform>().position ;
         ForwardDir.y = 0.0f;
