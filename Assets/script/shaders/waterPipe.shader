@@ -32,8 +32,6 @@
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
 
         Pass
         {
@@ -136,27 +134,27 @@
                 o.uv.z = v.vertex.z;
 
                 v.vertex = getVertexDistortion(v.vertex, v.uv);
-                float PI = 3.14159265359;
-                float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
-                float4 start = normalize(_Direction) * v.vertex.z + _PipeStart;
-                float4 angle = PI * 2 / _PipeSegmentsRound;
+                // float PI = 3.14159265359;
+                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
+                // float4 start = normalize(_Direction) * v.vertex.z + _PipeStart;
+                // float4 angle = PI * 2 / _PipeSegmentsRound;
 
-                float4 H = start - worldPos;
-                float y = cos(angle) * H;
-                float x = sin(angle) * H;
-                float4 next = float4(start.x + x, start.y + y, start.z, start.w);
-                float4 next2 = float4(start.x - x, start.y - y, start.z, start.w);
-                float zstep = 0.1;
-                float4 next3 = float4(start.x + x, start.y + y, start.z + zstep, start.w);
-                float4 next4 = float4(start.x - x, start.y - y, start.z + zstep, start.w);
+                // float4 H = start - worldPos;
+                // float y = cos(angle) * H;
+                // float x = sin(angle) * H;
+                // float4 next = float4(start.x + x, start.y + y, start.z, start.w);
+                // float4 next2 = float4(start.x - x, start.y - y, start.z, start.w);
+                // float zstep = 0.1;
+                // float4 next3 = float4(start.x + x, start.y + y, start.z + zstep, start.w);
+                // float4 next4 = float4(start.x - x, start.y - y, start.z + zstep, start.w);
 
-                next = normalize(getVertexDistortion(next, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y)));
-                next2 = normalize(getVertexDistortion(next2, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y)));
+                // next = normalize(getVertexDistortion(next, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y)));
+                // next2 = normalize(getVertexDistortion(next2, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y)));
 
-                next3 = normalize(getVertexDistortion(next3, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
-                next4 = normalize(getVertexDistortion(next4, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
+                // next3 = normalize(getVertexDistortion(next3, float2(v.uv.x + (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
+                // next4 = normalize(getVertexDistortion(next4, float2(v.uv.x - (1.0 / _PipeRadius),v.uv.y + zstep / (_PipeLength * v.vertex.z))));
 
-                float normal = cross(next-next3,next-next4);
+                // float normal = cross(next-next3,next-next4);
 
                 o.normal = UnityObjectToWorldNormal(v.normal);
                 o.wpos = worldPos;
@@ -176,7 +174,9 @@
 
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
-                return _Color + col.r;// - i.uv.z/10;
+                col = col.r + _Color;
+
+                return col;
             }
             ENDCG
         }
