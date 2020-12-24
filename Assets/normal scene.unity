@@ -5901,7 +5901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numSegs: 40
   segSize: 0.07
-  waterOpaqueness: 0.69
+  waterOpaqueness: 1.29
   primaryCol: {r: 0.90588236, g: 0.77254903, b: 0.8673837, a: 1}
   numFieldPoints: 50
   neighbourFriction: 0.3
