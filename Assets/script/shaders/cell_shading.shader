@@ -73,7 +73,7 @@
                 o.worldNormal =  UnityObjectToWorldNormal(v.normal);
                 o.wpos = mul(unity_ObjectToWorld, v.vertex);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
-				o.screenPos = ComputeScreenPos(o.vertex);   
+				o.screenPos = ComputeScreenPos(o.vertex);
 
                 half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
                 // compute bitangent from cross product of normal and tangent
@@ -108,7 +108,7 @@
                 //apply saturation
                 col.rgb = col.rgb * _Saturation;
 
-                float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 float shadow = SHADOW_ATTENUATION(i);
                 //fixed4 c = atten;

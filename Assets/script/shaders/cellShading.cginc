@@ -1,6 +1,6 @@
 
 
-inline float4 GetShading (float4 wpos, float4 opos, float4 lightPos, float3 wNorm, float3 viewDir, float4 baseColor, float4 _RimColor, float4 _SpecularColor, float _RimAmount, float _Glossiness)
+inline float4 GetShading (float4 wpos, float4 lightPos, float3 wNorm, float3 viewDir, float4 baseColor, float4 _RimColor, float4 _SpecularColor, float _RimAmount, float _Glossiness)
 {
     float4 col = baseColor;
 

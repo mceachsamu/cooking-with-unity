@@ -117,14 +117,14 @@ public class potwater : MonoBehaviour
 
     private void setShaderProperties(){
         //give these values to our shader
-        this.GetComponent<Renderer>().material.SetFloat("xRad", xRadius);
-        this.GetComponent<Renderer>().material.SetFloat("seperation", segSize);
-        this.GetComponent<Renderer>().material.SetFloat("totalSize", GetSize());
+        this.GetComponent<Renderer>().material.SetFloat("_xRad", xRadius);
+        this.GetComponent<Renderer>().material.SetFloat("_Seperation", segSize);
+        this.GetComponent<Renderer>().material.SetFloat("_TotalSize", GetSize());
         this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", maxHeight);
 
-        this.GetComponent<Renderer>().material.SetVector("center", GetCenter());
+        this.GetComponent<Renderer>().material.SetVector("_Center", GetCenter());
         this.GetComponent<Renderer>().material.SetTexture("_Tex", heightMap);
-        this.GetComponent<Renderer>().material.SetVector("baseColor", primaryCol);
+        this.GetComponent<Renderer>().material.SetVector("_BaseColor", primaryCol);
     }
 
     public Color GetColor(){

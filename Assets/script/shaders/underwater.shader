@@ -64,10 +64,11 @@
 
             struct v2f
             {
-                float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
-                float4 wpos : TEXCOORD1;
                 float3 worldNormal : NORMAL;
+
+                float2 uv : TEXCOORD0;
+                float4 wpos : TEXCOORD1;
                 float3 viewDir : TEXCOORD2;
                 SHADOW_COORDS(3)
             };
@@ -146,7 +147,7 @@
                 fixed4 caustic1 = tex2D(_Caustics, float2(uvxDistortion, uvyDistortion) * _Caustic1Frequency);
                 fixed4 caustic2 = tex2D(_Caustics, float2(uvxDistortion, uvyDistortion) * _Caustic2Frequency);
 
-                float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
                 col = shading;
 
                 //calculate the world height of the water
