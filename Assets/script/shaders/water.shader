@@ -5,8 +5,9 @@ Shader "Unlit/water"
     Properties
     {
         _Tex ("Texture", 2D) = "white" {}//the main texture-- used as the height map
-        _RenderTex ("RenderTexture", 2D) = "white" {}
+        _RenderTex ("Render texture", 2D) = "white" {}
         _Texture ("tex", 2D) = "white" {}
+        _RenderTexAbove ("Render texture above", 2D) = "white" {}
         baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
         xRad("xRad", float) = 0.0
         seperation("seperation", float) = 0.0
@@ -80,6 +81,9 @@ Shader "Unlit/water"
 
             sampler2D _RenderTex;
             float4 _RenderTex_ST;
+
+            sampler2D _RenderTexAbove;
+            float4  _RenderTexAbove_ST;
 
             uniform float seperation;
             uniform float totalSize;
@@ -167,8 +171,6 @@ Shader "Unlit/water"
                 return o;
             }
 
-            
-
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
@@ -179,12 +181,13 @@ Shader "Unlit/water"
                 float4 shading = GetShading(i.wpos, i.vertex, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, baseColor, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
                 //render the render texure relative to screen position
                 fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/1.5+0.3)/i.screenPos.w);
+                fixed4 aboveTex = tex2D(_RenderTexAbove, i.uv);
 
                 fixed shadow = SHADOW_ATTENUATION(i);
                 col = col*shading - tex * clamp(1.0 - tex.a,0.0,1.0) * 0.4;
                 col.a = alpha;
                 //col.xyz *= shadow;
-                return  col;
+                return col;
             }
             ENDCG
         }

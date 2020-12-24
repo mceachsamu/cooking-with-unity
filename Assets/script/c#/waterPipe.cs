@@ -130,6 +130,10 @@ public class waterPipe : MonoBehaviour
         FallPosition = position;
     }
 
+    public Vector3 GetFallPosition() {
+        return FallPosition;
+    }
+
     public void SetSize(float mag) {
         this.size = Mathf.Log(mag);
     }

@@ -35,7 +35,19 @@ inline float4 GetShading (float4 wpos, float4 opos, float4 lightPos, float3 wNor
     float rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimDot);
     float4 rim = rimIntensity * _RimColor;
 
-    float4 finalColor = (baseColor + overall + specular + rim) * dist;
+
+
+    //calculate backlighting
+    float3 FragToLight = wpos - lightPos;
+    if (lightPos.w == 0){
+        //directional lighting
+        FragToLight = - lightPos;
+    }
+
+    float backLighting = dot(normalize(viewDir), -normalize(lightDir - wNorm * 0.01));
+    float smoothBack = smoothstep(0.0,0.5,backLighting);
+
+    float4 finalColor = (baseColor + overall + specular + rim + backLighting/4.0) * dist;
     //we arent using the alpha channel for our final shading, so pass
     //through the NdotL value so we can use it for calculating underwater distortion
     finalColor.a = NdotL;

@@ -163,7 +163,7 @@
 
                 float shadow = SHADOW_ATTENUATION(i);
                 col.xyz -= shadow;
-                return col + (caustic1.r + caustic2.r)/3.0 * (col.a);
+                return col + (caustic1.r + caustic2.r)/2.0 * (col.a);
             }
             ENDCG
         }
