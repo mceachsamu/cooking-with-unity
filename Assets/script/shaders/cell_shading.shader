@@ -5,6 +5,7 @@
         _MainTex("Texture", 2D) = "white" {}
         _PaintTexture("paint texture", 2D) = "white" {}
         _NormalMap("normal map", 2D) = "white" {}
+
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
         _SpecularColor("Specular Color", Color) = (0.0,0.0,0.0,1)
@@ -56,13 +57,13 @@
             sampler2D _PaintTexture;
             float4 _PaintTexture_ST;
 
-            float _Glossiness;
-            float4 _SpecularColor;
-            float4 _RimColor;
-            float _RimAmount;
-            float4 _AmbientColor;
-            int _UseNormalMap;
-            float _Saturation;
+            uniform float _Glossiness;
+            uniform float4 _SpecularColor;
+            uniform float4 _RimColor;
+            uniform float _RimAmount;
+            uniform float4 _AmbientColor;
+            uniform int _UseNormalMap;
+            uniform float _Saturation;
 
             v2f vert (appdata_tan v)
             {
