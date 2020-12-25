@@ -70,8 +70,8 @@ Material:
     m_Floats:
     - _Angle: 0
     - _BumpScale: 1
-    - _Caustic1Frequency: 3
-    - _Caustic2Frequency: 2
+    - _Caustic1Frequency: 2
+    - _Caustic2Frequency: 1.5
     - _CausticNoiseScroll: 300
     - _CausticRotationSpeed: 50000
     - _CausticScrollSpeed: 300
