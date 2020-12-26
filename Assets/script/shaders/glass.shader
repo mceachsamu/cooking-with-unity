@@ -33,8 +33,9 @@
             #pragma vertex vert
             #pragma fragment frag
 
-            #include "cellShading.cginc"
             #include "UnityCG.cginc"
+            #include "cellShading.cginc"
+            #include "UnityLightingCommon.cginc"
 
             struct appdata
             {
@@ -94,7 +95,7 @@
                 fixed4 behind = tex2D(_BehindGlass, float2(i.screenPos.x * (1.0 - (tex.r-0.5)*_GlassDistortionX), i.screenPos.y * (1.0 - (tex.r-0.5)*_GlassDistortionY))/i.screenPos.w);
                 fixed4 color = _GlassColor;// * _GlassTransparency;
 
-                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, color, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, color, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 return behind * color + tex * shading * _GlassTransparency;
             }

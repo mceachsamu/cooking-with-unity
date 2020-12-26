@@ -47,6 +47,8 @@
             #include "UnityCG.cginc"
             #pragma multi_compile_fwdadd_fullshadows
             #include "AutoLight.cginc"
+            #include "UnityLightingCommon.cginc"
+
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -117,7 +119,7 @@
             {
                 // sample the texture
                 fixed4 col = _Color;
-                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 //dont render bubbles outside of pot
                 float alpha = getAlpha(i.wpos, center, xRad);

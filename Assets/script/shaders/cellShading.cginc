@@ -1,13 +1,12 @@
 
-
-inline float4 GetShading (float4 wpos, float4 lightPos, float3 wNorm, float3 viewDir, float4 baseColor, float4 _RimColor, float4 _SpecularColor, float _RimAmount, float _Glossiness)
+inline float4 GetShading (float4 wpos, float4 lightPos, float3 wNorm, float3 viewDir, float4 baseColor, float4 lightCol, float4 _RimColor, float4 _SpecularColor, float _RimAmount, float _Glossiness)
 {
     float4 col = baseColor;
 
     float4 _LightPos =  lightPos;
 
     //reduce overall shading when light source is further away
-    float dist = smoothstep(0,1.0,1.0/pow(length(_LightPos - wpos),0.5));
+    float dist = smoothstep(0,1.0,1.0/pow(length(_LightPos - wpos),1.0));
 
     //computer the over light intensity
     float3 lightDir = normalize(_LightPos - wpos);
@@ -35,8 +34,6 @@ inline float4 GetShading (float4 wpos, float4 lightPos, float3 wNorm, float3 vie
     float rimIntensity = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rimDot);
     float4 rim = rimIntensity * _RimColor;
 
-
-
     //calculate backlighting
     float3 FragToLight = wpos - lightPos;
     if (lightPos.w == 0){
@@ -44,10 +41,10 @@ inline float4 GetShading (float4 wpos, float4 lightPos, float3 wNorm, float3 vie
         FragToLight = - lightPos;
     }
 
-    float backLighting = dot(normalize(viewDir), -normalize(lightDir - wNorm * 0.01));
+    float backLighting = dot(normalize(viewDir), -normalize(lightDir - wNorm * 0.1));
     float smoothBack = smoothstep(0.0,0.5,backLighting);
 
-    float4 finalColor = (baseColor + overall + specular + rim + backLighting/4.0) * dist;
+    float4 finalColor = (baseColor + overall + specular + rim + backLighting/1.0) * dist * lightCol;
     //we arent using the alpha channel for our final shading, so pass
     //through the NdotL value so we can use it for calculating underwater distortion
     finalColor.a = NdotL;

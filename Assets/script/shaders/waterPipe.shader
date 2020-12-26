@@ -44,6 +44,7 @@
             #include "cellShading.cginc"
 
             #include "UnityCG.cginc"
+            #include "UnityLightingCommon.cginc"
 
             struct appdata
             {
@@ -122,8 +123,8 @@
                 #if !defined(SHADER_API_OPENGL)
                     float4 col = tex2Dlod(_NoiseMap, float4(float2(uv.x + _Count/90,uv.y - _Count/60),0,0));
                     float s = (col.r)*(sway);
-                     vertex.x += ((s)*0.2*_PipeSize);
-                     vertex.z += (s*0.1*_PipeSize);
+                    vertex.x += ((s)*0.2*_PipeSize);
+                    vertex.z += (s*0.1*_PipeSize);
                 #endif
                 return vertex;
             }
@@ -135,7 +136,7 @@
 
                 v.vertex = getVertexDistortion(v.vertex, v.uv);
                 // float PI = 3.14159265359;
-                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
+                float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
                 // float4 start = normalize(_Direction) * v.vertex.z + _PipeStart;
                 // float4 angle = PI * 2 / _PipeSegmentsRound;
 
@@ -172,7 +173,7 @@
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, float2(i.uv.x/2.0, i.uv.y - _Count / 40.0 )/2);
 
-                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 col = col.r + _Color;
 

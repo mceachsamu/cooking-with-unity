@@ -46,6 +46,7 @@ Shader "Unlit/water"
             #include "cellShading.cginc"
             #include "waterDistortion.cginc"
             #include "pot-cull.cginc"
+            #include "UnityLightingCommon.cginc"
             #pragma multi_compile_fwdadd_fullshadows
 
             struct appdata
@@ -123,7 +124,7 @@ Shader "Unlit/water"
                 //check to see if we should render this fragment (if its inside the pot)
                 float alpha = getAlpha(i.wpos, _Center, _xRad);
 
-                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, _BaseColor, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, _BaseColor, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
                 //render the render texure relative to screen position
                 fixed4 tex = tex2D(_RenderTex, float2(i.screenPos.x, i.screenPos.y + i.pos.y/1.5+0.3)/i.screenPos.w);
                 fixed4 aboveTex = tex2D(_RenderTexAbove, i.uv);

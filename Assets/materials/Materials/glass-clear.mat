@@ -72,7 +72,7 @@ Material:
     - _GlassDistortionX: 0
     - _GlassDistortionY: 0
     - _GlassTextureFrequency: 1
-    - _GlassTransparency: 0
+    - _GlassTransparency: 0.234
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1

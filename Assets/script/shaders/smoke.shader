@@ -30,8 +30,9 @@
             #pragma vertex vert
             #pragma fragment frag
 
-            #include "cellShading.cginc"
             #include "UnityCG.cginc"
+            #include "cellShading.cginc"
+            #include "UnityLightingCommon.cginc"
 
             struct appdata
             {
@@ -83,10 +84,10 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 NoiseMap = tex2D(_NoiseMap, float2(i.uv.x - _Count/1000.0, i.uv.y - _Count/1000.0));
-                
+
                 fixed4 col = _Color;
 
-                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 //col.a = clamp(i.vertex.y/2000 - NoiseMap.r , 0, 1)*0.5;
                 col.a = 0.2;

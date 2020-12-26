@@ -35,6 +35,7 @@
             #include "UnityCG.cginc"
             #pragma multi_compile_fwdadd_fullshadows
             #include "AutoLight.cginc"
+            #include "UnityLightingCommon.cginc"
 
             struct v2f
             {
@@ -109,7 +110,7 @@
                 //apply saturation
                 col.rgb = col.rgb * _Saturation;
 
-                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, worldNormal, i.viewDir, col, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 float shadow = SHADOW_ATTENUATION(i);
                 //fixed4 c = atten;
