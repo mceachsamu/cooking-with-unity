@@ -69,8 +69,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlassDistortion: 3.6
-    - _GlassDistortionX: 2.85
-    - _GlassDistortionY: 2.19
+    - _GlassDistortionX: 0
+    - _GlassDistortionY: 0.9
     - _GlassTextureFrequency: 2.09
     - _GlassTransparency: 0.113
     - _GlossMapScale: 1

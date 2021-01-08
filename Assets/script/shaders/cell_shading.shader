@@ -3,10 +3,11 @@
     Properties
     {
         _MainTex("Texture", 2D) = "white" {}
-        _PaintTexture("paint texture", 2D) = "white" {}
         _NormalMap("normal map", 2D) = "white" {}
+        _UseColor("use color", int) = 0
 
         [HDR]
+        _Color("Color", Color) = (0.0,0.0,0.0,0.0)
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
         _SpecularColor("Specular Color", Color) = (0.0,0.0,0.0,1)
         _Glossiness("Glossiness", Range(0, 100)) = 14
@@ -55,9 +56,10 @@
             float4 _MainTex_ST;
             sampler2D _NormalMap;
             float4 _NormalMap_ST;
-            sampler2D _PaintTexture;
-            float4 _PaintTexture_ST;
 
+            uniform int _UseColor;
+
+            uniform float4 _Color;
             uniform float _Glossiness;
             uniform float4 _SpecularColor;
             uniform float4 _RimColor;
@@ -99,21 +101,23 @@
                 worldNormal.x = dot(i.tspace0, tnormal);
                 worldNormal.y = dot(i.tspace1, tnormal);
                 worldNormal.z = dot(i.tspace2, tnormal);
-                
+
                 //check if we should disabled normal mapping
                 if (!_UseNormalMap){
                     worldNormal = i.worldNormal;
                 }
 
                 fixed4 col = tex2D(_MainTex, i.uv);
-                fixed4 paint = tex2D(_PaintTexture, float2(i.screenPos.x, i.screenPos.y)/i.screenPos.w);
+                if(_UseColor == 1){
+                    col = _Color;
+                }
+
                 //apply saturation
                 col.rgb = col.rgb * _Saturation;
 
-                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetCellShading(i.wpos, _WorldSpaceLightPos0.xyzw, worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 float shadow = SHADOW_ATTENUATION(i);
-                //fixed4 c = atten;
                 col.xyz *= shadow;
                 return col * shading;
             }
