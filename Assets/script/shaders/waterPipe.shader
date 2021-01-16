@@ -11,7 +11,6 @@
         _PreviousEnd("pipe end previous", Vector) = (0.0,0.0,0.0,0.0)
         _Direction("direction", Vector) = (0.0,0.0,0.0,0.0)
         _DirectionPrev("Direction Previous", Vector) = (0.0,0.0,0.0,0.0)
-        _Count("timer", float) = 0.0
         _PipeSize("pipe size", float) = 1.0
         _PipeLength("length", float) = 0.0
         _PipeRadius("radius", float) = 0.0
@@ -82,7 +81,6 @@
             uniform float _RimAmount;
             uniform float4 _AmbientColor;
 
-            uniform float _Count;
             uniform float _PipeLength;
             uniform float _PipeRadius;
             uniform float _PipeSegmentsRound;
@@ -121,7 +119,7 @@
                 vertex.x -= x;
 
                 #if !defined(SHADER_API_OPENGL)
-                    float4 col = tex2Dlod(_NoiseMap, float4(float2(uv.x + _Count/90,uv.y - _Count/60),0,0));
+                    float4 col = tex2Dlod(_NoiseMap, float4(float2(uv.x + _Time.y/1.5,uv.y - _Time.y),0,0));
                     float s = (col.r)*(sway);
                     vertex.x += ((s)*0.2*_PipeSize);
                     vertex.z += (s*0.1*_PipeSize);
@@ -171,7 +169,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, float2(i.uv.x/2.0, i.uv.y - _Count / 40.0 )/2);
+                fixed4 col = tex2D(_MainTex, float2(i.uv.x/2.0, i.uv.y - _Time.y * 2.0 )/2);
 
                 float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
