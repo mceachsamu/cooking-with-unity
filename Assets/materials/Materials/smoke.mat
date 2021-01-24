@@ -72,6 +72,7 @@ Material:
     - _Mode: 0
     - _NoiseStrength: 2.9
     - _OcclusionStrength: 1
+    - _OverallVisability: 0.54
     - _Parallax: 0.02
     - _PipeSizeDiv: 100
     - _RimAmount: 1
