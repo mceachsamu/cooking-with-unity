@@ -27,4 +27,11 @@ public class ingredient : MonoBehaviour
         }
     }
 
+    public enum Name
+    {
+        Mushroom,
+        Cinamon,
+        Flower
+    }
+
 }

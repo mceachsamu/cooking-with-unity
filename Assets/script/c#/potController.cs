@@ -5,7 +5,7 @@ using UnityEngine;
 public class potController : MonoBehaviour
 {
     private float totalVolume = 0.001f;
-    
+
     //the speed the bubbles pop
     [Range(0.0f, 0.5f)]
     public float speed = 0.1f;
