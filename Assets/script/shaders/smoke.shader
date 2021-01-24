@@ -5,8 +5,11 @@
 
         _NoiseMap ("noise map", 2D) = "white" {}
         _Color ("color", Color) = (0.0,0.0,0.0,0.0)
-        _Count ("count", int) = 0
 
+        _SmokeTiltX("smoke tilt x", Range(-100.0,100.0)) = 1.0
+        _SmokeTiltY("smoke tilt y", Range(-100.0,100.0)) = 1.0
+        _PipeSizeDiv("pipe size div", Range(1.0,100.0)) = 1.0
+        _NoiseStrength("noise strength", Range(1.0,20.0)) = 1.0
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
         _SpecularColor("Specular Color", Color) = (0.0,0.0,0.0,1)
@@ -49,13 +52,18 @@
                 float3 worldNormal : TEXCOORD2;
                 float3 viewDir : TEXCOORD3;
                 float4 wpos : TEXCOORD4;
+                float4 oPosition : TEXCOORD5;
             };
 
             uniform sampler2D _NoiseMap;
             uniform float4 _NoiseMap_ST;
 
             uniform float4 _Color;
-            uniform int _Count;
+
+            uniform float _SmokeTiltX;
+            uniform float _SmokeTiltY;
+            uniform float _PipeSizeDiv;
+            uniform float _NoiseStrength;
 
             uniform float _Glossiness;
             uniform float4 _SpecularColor;
@@ -66,9 +74,17 @@
             v2f vert (appdata v)
             {
                 v2f o;
+
+                o.oPosition = v.vertex;
                 #if !defined(SHADER_API_OPENGL)
-                    float4 noise = tex2Dlod (_NoiseMap, float4(v.uv.x, v.uv.y + _Count/1000.0,0,0));
-                    //v.vertex.z += (noise.r-0.5)/100.0;
+                    float4 noise = tex2Dlod (_NoiseMap, float4(v.uv.x, v.uv.y + _Time.y/100.0,0,0));
+                    v.vertex.xy *= (1.0 + v.vertex.z*500.0);
+                    v.vertex.xy /= _PipeSizeDiv;
+                    v.vertex.xy *= (1 + noise.r)*_NoiseStrength;
+                    v.vertex.x += sin(_Time*50.0+ v.vertex.z * 2000.0)/5.0 * v.vertex.z;
+                    v.vertex.x += abs(pow(v.vertex.z*_SmokeTiltX,2.0));
+                    v.vertex.y += abs(pow(v.vertex.z*_SmokeTiltY,2.0));
+                    v.vertex.xy *= (1.0 + v.vertex.z);
                 #endif
 
                 //v.vertex.xz -= sin(v.vertex.zy*1600 - _Count/20.0)/5000;// -  v.vertex.z;
@@ -83,16 +99,16 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 NoiseMap = tex2D(_NoiseMap, float2(i.uv.x - _Count/1000.0, i.uv.y - _Count/1000.0));
+                fixed4 NoiseMap = tex2D(_NoiseMap, float2(i.uv.x - _Time.y/100.0, i.uv.y - _Time.y/100.0));
 
                 fixed4 col = _Color;
 
                 float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 //col.a = clamp(i.vertex.y/2000 - NoiseMap.r , 0, 1)*0.5;
-                col.a = 0.2;
+                col.a = i.oPosition.z*30.0;
                 shading.a = 1.0;
-                return NoiseMap;//shading * col;
+                return col;
             }
             ENDCG
         }

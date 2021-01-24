@@ -19,12 +19,13 @@
     }
     SubShader
     {
+        Tags {
+                "LightMode" = "ForwardAdd" "RenderType"="Opaque"
+            }
         Pass
         {
             Name "FORWARD_DELTA"
-            Tags {
-            "LightMode" = "ForwardAdd"
-            }
+
             CGPROGRAM
             #pragma target 3.0
 

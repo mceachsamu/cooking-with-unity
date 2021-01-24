@@ -106,12 +106,11 @@ public class potController : MonoBehaviour
         bub.GetComponent<bubble>().center = new Vector3(pot.transform.position.x, lid.transform.position.y, pot.transform.position.z);
         bub.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potwater>().GetColor());
 
-        //render after water
         bub.GetComponent<bubble>().scaleIncrease = Random.Range(0.003f,0.006f);
         bub.GetComponent<bubble>().maxScale = Random.Range(0.05f,0.1f);
         bub.GetComponent<bubble>().water = this;
         bub.GetComponent<Transform>().parent = water.GetComponent<Transform>();
-        
+
         //water layer
         bub.layer = 4;
         return bub;
@@ -149,6 +148,5 @@ public class potController : MonoBehaviour
         return pot.transform.localScale.x * lid.GetComponent<lid>().lidXradius;
     }
 
-    
 }
 

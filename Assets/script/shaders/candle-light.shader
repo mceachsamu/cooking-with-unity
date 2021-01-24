@@ -14,10 +14,11 @@
         Pass
         {
             CGPROGRAM
+
+            #pragma target 3.0
+
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
 
@@ -54,7 +55,6 @@
             {
                 // sample the texture
                 fixed4 col = _Color;
-
 
                 return col;
             }

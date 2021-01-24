@@ -18,6 +18,11 @@ public class smoke : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //move upwards with the water level
+        Vector3 pos = this.transform.position;
+        pos.y = water.transform.position.y;
+        this.transform.position = pos;
+
         count++;
         SetShaderProperties();
     }
