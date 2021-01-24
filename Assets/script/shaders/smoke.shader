@@ -10,6 +10,8 @@
         _SmokeTiltY("smoke tilt y", Range(-100.0,100.0)) = 1.0
         _PipeSizeDiv("pipe size div", Range(1.0,100.0)) = 1.0
         _NoiseStrength("noise strength", Range(1.0,20.0)) = 1.0
+        _OverallVisability("visability", Range(0.0,1.0)) = 1.0
+
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
         _SpecularColor("Specular Color", Color) = (0.0,0.0,0.0,1)
@@ -64,6 +66,7 @@
             uniform float _SmokeTiltY;
             uniform float _PipeSizeDiv;
             uniform float _NoiseStrength;
+            uniform float _OverallVisability;
 
             uniform float _Glossiness;
             uniform float4 _SpecularColor;
@@ -76,6 +79,7 @@
                 v2f o;
 
                 o.oPosition = v.vertex;
+
                 #if !defined(SHADER_API_OPENGL)
                     float4 noise = tex2Dlod (_NoiseMap, float4(v.uv.x, v.uv.y + _Time.y/100.0,0,0));
                     v.vertex.xy *= (1.0 + v.vertex.z*500.0);
@@ -106,8 +110,7 @@
                 float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 //col.a = clamp(i.vertex.y/2000 - NoiseMap.r , 0, 1)*0.5;
-                col.a = i.oPosition.z*30.0;
-                shading.a = 1.0;
+                col.a = i.oPosition.z*30.0 * _OverallVisability;
                 return col;
             }
             ENDCG
