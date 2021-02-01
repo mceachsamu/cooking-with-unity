@@ -156,6 +156,7 @@ public class potwater : MonoBehaviour
         if (lid != null){
             return lid.transform.position;
         }
+
         return new Vector3(0.0f,0.0f,0.0f);
     }
 
@@ -163,7 +164,6 @@ public class potwater : MonoBehaviour
         return segSize * numSegs;
     }
 
-    
     public Vector3 RotateAround(Vector3 position, Vector3 point, Vector3 axis, float angle)
     {
         Vector3 pos = position;

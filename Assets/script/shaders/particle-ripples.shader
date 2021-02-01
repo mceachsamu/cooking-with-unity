@@ -67,7 +67,6 @@
             uniform float _WaterSize;
             uniform float4 _ItemWorldPosition;
 
-            
             uniform float _Magnitude;
             uniform float4 _Position;
             uniform int _Counter;
@@ -102,17 +101,11 @@
                 float waterLevel = waterHeight + _WaterLevel - _MaxHeight;
 
                 float heightDiff = clamp(waterLevel - _ItemWorldPosition.y,0.0,1.0)*5;
-                
-                
+
                 //adjust the color based on how far from the top of the water the ripples
                 float dist = sin(length(_Position - i.wpos) * 40 + noise.r*3 - _Counter/10.0) + heightDiff + noise2.r * 6 * (1 - col.a);
                 dist = dist / pow(length(_Position - i.wpos),8);
-                col = clamp(col - dist ,0.0,1.0);
-                if (col.r > 0.5){
-                    col.rgba = float4(1.0,1.0,1.0,1.0);
-                }else{
-                    col.rgba = float4(0.0,0.0,0.0,0.0);
-                }
+                col = clamp(col - dist ,0.0, 1.0);
 
                 //dont render ripples outside of pot
                 float alpha = getAlpha(i.wpos, _PotCenter, _XRad);
