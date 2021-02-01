@@ -19,12 +19,117 @@
     }
     SubShader
     {
-        Tags {
-                "LightMode" = "ForwardAdd" "RenderType"="Opaque"
-            }
+        LOD 300
+
         Pass
         {
+
+            Name "FORWARD"
+            Tags { "LightMode" = "ForwardBase" }
+
+
+            CGPROGRAM
+            #pragma target 3.0
+
+            #include "cellShading.cginc"
+
+            #pragma multi_compile_shadowcaster
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+            #pragma multi_compile_fwdbase_fullshadows
+            #include "AutoLight.cginc"
+            #include "UnityLightingCommon.cginc"
+
+            struct v2f
+            {
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
+                float4 wpos : TEXCOORD1;
+                float3 worldNormal : NORMAL;
+                float3 viewDir : TEXCOORD2;
+                float4 screenPos : TEXCOORD3;
+                half3 tspace0 : TEXCOORD4; // tangent.x, bitangent.x, normal.x
+                half3 tspace1 : TEXCOORD5; // tangent.y, bitangent.y, normal.y
+                half3 tspace2 : TEXCOORD6; // tangent.z, bitangent.z, normal.z
+                //SHADOW_COORDS(7)
+            };
+
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+            sampler2D _NormalMap;
+            float4 _NormalMap_ST;
+
+            uniform int _UseColor;
+
+            uniform float4 _Color;
+            uniform float _Glossiness;
+            uniform float4 _SpecularColor;
+            uniform float4 _RimColor;
+            uniform float _RimAmount;
+            uniform float4 _AmbientColor;
+            uniform int _UseNormalMap;
+            uniform float _Saturation;
+
+            v2f vert (appdata_tan v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+
+                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+                o.worldNormal =  UnityObjectToWorldNormal(v.normal);
+                o.wpos = mul(unity_ObjectToWorld, v.vertex);
+                o.viewDir = WorldSpaceViewDir(v.vertex);
+				o.screenPos = ComputeScreenPos(o.vertex);
+
+                half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
+                // compute bitangent from cross product of normal and tangent
+                half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
+                half3 wBitangent = cross(o.worldNormal, wTangent) * tangentSign;
+                // output the tangent space matrix
+                o.tspace0 = half3(wTangent.x, wBitangent.x, o.worldNormal.x);
+                o.tspace1 = half3(wTangent.y, wBitangent.y, o.worldNormal.y);
+                o.tspace2 = half3(wTangent.z, wBitangent.z, o.worldNormal.z);
+                //TRANSFER_SHADOW(o);
+                return o;
+            }
+
+            fixed4 frag (v2f i) : SV_Target
+            {
+                half2 uv_NormalMap = TRANSFORM_TEX (i.uv, _NormalMap);
+
+                half3 tnormal = UnpackNormal(tex2D(_NormalMap, uv_NormalMap));
+                 // transform normal from tangent to world space
+                half3 worldNormal;
+                worldNormal.x = dot(i.tspace0, tnormal);
+                worldNormal.y = dot(i.tspace1, tnormal);
+                worldNormal.z = dot(i.tspace2, tnormal);
+
+                //check if we should disabled normal mapping
+                if (!_UseNormalMap){
+                    worldNormal = i.worldNormal;
+                }
+
+                fixed4 col = tex2D(_MainTex, i.uv);
+                if(_UseColor == 1){
+                    col = _Color;
+                }
+
+                //apply saturation
+                col.rgb = col.rgb * _Saturation;
+
+                float4 shading = GetCellShading(i.wpos, _WorldSpaceLightPos0.xyzw, worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+
+                //float shadow = SHADOW_ATTENUATION(i);
+               // col.xyz *= shadow;
+                return col * shading;
+            }
+            ENDCG
+        }
+
+        Pass {
             Name "FORWARD_DELTA"
+            Tags { "LightMode" = "ForwardAdd" }
 
             CGPROGRAM
             #pragma target 3.0
