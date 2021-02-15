@@ -43,7 +43,6 @@ public class particleRipples : MonoBehaviour
         this.GetComponent<Renderer>().material.SetVector("_PotCenter", waterController.GetComponent<potController>().GetCenter());
         this.GetComponent<Renderer>().material.SetInt("_Counter", count);
         this.GetComponent<Renderer>().material.SetFloat("_XRad", waterController.GetComponent<potController>().GetXRadius());
-        
 
         //if not attached to anything, dont set these shader properties
         if (attachedTo != null){
@@ -51,7 +50,6 @@ public class particleRipples : MonoBehaviour
             this.GetComponent<Renderer>().material.SetFloat("_Magnitude", attachedTo.GetComponent<underwater>().RippleMagnitude);
             this.GetComponent<ParticleSystem>().startSize = attachedTo.GetComponent<underwater>().RippleMagnitude;
         }
-        
     }
 
     public void SetAttachedObject(GameObject toAttach){

@@ -108,10 +108,10 @@
                 col = clamp(col - dist ,0.0, 1.0);
 
                 //dont render ripples outside of pot
-                float alpha = getAlpha(i.wpos, _PotCenter, _XRad);
-                if (alpha == 0.0){
-                    col.a = 0.0;
-                }
+                // float alpha = getAlpha(i.wpos, _PotCenter, _XRad);
+                // if (alpha == 0.0){
+                //     col.a = 0.0;
+                // }
                 return col;
             }
             ENDCG

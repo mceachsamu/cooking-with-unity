@@ -5,6 +5,7 @@
         _MainTex("Texture", 2D) = "white" {}
         _NormalMap("normal map", 2D) = "white" {}
         _UseColor("use color", int) = 0
+        _NormalFrequency("normal frequency", range(1.0,10.0)) = 1.0
 
         [HDR]
         _Color("Color", Color) = (0.0,0.0,0.0,0.0)
@@ -61,6 +62,7 @@
             float4 _NormalMap_ST;
 
             uniform int _UseColor;
+            uniform float _NormalFrequency;
 
             uniform float4 _Color;
             uniform float _Glossiness;
@@ -164,6 +166,7 @@
             float4 _NormalMap_ST;
 
             uniform int _UseColor;
+            uniform float _NormalFrequency;
 
             uniform float4 _Color;
             uniform float _Glossiness;
@@ -201,7 +204,7 @@
             {
                 half2 uv_NormalMap = TRANSFORM_TEX (i.uv, _NormalMap);
 
-                half3 tnormal = UnpackNormal(tex2D(_NormalMap, uv_NormalMap));
+                half3 tnormal = UnpackNormal(tex2D(_NormalMap, uv_NormalMap * _NormalFrequency));
                  // transform normal from tangent to world space
                 half3 worldNormal;
                 worldNormal.x = dot(i.tspace0, tnormal);
