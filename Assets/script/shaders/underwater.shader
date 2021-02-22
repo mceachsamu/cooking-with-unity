@@ -148,7 +148,7 @@
                 fixed4 caustic1 = tex2D(_Caustics, float2(uvxDistortion, uvyDistortion) * _Caustic1Frequency);
                 fixed4 caustic2 = tex2D(_Caustics, float2(uvxDistortion, uvyDistortion) * _Caustic2Frequency);
 
-                float4 shading = GetCellShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
                 col = shading;
 
                 //calculate the world height of the water
