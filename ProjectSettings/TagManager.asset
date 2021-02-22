@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - WaterSpout
+  - Bottle
+  - BottleEnd
+  - BottleParticles
+  - Water
+  - IngredientSpawn
+  - WaterRipples
   layers:
   - Default
   - TransparentFX
