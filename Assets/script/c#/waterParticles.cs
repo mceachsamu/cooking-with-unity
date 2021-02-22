@@ -11,7 +11,7 @@ public class waterParticles : MonoBehaviour
 
     public GameObject waterSpout;
 
-    public GameObject water;
+    public GameObject waterController;
 
     public GameObject bottleEnd;
 
@@ -28,6 +28,16 @@ public class waterParticles : MonoBehaviour
         this.transform.position = bottleEnd.GetComponent<Transform>().position;
         system = this.GetComponent<ParticleSystem>();
         m_Particles = new ParticleSystem.Particle[system.main.maxParticles];
+
+        //initialize water
+        GameObject[] controllers = new GameObject[0];
+        if (waterController == null){
+            controllers = GameObject.FindGameObjectsWithTag("GameController");
+        }
+        if (controllers.Length > 0){
+            //just get the first one
+            waterController = controllers[0];
+        }
     }
 
     void LateUpdate()
@@ -37,7 +47,7 @@ public class waterParticles : MonoBehaviour
         system.GetCustomParticleData(customDat, ParticleSystemCustomData.Custom1);
 
         int numParticlesAlive = system.GetParticles(m_Particles);
-        potController controller = water.GetComponent<potController>();
+        potController controller = waterController.GetComponent<potController>();
         waterPipe waterPipe = waterSpout.GetComponent<waterPipe>();
         int count = 0;
         Vector3 positionSum = new Vector3(0.0f,0.0f,0.0f);
@@ -73,8 +83,5 @@ public class waterParticles : MonoBehaviour
         system.SetCustomParticleData(customDat, ParticleSystemCustomData.Custom1);
 
         count++;
-       //this.GetComponent<Renderer>().material.SetFloat("_Count", count);
-       //this.GetComponent<Renderer>().material.SetVector("_LightPos", Light.transform.position);
-
     }
 }
