@@ -29,7 +29,6 @@ public class bottle : MonoBehaviour
         mousePrev = Input.mousePosition;
 
         //initialize water
-        //initialize water
         waterController = FindFirstWithTag("GameController");
     }
 

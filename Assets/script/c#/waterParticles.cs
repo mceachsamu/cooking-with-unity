@@ -10,9 +10,9 @@ public class waterParticles : MonoBehaviour
     public float gravity = 0.00f;
     private int count = 0;
 
-    public GameObject waterSpout;
+    private GameObject waterSpout;
 
-    public GameObject waterController;
+    private GameObject waterController;
 
     public GameObject bottleEnd;
 
@@ -32,7 +32,7 @@ public class waterParticles : MonoBehaviour
 
         //initialize water
         waterController = FindFirstWithTag("GameController");
-
+        waterSpout =  FindFirstWithTag("WaterSpout");
     }
 
     void LateUpdate()

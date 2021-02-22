@@ -1,21 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ObjectFind;
 
 public class particleRipples : MonoBehaviour
 {
 
-    public GameObject waterController;
+    private GameObject waterController;
 
     private GameObject attachedTo;
-
-
 
     private int count = 0;
     // Start is called before the first frame update
     void Start()
     {
-        
+        //initialize water
+        waterController = FindFirstWithTag("GameController");
     }
 
     // Update is called once per frame

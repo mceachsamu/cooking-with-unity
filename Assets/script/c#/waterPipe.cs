@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ObjectFind;
 
 public class waterPipe : MonoBehaviour
 {
@@ -9,13 +10,11 @@ public class waterPipe : MonoBehaviour
     public int numSegmentsRound = 15;
     public int numSegmentsLong = 10;
 
-    public GameObject bottle;
+    private GameObject bottle;
 
-    public GameObject bottleEnd;
+    private GameObject bottleEnd;
 
-    public GameObject water;
-
-    public ParticleSystem particles;
+    private GameObject waterController;
 
     private Vector3 PreviousPoint;
 
@@ -43,10 +42,21 @@ public class waterPipe : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //create starting shape
         shapes3D shapeGen = new shapes3D();
         Mesh mesh = shapeGen.CreateCylandar(baseRadius,baseLength,numSegmentsRound,numSegmentsLong);
         this.GetComponent<MeshFilter>().mesh = mesh;
-        PreviousPoint = water.GetComponent<potController>().GetCenter();
+
+        //initialize water
+        waterController = FindFirstWithTag("GameController");
+        //initialize bottle
+        bottle = FindFirstWithTag("Bottle");
+        //initialize bottle end
+        bottleEnd = FindFirstWithTag("BottleEnd");
+
+
+        PreviousPoint = waterController.GetComponent<potController>().GetCenter();
+
     }
 
     // Update is called once per frame
@@ -57,11 +67,11 @@ public class waterPipe : MonoBehaviour
         count++;
 
         force = size*0.3f;
-        
-        FallPosition.y = water.GetComponent<potController>().GetWaterHeightAtPosition(FallPosition);
 
-        water.GetComponent<potController>().AddForceToWater(FallPosition, force, 0.0f);
-        water.GetComponent<potController>().AddLiquidToWater(0.01f * force, new Color(0.0f,0.0f,0.0f,0.0f));
+        FallPosition.y = waterController.GetComponent<potController>().GetWaterHeightAtPosition(FallPosition);
+
+        waterController.GetComponent<potController>().AddForceToWater(FallPosition, force, 0.0f);
+        waterController.GetComponent<potController>().AddLiquidToWater(0.01f * force, new Color(0.0f,0.0f,0.0f,0.0f));
 
         this.GetComponent<Renderer>().material.SetVector("_PipeStart", bottleEnd.transform.position);
         this.GetComponent<Renderer>().material.SetVector("_PipeEnd", FallPosition);
@@ -74,7 +84,7 @@ public class waterPipe : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_Exponent", exponential);
 
         this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
-        this.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potController>().GetColor());
+        this.GetComponent<Renderer>().material.SetVector("baseColor", waterController.GetComponent<potController>().GetColor());
 
         Vector3 direction = this.transform.position - FallPosition;
         Vector3 directionPrev = this.transform.position - PreviousPoint;
@@ -91,7 +101,7 @@ public class waterPipe : MonoBehaviour
         Vector3 drawbug = FallPosition;
         drawbug.y = 5.0f;
         Vector3 Fall = FallPosition;
-        Fall.y = water.GetComponent<potController>().GetWaterHeightAtPosition(FallPosition) + water.GetComponent<potController>().GetWaterPosition().y ;
+        Fall.y = waterController.GetComponent<potController>().GetWaterHeightAtPosition(FallPosition) + waterController.GetComponent<potController>().GetWaterPosition().y ;
         Debug.DrawLine(Fall, drawbug, Color.green);
     }
 
