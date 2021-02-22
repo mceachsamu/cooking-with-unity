@@ -1,5 +1,4 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
+﻿
 Shader "Unlit/water"
 {
     Properties
@@ -26,18 +25,16 @@ Shader "Unlit/water"
     }
     SubShader
     {
-
-        Blend One One
-        Tags {"RenderType"="Opaque"
-            "LightMode"="ForwardAdd" }
-        Lighting On
-        LOD 200
+        Tags {"RenderType"="Opaque" "LightMode"="ForwardAdd" }
+        LOD 300
         ZWrite Off
+        ColorMask RGBA
+
         Blend SrcAlpha OneMinusSrcAlpha
-        ColorMask RGB
         Pass
         {
             CGPROGRAM
+            #pragma target 3.0
             #pragma vertex vert
             #pragma fragment frag
 

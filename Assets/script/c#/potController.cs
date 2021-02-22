@@ -75,8 +75,8 @@ public class potController : MonoBehaviour
         Vector3 pos = water.transform.position;
 
         //using log because its kinda similar to the shape of a bowl
-        float newHeight = Mathf.Log(totalVolume+0.5f, 2);
-        pos.y = newHeight;
+        float newHeight = Mathf.Log(totalVolume, 2);
+        pos.y = newHeight+0.5f;
         water.transform.position = pos;
     }
 

@@ -34,7 +34,7 @@ public class waterPipe : MonoBehaviour
     [Range(0.0f, 5.0f)]
 
     public float sizeAdd = 1.0f;
-    private float size = 1.0f;
+    private float size = 0.0f;
 
 
     [Range(0.1f, 0.5f)]
@@ -97,7 +97,7 @@ public class waterPipe : MonoBehaviour
         PreviousPoint.x += diffX * creep;
         PreviousPoint.y += diffY * creep;
         PreviousPoint.z += diffZ * creep;
-        
+
         Vector3 drawbug = FallPosition;
         drawbug.y = 5.0f;
         Vector3 Fall = FallPosition;
