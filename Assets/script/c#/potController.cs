@@ -22,8 +22,6 @@ public class potController : MonoBehaviour
 
     public GameObject lid;
 
-    public GameObject pot;
-
     public GameObject bubblePrefab;
 
 
@@ -83,7 +81,7 @@ public class potController : MonoBehaviour
     }
 
     private void SetWaterRadius(){
-        this.water.GetComponent<potwater>().SetRadius(pot.transform.localScale.x * lid.GetComponent<lid>().lidXradius);
+        this.water.GetComponent<potwater>().SetRadius(this.transform.localScale.x * lid.GetComponent<lid>().lidXradius);
     }
 
     public void AddLiquidToWater(float amount, Color color) {
@@ -103,7 +101,7 @@ public class potController : MonoBehaviour
         bub.GetComponent<MeshFilter>().mesh = bubblePrefab.GetComponent<MeshFilter>().mesh;
         bub.AddComponent<bubble>();
         bub.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
-        bub.GetComponent<bubble>().center = new Vector3(pot.transform.position.x, lid.transform.position.y, pot.transform.position.z);
+        bub.GetComponent<bubble>().center = new Vector3(this.transform.position.x, lid.transform.position.y, this.transform.position.z);
         bub.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potwater>().GetColor());
 
         bub.GetComponent<bubble>().scaleIncrease = Random.Range(0.003f,0.006f);
@@ -145,7 +143,7 @@ public class potController : MonoBehaviour
     }
 
     public float GetXRadius(){
-        return pot.transform.localScale.x * lid.GetComponent<lid>().lidXradius;
+        return this.transform.localScale.x * lid.GetComponent<lid>().lidXradius;
     }
 
 }

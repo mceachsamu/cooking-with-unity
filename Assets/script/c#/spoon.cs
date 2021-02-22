@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ObjectFind;
 
 public class spoon : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class spoon : MonoBehaviour
     Quaternion rotation;
 
     //reference the water we are currently stirring
-    public GameObject water;
+    public GameObject potController;
 
     //the multiplier for the force this spoon exhubits on water
     public float forceMultiplier = 2.0f;
@@ -27,28 +28,34 @@ public class spoon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //initialize water
+        potController = FindFirstWithTag("GameController");
+
         origin = this.transform.position;
         previousPosition = origin;
         rotation = this.transform.rotation;
     }
 
     private void addForceToWater(){
-        Vector3 center = water.GetComponent<potController>().GetCenter();
+        Vector3 center = potController.GetComponent<potController>().GetCenter();
         float force = (this.transform.position - previousPosition).magnitude;
+
+        //determine the direction to stir the water
         Vector3 p1 = this.transform.position;
         Vector3 p2 = previousPosition;
         Vector3 ac = center - p1;
         Vector3 bc = p2 - center;
         float x = -1.0f * (ac.x*bc.z-ac.z*bc.x);
+
         //if x positive, then clockwise, otherwise anti clockwise
-        water.GetComponent<potController>().AddForceToWater(this.transform.position, force * forceMultiplier, x * stirForce);
+        potController.GetComponent<potController>().AddForceToWater(this.transform.position, force * forceMultiplier, x * stirForce);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        Vector3 dir =  this.transform.position - water.GetComponent<potController>().GetCenter();
+        Vector3 dir =  this.transform.position - potController.GetComponent<potController>().GetCenter();
         dir.y = 0.0f;
 
         //add a force to water each frame
