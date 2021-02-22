@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ObjectFind;
 
 public class bottle : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class bottle : MonoBehaviour
     //the mouse position in the previous frame
     Vector3 mousePrev;
 
-    public GameObject waterController;
+    private GameObject waterController;
 
     //the bottom position of the bottle
     public GameObject bottom;
@@ -28,14 +29,8 @@ public class bottle : MonoBehaviour
         mousePrev = Input.mousePosition;
 
         //initialize water
-        GameObject[] controllers = new GameObject[0];
-        if (waterController == null){
-            controllers = GameObject.FindGameObjectsWithTag("GameController");
-        }
-        if (controllers.Length > 0){
-            //just get the first one
-            waterController = controllers[0];
-        }
+        //initialize water
+        waterController = FindFirstWithTag("GameController");
     }
 
     // Update is called once per frame

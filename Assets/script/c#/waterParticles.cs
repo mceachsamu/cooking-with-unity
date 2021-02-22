@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ObjectFind;
 
 public class waterParticles : MonoBehaviour
 {
@@ -30,14 +31,8 @@ public class waterParticles : MonoBehaviour
         m_Particles = new ParticleSystem.Particle[system.main.maxParticles];
 
         //initialize water
-        GameObject[] controllers = new GameObject[0];
-        if (waterController == null){
-            controllers = GameObject.FindGameObjectsWithTag("GameController");
-        }
-        if (controllers.Length > 0){
-            //just get the first one
-            waterController = controllers[0];
-        }
+        waterController = FindFirstWithTag("GameController");
+
     }
 
     void LateUpdate()
