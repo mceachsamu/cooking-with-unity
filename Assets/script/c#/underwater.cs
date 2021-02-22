@@ -10,6 +10,7 @@ public class underwater : MonoBehaviour
     private ParticleSystem prefab;
 
     public bool hasRipples = true;
+
     //if true, will not render fragments above water surface
     public int cullAboveWater = 1;
 
