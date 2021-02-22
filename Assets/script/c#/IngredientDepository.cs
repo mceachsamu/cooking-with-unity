@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ObjectFind;
 
 public class IngredientDepository : MonoBehaviour
 {
-    public GameObject pot;
 
-    public GameObject SpawnPoint;
+    private GameObject water;
+
+    private GameObject potController;
+
 
     public float popSideForce = 10.0f;
 
@@ -32,11 +35,19 @@ public class IngredientDepository : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        //initialize water
+        water = FindFirstWithTag("Water");
+
+        //initialize water controller
+        potController = FindFirstWithTag("GameController");
+
         settings = new IngredientSettings[3]{
             new IngredientSettings(mushroomPrefab, numMushrooms, "q"),
             new IngredientSettings(cinamonPrefab, numCinamons, "w"),
             new IngredientSettings(flowerPrefab, numFlowers, "e")
         };
+
 
         for (int i = 0; i < settings.Length; i++){
             for (int j = 0; j < settings[i].numSpawn; j++){
@@ -68,21 +79,21 @@ public class IngredientDepository : MonoBehaviour
                 GameObject g = settings[i].ingredients[settings[i].index];
                 AddForceToIngredient(g);
 
-                g.transform.position = SpawnPoint.transform.position;
+                g.transform.position = this.transform.position;
                 settings[i].index++;
             }
         }
     }
 
     public void AddForceToIngredient(GameObject go){
-        Vector3 dir = (pot.GetComponent<potController>().GetCenter() - SpawnPoint.transform.position) * popSideForce;
+        Vector3 dir = (potController.GetComponent<potController>().GetCenter() - this.transform.position) * popSideForce;
         dir += Vector3.up * popUpwardsForce;
         go.GetComponent<Rigidbody>().AddForce(dir);
     }
 
     public GameObject instantiateIngredient(GameObject prefab){
         GameObject go = Instantiate(prefab);
-        go.transform.parent = prefab.transform.parent;
+        go.transform.parent = water.transform;
         return go;
     }
 }

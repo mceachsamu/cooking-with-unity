@@ -6,7 +6,7 @@ using static ObjectFind;
 public class particleRipples : MonoBehaviour
 {
 
-    private GameObject waterController;
+    private GameObject potController;
 
     private GameObject attachedTo;
 
@@ -15,7 +15,7 @@ public class particleRipples : MonoBehaviour
     void Start()
     {
         //initialize water
-        waterController = FindFirstWithTag("GameController");
+        potController = FindFirstWithTag("GameController");
     }
 
     // Update is called once per frame
@@ -24,9 +24,9 @@ public class particleRipples : MonoBehaviour
         //move this particle effect to its attached component
         //want to keep it at the water height
         if (attachedTo != null){
-            float height = waterController.GetComponent<potController>().GetWaterHeightAtPosition(this.transform.position);
+            float height = potController.GetComponent<potController>().GetWaterHeightAtPosition(this.transform.position);
             Vector3 position = attachedTo.transform.position;
-            position.y = waterController.GetComponent<potController>().GetWaterPosition().y - waterController.GetComponent<potController>().GetWaterMaxHeight()/2;
+            position.y = potController.GetComponent<potController>().GetWaterPosition().y - potController.GetComponent<potController>().GetWaterMaxHeight()/2;
             this.transform.position = position;
             count++;
         }
@@ -35,14 +35,14 @@ public class particleRipples : MonoBehaviour
 
 
     private void setShaderProperties(){
-        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", waterController.GetComponent<potController>().GetWaterHeightMap());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", waterController.GetComponent<potController>().GetWaterPosition().y);
-        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", waterController.GetComponent<potController>().GetWaterSize());
-        this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", waterController.GetComponent<potController>().GetWaterMaxHeight());
+        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", potController.GetComponent<potController>().GetWaterHeightMap());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", potController.GetComponent<potController>().GetWaterPosition().y);
+        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", potController.GetComponent<potController>().GetWaterSize());
+        this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", potController.GetComponent<potController>().GetWaterMaxHeight());
         this.GetComponent<Renderer>().material.SetVector("_Position", this.transform.position);
-        this.GetComponent<Renderer>().material.SetVector("_PotCenter", waterController.GetComponent<potController>().GetCenter());
+        this.GetComponent<Renderer>().material.SetVector("_PotCenter", potController.GetComponent<potController>().GetCenter());
         this.GetComponent<Renderer>().material.SetInt("_Counter", count);
-        this.GetComponent<Renderer>().material.SetFloat("_XRad", waterController.GetComponent<potController>().GetXRadius());
+        this.GetComponent<Renderer>().material.SetFloat("_XRad", potController.GetComponent<potController>().GetXRadius());
 
         //if not attached to anything, dont set these shader properties
         if (attachedTo != null){

@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ObjectFind;
 
 public class underwater : MonoBehaviour
 {
-    public GameObject water;
+    private GameObject potController;
 
-    public ParticleSystem prefab;
+    private ParticleSystem prefab;
+
     public bool hasRipples = true;
     //if true, will not render fragments above water surface
     public int cullAboveWater = 1;
@@ -17,15 +19,20 @@ public class underwater : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //initialize water
+        potController = FindFirstWithTag("GameController");
+
         //set the render queue for underwater objects
         this.GetComponent<Renderer>().material.renderQueue = 2;
-        
+
         //create ripple effect if we hasRipples is true
         if (hasRipples){
-            ParticleSystem ripple = Instantiate(prefab, this.transform.position, this.transform.rotation);
+            GameObject particles = FindFirstWithTag("WaterRipples");
+            ParticleSystem system = particles.GetComponent<ParticleSystem>();
+            ParticleSystem ripple = Instantiate(system, this.transform.position, this.transform.rotation);
             ripple.GetComponent<particleRipples>().SetAttachedObject(this.gameObject);
         }
-        
+
     }
 
     // Update is called once per frame
@@ -35,16 +42,16 @@ public class underwater : MonoBehaviour
     }
 
     private void setShaderProperties(){
-        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", water.GetComponent<potController>().GetWaterOpaqueness());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", water.GetComponent<potController>().GetWaterSize());
-        this.GetComponent<Renderer>().material.SetFloat("_Count", water.GetComponent<potController>().GetCount());
-        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", water.GetComponent<potController>().GetWaterHeightMap());
-        this.GetComponent<Renderer>().material.SetVector("_PotCenter", water.GetComponent<potController>().GetCenter());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<potController>().GetWaterPosition().y);
-        this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", water.GetComponent<potController>().GetWaterMaxHeight());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", potController.GetComponent<potController>().GetWaterOpaqueness());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", potController.GetComponent<potController>().GetWaterSize());
+        this.GetComponent<Renderer>().material.SetFloat("_Count", potController.GetComponent<potController>().GetCount());
+        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", potController.GetComponent<potController>().GetWaterHeightMap());
+        this.GetComponent<Renderer>().material.SetVector("_PotCenter", potController.GetComponent<potController>().GetCenter());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", potController.GetComponent<potController>().GetWaterPosition().y);
+        this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", potController.GetComponent<potController>().GetWaterMaxHeight());
         this.GetComponent<Renderer>().material.SetInt("_CullAboveWater", cullAboveWater);
 
-        this.GetComponent<Renderer>().material.SetFloat("_Angle", water.GetComponent<potController>().GetWaterAngle());
+        this.GetComponent<Renderer>().material.SetFloat("_Angle", potController.GetComponent<potController>().GetWaterAngle());
     }
 
 }

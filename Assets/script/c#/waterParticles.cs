@@ -12,7 +12,7 @@ public class waterParticles : MonoBehaviour
 
     private GameObject waterSpout;
 
-    private GameObject waterController;
+    private GameObject potController;
 
     public GameObject bottleEnd;
 
@@ -31,7 +31,7 @@ public class waterParticles : MonoBehaviour
         m_Particles = new ParticleSystem.Particle[system.main.maxParticles];
 
         //initialize water
-        waterController = FindFirstWithTag("GameController");
+        potController = FindFirstWithTag("GameController");
         waterSpout =  FindFirstWithTag("WaterSpout");
     }
 
@@ -42,7 +42,7 @@ public class waterParticles : MonoBehaviour
         system.GetCustomParticleData(customDat, ParticleSystemCustomData.Custom1);
 
         int numParticlesAlive = system.GetParticles(m_Particles);
-        potController controller = waterController.GetComponent<potController>();
+        potController controller = potController.GetComponent<potController>();
         waterPipe waterPipe = waterSpout.GetComponent<waterPipe>();
         int count = 0;
         Vector3 positionSum = new Vector3(0.0f,0.0f,0.0f);

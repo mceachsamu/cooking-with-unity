@@ -6,7 +6,6 @@ using static ObjectFind;
 public class bottle : MonoBehaviour
 {
 
-
     //the origin of the bottle so we can reset its position
     Vector3 origin;
 
@@ -16,10 +15,11 @@ public class bottle : MonoBehaviour
     //the mouse position in the previous frame
     Vector3 mousePrev;
 
-    private GameObject waterController;
+    private GameObject potController;
 
     //the bottom position of the bottle
     public GameObject bottom;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +29,7 @@ public class bottle : MonoBehaviour
         mousePrev = Input.mousePosition;
 
         //initialize water
-        waterController = FindFirstWithTag("GameController");
+        potController = FindFirstWithTag("GameController");
     }
 
     // Update is called once per frame
@@ -54,11 +54,11 @@ public class bottle : MonoBehaviour
     }
 
     void setShaderProperties(){
-        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", waterController.GetComponent<potController>().GetWaterOpaqueness());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", waterController.GetComponent<potController>().GetWaterSize());
-        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", waterController.GetComponent<potController>().GetWaterHeightMap());
-        this.GetComponent<Renderer>().material.SetVector("_PotCenter", waterController.GetComponent<potController>().GetCenter());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", waterController.GetComponent<potController>().GetWaterPosition().y);
+        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", potController.GetComponent<potController>().GetWaterOpaqueness());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", potController.GetComponent<potController>().GetWaterSize());
+        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", potController.GetComponent<potController>().GetWaterHeightMap());
+        this.GetComponent<Renderer>().material.SetVector("_PotCenter", potController.GetComponent<potController>().GetCenter());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", potController.GetComponent<potController>().GetWaterPosition().y);
     }
 
 }
