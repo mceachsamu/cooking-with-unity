@@ -27,5 +27,3 @@ Open up the file using unity hub using the recommended version.
 right mouse button - move spoon
 
 z - tilt bottle
-q, w,e - add ingredients
-right click - stir spoon
