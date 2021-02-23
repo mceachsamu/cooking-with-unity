@@ -53,7 +53,6 @@
                 half3 tspace0 : TEXCOORD4; // tangent.x, bitangent.x, normal.x
                 half3 tspace1 : TEXCOORD5; // tangent.y, bitangent.y, normal.y
                 half3 tspace2 : TEXCOORD6; // tangent.z, bitangent.z, normal.z
-                //SHADOW_COORDS(7)
             };
 
             sampler2D _MainTex;
@@ -92,7 +91,6 @@
                 o.tspace0 = half3(wTangent.x, wBitangent.x, o.worldNormal.x);
                 o.tspace1 = half3(wTangent.y, wBitangent.y, o.worldNormal.y);
                 o.tspace2 = half3(wTangent.z, wBitangent.z, o.worldNormal.z);
-                //TRANSFER_SHADOW(o);
                 return o;
             }
 
@@ -122,8 +120,6 @@
 
                 float4 shading = GetCellShading(i.wpos, _WorldSpaceLightPos0.xyzw, worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
-                //float shadow = SHADOW_ATTENUATION(i);
-               // col.xyz *= shadow;
                 return col * shading;
             }
             ENDCG
