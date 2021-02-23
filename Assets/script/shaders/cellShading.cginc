@@ -12,13 +12,6 @@ inline float4 GetShading (float4 wpos, float4 lightPos, float3 wNorm, float3 vie
     float NdotL = dot(wNorm , lightDir);
     float intensity = smoothstep(0, 1.0, NdotL);
     float overall = intensity;
-    //use hard cuttoffs so we get cell effect
-    // if (overall < 0.0){
-    //     overall = 0.5;
-    // }
-    // if (overall > 0.0){
-    //     overall = 1.0;
-    // }
 
     //calculate the specular intensity
     float3 H = normalize(_LightPos + viewDir);
@@ -97,8 +90,11 @@ inline float4 GetCellShading (float4 wpos, float4 lightPos, float3 wNorm, float3
     float smoothBack = smoothstep(0.0,0.5,backLighting);
 
     float4 finalColor = (baseColor + overall + specular + rim + backLighting/1.0) * dist * lightCol;
+
     //we arent using the alpha channel for our final shading, so pass
     //through the NdotL value so we can use it for calculating underwater distortion
+    //this is so we get smooth values for distortion
+
     finalColor.a = NdotL;
     return finalColor;
 }
