@@ -97,16 +97,15 @@ Shader "Unlit/water"
                 o.uv = TRANSFORM_TEX(v.uv, _Tex);
                 //get world position from object position
                 float4 worldPos = mul (unity_ObjectToWorld, v.vertex);
-                o.wpos = worldPos;
 
                 waterOutput w = GetWaterDistortion(_Tex, v.vertex, o.uv, _Seperation, _TotalSize, _MaxHeight);
                 v.vertex.y = w.vertex.y;
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                worldPos = mul (unity_ObjectToWorld, v.vertex);
-                worldPos.y = w.vertex.y;
+                worldPos = mul(unity_ObjectToWorld, v.vertex);
                 o.worldNormal = w.worldNorm;
 
+                o.wpos = worldPos;
                 o.pos = v.vertex;
                 o.uv = TRANSFORM_TEX(v.uv, _Tex);
 				o.screenPos = ComputeScreenPos(o.vertex);

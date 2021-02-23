@@ -39,7 +39,6 @@
 
             #include "cellShading.cginc"
             #include "pot-cull.cginc"
-            
 
             #pragma multi_compile_shadowcaster
             #pragma vertex vert
@@ -119,7 +118,7 @@
             {
                 // sample the texture
                 fixed4 col = _Color;
-                float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
+                float4 shading = GetCellShading(i.wpos, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 //dont render bubbles outside of pot
                 float alpha = getAlpha(i.wpos, center, xRad);
@@ -139,10 +138,11 @@
                 if (i.wpos.y < waterLevel){
                     shading.a = 0.0;
                 }
+                col.a = 0.5;
 
                 float shadow = SHADOW_ATTENUATION(i);
                 col *= shadow;
-                return shading * pow(col, 1.0);
+                return col * shading;
             }
             ENDCG
         }
