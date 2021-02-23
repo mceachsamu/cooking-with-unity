@@ -2,6 +2,8 @@
 {
     Properties
     {
+
+        [HDR]
         _HeightMap("heightmap", 2D) = "white" {}
         _DecayMap ("decay-map", 2D) = "white" {}
         _DecayAmount ("decay-amount", float) = 0.0
@@ -10,15 +12,10 @@
         _PotCenter("center", Vector) = (0.0,0.0,0.0,0.0)
         _LightPos("light-position", Vector) = (0.0,0.0,0.0,0.0)
         _Color("color", Vector) = (1.0,1.0,1.0,0.0)
-        _Color2("color2", Vector) = (1.0,1.0,1.0,0.0)
-        xRad("xRad", float) = 0.0
-        zRad("zRad", float) = 0.0//to do --use to implement oval pots
-        center("center", Vector) = (0.0,0.0,0.0,0.0)//center of pot water
-        time("time", float) = 0.0 //increasing timer to help with animations
-        waterSize("waterSize", float) = 0.0//the size of the water we are rendering on for height purposes
+        _xRad("xRad", float) = 0.0
+        _zRad("zRad", float) = 0.0//to do --use to implement oval pots
         _WaterLevel("water level", float) = 0.0
 
-        [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
         _SpecularColor("Specular Color", Color) = (0.1,0.1,0.1,1)
         _Glossiness("Glossiness", Range(0, 100)) = 14
@@ -65,7 +62,6 @@
                 SHADOW_COORDS(3)
             };
 
-
             sampler2D _HeightMap;
             float4 _HeightMap_ST;
 
@@ -78,12 +74,10 @@
             uniform float _DecayAmount;
             uniform float4 _LightPos;
             uniform float4 _Color;
-            uniform float4 _Color2;
-            uniform float xRad;
-            uniform float zRad;
-            uniform float time;
+            uniform float _xRad;
+            uniform float _zRad;
             uniform float waterSize;
-            uniform float4 center;
+            uniform float4 _Center;
             uniform float _WaterLevel;
 
 
@@ -98,8 +92,9 @@
             {
                 v2f o;
 
-                v.vertex.x = v.vertex.x + sin(v.vertex.x*10 + time*3)/20;
-                v.vertex.z = v.vertex.z + sin(v.vertex.z*10 + time*3)/20;
+                //make the bubble all wobbly
+                v.vertex.x = v.vertex.x + sin(v.vertex.x*10 + _Time.y*15.0)/20;
+                v.vertex.z = v.vertex.z + sin(v.vertex.z*10 + _Time.y*15.0)/20;
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
                 o.uv = TRANSFORM_TEX(v.uv, _DecayMap);
@@ -118,17 +113,18 @@
             {
                 // sample the texture
                 fixed4 col = _Color;
+                col.a = 0.5;
+
                 float4 shading = GetCellShading(i.wpos, _WorldSpaceLightPos0, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
                 //dont render bubbles outside of pot
-                float alpha = getAlpha(i.wpos, center, xRad);
+                float alpha = getAlpha(i.wpos, _PotCenter, _xRad);
                 shading.a = alpha;
 
                 //give bubble popping effect
                 fixed4 decay = tex2D(_DecayMap, float2(i.uv.x-0.75,i.uv.y+0.1)) + _DecayAmount;
                 if (decay.r < 0.5) {
-                    //decaying bubbles make the shadows look really bad right, so disable for now
-                    //shading.a = 0.0;
+                    shading.a = 0.0;
                 }
 
                 //dont render bubble underwater
@@ -138,93 +134,13 @@
                 if (i.wpos.y < waterLevel){
                     shading.a = 0.0;
                 }
-                col.a = 0.5;
 
                 float shadow = SHADOW_ATTENUATION(i);
-                col *= shadow;
-                return col * shading;
+
+                return col * shading * shadow;
             }
+
             ENDCG
         }
-        Pass {
-			Tags {
-				"LightMode" = "ShadowCaster"
-			}
-
-			CGPROGRAM
-
-			#pragma target 3.0
-
-			#pragma multi_compile_shadowcaster
-
-			#pragma vertex vert
-			#pragma fragment frag
-
-            #if !defined(MY_SHADOWS_INCLUDED)
-            #define MY_SHADOWS_INCLUDED
-
-            #include "UnityCG.cginc"
-
-
-            sampler2D _HeightMap;
-            float4 _HeightMap_ST;
-
-            sampler2D _DecayMap;
-            float4 _DecayMap_ST;
-
-            uniform float4 _PotCenter;
-            uniform float _WaterSize;
-            uniform float _MaxHeight;
-            uniform float _DecayAmount;
-            uniform float4 _LightPos;
-            uniform float4 _Color;
-            uniform float4 _Color2;
-            uniform float xRad;
-            uniform float zRad;
-            uniform float time;
-            uniform float waterSize;
-            uniform float4 center;
-            uniform float _WaterLevel;
-            struct VertexData {
-                float4 position : POSITION;
-                float3 normal : NORMAL;
-            };
-
-            #if defined(SHADOWS_CUBE)
-                struct Interpolators {
-                    float4 position : SV_POSITION;
-                    float3 lightVec : TEXCOORD0;
-                };
-
-                Interpolators vert (VertexData v) {
-                    Interpolators i;
-
-                    i.position = UnityObjectToClipPos(v.position);
-                    i.lightVec = mul(unity_ObjectToWorld, i.position).xyz - _LightPositionRange.xyz;
-                    return i;
-                }
-
-                float4 frag (Interpolators i) : SV_TARGET {
-                    float depth = length(i.lightVec) + unity_LightShadowBias.x;
-                    depth *= _LightPositionRange.w;
-                    //return float4(0.0,0.0,0.0,0.0);
-                    return UnityEncodeCubeShadowDepth(depth);
-                }
-            #else
-                float4 vert (VertexData v) : SV_POSITION {
-                    float4 position =
-                        UnityClipSpaceShadowCasterPos(v.position.xyz, v.normal);
-                    return UnityApplyLinearShadowBias(position);
-                }
-
-                half4 frag () : SV_TARGET {
-                    return 1;
-                }
-            #endif
-
-            #endif
-			ENDCG
-		}
-
     }
 }

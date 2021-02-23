@@ -19,7 +19,7 @@ public class bubble : MonoBehaviour
 
     private float decay = 1.0f;
 
-    private float decayRate = 0.01f;
+    private float decayRate = 0.015f;
     private bool decaying = false;
 
     // Start is called before the first frame update
@@ -54,7 +54,6 @@ public class bubble : MonoBehaviour
             decaying = false;
         }
 
-        
         setShaderProperties();
     }
 
@@ -67,11 +66,10 @@ public class bubble : MonoBehaviour
         this.GetComponent<bubble>().xRadius = water.GetXRadius();
         this.GetComponent<bubble>().scaleIncrease = water.GetSpeed();
         this.GetComponent<bubble>().center = new Vector3(water.transform.position.x, water.GetWaterPosition().y+bubbleHeight, water.transform.position.z);
-        this.GetComponent<Renderer>().material.SetFloat("xRad", water.GetXRadius());
-        this.GetComponent<Renderer>().material.SetFloat("zRad", water.GetXRadius());
-        this.GetComponent<Renderer>().material.SetFloat("time", water.GetCount());
+        this.GetComponent<Renderer>().material.SetFloat("_xRad", water.GetXRadius());
+        this.GetComponent<Renderer>().material.SetFloat("_zRad", water.GetXRadius());
         this.GetComponent<Renderer>().material.SetFloat("waterSize", water.GetComponent<potController>().GetWaterSize());
-        this.GetComponent<Renderer>().material.SetVector("center", water.GetCenter());
+        this.GetComponent<Renderer>().material.SetVector("_Center", water.GetCenter());
         this.GetComponent<Renderer>().material.SetVector("_Color", water.GetColor());
         this.GetComponent<Renderer>().material.SetFloat("_DecayAmount", decay);
         this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", water.GetComponent<potController>().GetWaterMaxHeight());
