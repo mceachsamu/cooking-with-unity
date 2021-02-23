@@ -84,7 +84,7 @@ public class waterPipe : MonoBehaviour
         this.GetComponent<Renderer>().material.SetFloat("_Exponent", exponential);
 
         this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
-        this.GetComponent<Renderer>().material.SetVector("baseColor", potController.GetComponent<potController>().GetColor());
+        this.GetComponent<Renderer>().material.SetVector("_BaseColor", potController.GetComponent<potController>().GetColor());
 
         Vector3 direction = this.transform.position - FallPosition;
         Vector3 directionPrev = this.transform.position - PreviousPoint;

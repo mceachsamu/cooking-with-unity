@@ -6,7 +6,7 @@
         _HeightMap("heightmap", 2D) = "white" {}
         _Caustics("caustics", 2D) = "white" {}
         _NoiseMap("noise map", 2D) = "white" {}
-        
+
         _MaxHeight("max height", float) = 0.0
         _WaterSize("water size", float) = 0.0
         _PotCenter("center", Vector) = (0.0,0.0,0.0,0.0)
@@ -33,7 +33,6 @@
         _Glossiness("Glossiness", Range(0, 100)) = 14
         _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimAmount("Rim Amount", Range(0, 1)) = 1.0
-        
     }
     SubShader
     {
@@ -140,7 +139,6 @@
                 float waterHeight = tex2D(_HeightMap, waterUV);
 
                 fixed4 noise = tex2D(_NoiseMap, float2(i.uv.x, i.uv.y - _Count / _CausticNoiseScroll));
-
 
                 //calculate the caustic distortion
                 float uvxDistortion = i.uv.x + waterHeight.r / _CausticXWaterDistortion + noise.r / _CausticXDistortNoise + _Angle / _CausticRotationSpeed;

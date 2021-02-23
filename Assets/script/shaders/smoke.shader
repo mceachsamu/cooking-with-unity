@@ -109,7 +109,6 @@
 
                 float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.worldNormal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
-                //col.a = clamp(i.vertex.y/2000 - NoiseMap.r , 0, 1)*0.5;
                 col.a = i.oPosition.z*30.0 * _OverallVisability;
                 return col;
             }

@@ -18,7 +18,7 @@
         _PipeSegmentsLong("number of segments long", float) = 0.0
         _Exponent("exonential - spout curvature", float) = 0.0
 
-        baseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
+        _BaseColor("base-color", Vector) = (0.99,0.0,0.3,0.0)
 
         [HDR]
         _AmbientColor("Ambient Color", Color) = (0.0,0.0,0.0,1.0)
@@ -74,7 +74,7 @@
             uniform float4 _Direction;
             uniform float4 _DirectionPrev;
 
-            uniform float4 baseColor;
+            uniform float4 _BaseColor;
             uniform float _Glossiness;
             uniform float4 _SpecularColor;
             uniform float4 _RimColor;
@@ -173,9 +173,10 @@
 
                 float4 shading = GetShading(i.wpos, _WorldSpaceLightPos0.xyzw, i.normal, i.viewDir, col, _LightColor0, _RimColor, _SpecularColor, _RimAmount, _Glossiness);
 
-                col = col.r + _Color;
+                float dist = smoothstep(0,1.0,1.0/pow(length(_WorldSpaceLightPos0 - i.wpos),0.4))*1.0;
+                col = _BaseColor + col.r;
 
-                return col;
+                return col * dist;
             }
             ENDCG
         }
