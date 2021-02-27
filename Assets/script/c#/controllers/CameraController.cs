@@ -21,6 +21,13 @@ public class CameraController : MonoBehaviour
     private Vector3 targetPosition;
 
 
+    //the rotation the camera is starting at
+    private Quaternion startRotation;
+
+    //the rotation the camera is moving to/ is currently at
+    private Quaternion targetRotation;
+
+
     //the time the current animation started at
     private float startTime;
 
@@ -48,8 +55,8 @@ public class CameraController : MonoBehaviour
         float curFrame = GetAnimationFrame(cameraMoveSpeed, startTime);
 
         //interpolate between its current position and its new position
-
         this.transform.position = TranslateToPosition(startPosition, targetPosition, curFrame);
+        this.transform.rotation = TranslateToRotation(startRotation, targetRotation, curFrame);
     }
 
     private void ListenToPositionChanges()
@@ -59,7 +66,11 @@ public class CameraController : MonoBehaviour
             if (positions[0] != null)
             {
                 startTime = Time.time;
+
                 startPosition = this.transform.position;
+                startRotation = this.transform.rotation;
+
+                targetRotation = positions[0].transform.rotation;
                 targetPosition = positions[0].transform.position;
             }
         }
@@ -70,7 +81,11 @@ public class CameraController : MonoBehaviour
             {
 
                 startTime = Time.time;
+
                 startPosition = this.transform.position;
+                startRotation = this.transform.rotation;
+
+                targetRotation = positions[1].transform.rotation;
                 targetPosition = positions[1].transform.position;
             }
         }
@@ -80,7 +95,11 @@ public class CameraController : MonoBehaviour
             if (positions[2] != null)
             {
                 startTime = Time.time;
+
                 startPosition = this.transform.position;
+                startRotation = this.transform.rotation;
+
+                targetRotation = positions[2].transform.rotation;
                 targetPosition = positions[2].transform.position;
             }
         }
@@ -98,10 +117,17 @@ public class CameraController : MonoBehaviour
     }
 
 
-    private Vector3 TranslateToPosition(Vector3 currentPosition, Vector3 newPosition, float frame) {
+    private Vector3 TranslateToPosition(Vector3 currentPosition, Vector3 newPosition, float frame)
+    {
         Vector3 InterpolatedPos = currentPosition * (1.0f - frame) + newPosition * frame;
         return InterpolatedPos;
     }
 
-   
+    private Quaternion TranslateToRotation(Quaternion currentRotation, Quaternion newRotation, float frame)
+    {
+        Quaternion InterpolatedRot = Quaternion.Lerp(currentRotation, newRotation, frame);
+        return InterpolatedRot;
+    }
+
+
 }
