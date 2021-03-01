@@ -40,16 +40,16 @@ public class CameraController : MonoBehaviour
         }
 
         //initialize target position to the first position in the list
-
-        //FUCKING CUNT OBJECT ORIENTED PROGRAMMING -- these reference the position on the transform and change the value
         startPosition = positions[0].transform.position;
         targetPosition = positions[0].transform.position;
+        startRotation = positions[0].transform.rotation;
+        targetRotation = positions[0].transform.rotation;
     }
 
     void Update()
     {
         //listen for new position requests and update targetPosition and startTime
-        ListenToPositionChanges();
+        ListenToInput();
 
         //get the speed the camera should currently be moving at (if its changing positions)
         float curFrame = GetAnimationFrame(cameraMoveSpeed, startTime);
@@ -59,7 +59,7 @@ public class CameraController : MonoBehaviour
         this.transform.rotation = TranslateToRotation(startRotation, targetRotation, curFrame);
     }
 
-    private void ListenToPositionChanges()
+    private void ListenToInput()
     {
         if (Input.GetKeyDown("1"))
         {
