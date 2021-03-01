@@ -23,7 +23,7 @@ public abstract class CharacterBehaviour
 
     public bool IsCurrentlyOrdering()
     {
-
+        return isOrdering;
     }
 
     public void SetCharacterOrdering(bool ordering)
