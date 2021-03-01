@@ -12,6 +12,7 @@ TagManager:
   - IngredientSpawn
   - WaterRipples
   - Lid
+  - TimeController
   layers:
   - Default
   - TransparentFX
