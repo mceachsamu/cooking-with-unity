@@ -17,10 +17,20 @@ public class CharacterController : MonoBehaviour
 
 
         GameObject[] characterObjects = ObjectFind.FindAllWithTag("Character");
+
+        if (characterObjects.Length == 0)
+        {
+            print("no characters");
+        }
+
         characters = new CharacterBehaviour[characterObjects.Length];
         for (int i = 0; i < characterObjects.Length; i++)
         {
-            characters[i] = characterObjects[i].GetComponent<CharacterBehaviour>();
+            CharacterBehaviour b = characterObjects[i].GetComponent<CharacterBehaviour>();
+            if (b != null)
+            {
+                characters[i] = b;
+            }
         }
     }
 
@@ -30,10 +40,18 @@ public class CharacterController : MonoBehaviour
         {
 
             //need to do this step at random frames
-            CharacterBehaviour currentCharacter = SelectNextCharacterToOrder();
-            if (currentCharacter != null)
+            float rand = Random.Range(0.0f, 1.0f);
+            print(rand);
+            if (rand < 0.1f)
             {
-                currentCharacter.SetCharacterOrdering(true);
+
+                CharacterBehaviour currentCharacter = SelectNextCharacterToOrder();
+                if (currentCharacter != null)
+                {
+                    //its the responsibility of the chacter to set this back to false
+                    currentCharacter.SetCharacterOrdering();
+
+                }
             }
         }
     }
@@ -57,7 +75,7 @@ public class CharacterController : MonoBehaviour
     {
         for (int i = 0; i < characters.Length; i++)
         {
-            if (characters[i].CanArriveToOrder())
+            if (characters[i].CanArriveToOrder(timeController.GetTime()))
             {
                 return characters[i];
             }

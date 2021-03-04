@@ -10,5 +10,8 @@ public class Order
     //the numer of potions ordered
     public int number;
 
-
+    public Order(PotionType type, int numPotions) {
+        this.order = type;
+        this.number = numPotions;
+    }
 }

@@ -28,7 +28,6 @@ public class TimeCycleController : MonoBehaviour
             startTime = 0.0f;
             timeCount = 0.0f;
         }
-        print(GetTime());
         timeCount++;
     }
 

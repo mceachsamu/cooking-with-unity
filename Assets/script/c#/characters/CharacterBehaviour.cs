@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CharacterBehaviour
+public abstract class CharacterBehaviour : MonoBehaviour
 {
 
     public float startTime;
     public float endTime;
-    private bool isOrdering;
+
+    //placeholder
+    public GameObject moveTo;
+
+    protected bool isOrdering = true;
 
 
     //returns the window of time the character will show up in
@@ -26,11 +30,11 @@ public abstract class CharacterBehaviour
         return isOrdering;
     }
 
-    public void SetCharacterOrdering(bool ordering)
-    {
-        isOrdering = ordering;
-    }
+    public abstract void SetCharacterOrdering();
 
-    public abstract bool CanArriveToOrder();
+    public bool CanArriveToOrder(float currentTime)
+    {
+        return currentTime > startTime && currentTime < endTime;
+    }
 
 }
