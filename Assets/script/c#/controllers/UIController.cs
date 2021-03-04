@@ -1,17 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using static ObjectFind;
 
-public class NewMonoBehaviour : MonoBehaviour
+public class UIController : MonoBehaviour
 {
-    // Use this for initialization
+    private CameraController cameraController;
+
+    public Canvas WindowUI;
+
+
     void Start()
     {
+        GameObject camera = ObjectFind.FindFirstWithTag("Camera");
+        cameraController = camera.GetComponent<CameraController>();
 
     }
 
-    // Update is called once per frame
     void Update()
     {
+        CameraController.CameraPosition camPos = cameraController.GetCameraPosition();
 
+        switch (camPos)
+        {
+            case CameraController.CameraPosition.KITCHEN:
+                WindowUI.enabled = false;
+                break;
+            case CameraController.CameraPosition.POTION:
+                WindowUI.enabled = false;
+                break;
+            case CameraController.CameraPosition.WINDOW:
+                WindowUI.enabled = true;
+                break;
+        }
     }
+
+
 }

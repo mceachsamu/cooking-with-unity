@@ -31,6 +31,15 @@ public class CameraController : MonoBehaviour
     //the time the current animation started at
     private float startTime;
 
+    private CameraPosition cameraPosition = CameraPosition.KITCHEN;
+
+    public enum CameraPosition
+    {
+        POTION,
+        KITCHEN,
+        WINDOW,
+    }
+
 
     void Start()
     {
@@ -65,6 +74,7 @@ public class CameraController : MonoBehaviour
         {
             if (positions[0] != null)
             {
+                cameraPosition = CameraPosition.POTION;
                 startTime = Time.time;
 
                 startPosition = this.transform.position;
@@ -79,7 +89,7 @@ public class CameraController : MonoBehaviour
         {
             if (positions[1] != null)
             {
-
+                cameraPosition = CameraPosition.KITCHEN;
                 startTime = Time.time;
 
                 startPosition = this.transform.position;
@@ -94,6 +104,7 @@ public class CameraController : MonoBehaviour
         {
             if (positions[2] != null)
             {
+                cameraPosition = CameraPosition.WINDOW;
                 startTime = Time.time;
 
                 startPosition = this.transform.position;
@@ -129,5 +140,9 @@ public class CameraController : MonoBehaviour
         return InterpolatedRot;
     }
 
+    public CameraPosition GetCameraPosition()
+    {
+        return cameraPosition;
+    }
 
 }
