@@ -41,7 +41,6 @@ public class CharacterController : MonoBehaviour
 
             //need to do this step at random frames
             float rand = Random.Range(0.0f, 1.0f);
-            print(rand);
             if (rand < 0.1f)
             {
 

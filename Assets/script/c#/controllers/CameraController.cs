@@ -89,7 +89,7 @@ public class CameraController : MonoBehaviour
         {
             if (positions[1] != null)
             {
-                cameraPosition = CameraPosition.KITCHEN;
+                cameraPosition = CameraPosition.WINDOW;
                 startTime = Time.time;
 
                 startPosition = this.transform.position;
@@ -104,7 +104,7 @@ public class CameraController : MonoBehaviour
         {
             if (positions[2] != null)
             {
-                cameraPosition = CameraPosition.WINDOW;
+                cameraPosition = CameraPosition.KITCHEN;
                 startTime = Time.time;
 
                 startPosition = this.transform.position;

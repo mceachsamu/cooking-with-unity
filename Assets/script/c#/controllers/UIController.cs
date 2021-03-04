@@ -12,7 +12,7 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
-        GameObject camera = ObjectFind.FindFirstWithTag("Camera");
+        GameObject camera = ObjectFind.FindFirstWithTag("MainCamera");
         cameraController = camera.GetComponent<CameraController>();
 
     }
