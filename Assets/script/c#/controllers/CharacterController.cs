@@ -60,8 +60,8 @@ public class CharacterController : MonoBehaviour
     {
         for (int i = 0; i < characters.Length; i++)
         {
-            bool canArrive = characters[i].IsCurrentlyOrdering();
-            if (!canArrive)
+            bool isOrdering = characters[i].IsCurrentlyOrdering();
+            if (isOrdering)
             {
                 return false;
             }
@@ -82,4 +82,15 @@ public class CharacterController : MonoBehaviour
         return null;
     }
 
+    public bool CharacterCurrentlyOrdering()
+    {
+        for (int i = 0; i < characters.Length; i++)
+        {
+            if (characters[i].IsCurrentlyOrdering())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

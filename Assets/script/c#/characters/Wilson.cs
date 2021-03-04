@@ -20,4 +20,9 @@ public class Wilson : CharacterBehaviour
         this.isOrdering = true;
         this.transform.position = this.moveTo.transform.position;
     }
+
+    public override string GetCharacterText()
+    {
+        return "Hey whats up loser! gimme a potion for skateboarding or I'll burn this whole shop down!";
+    }
 }

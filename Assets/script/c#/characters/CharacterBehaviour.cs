@@ -11,7 +11,7 @@ public abstract class CharacterBehaviour : MonoBehaviour
     //placeholder
     public GameObject moveTo;
 
-    protected bool isOrdering = true;
+    protected bool isOrdering = false;
 
 
     //returns the window of time the character will show up in
@@ -36,5 +36,7 @@ public abstract class CharacterBehaviour : MonoBehaviour
     {
         return currentTime > startTime && currentTime < endTime;
     }
+
+    public abstract string GetCharacterText();
 
 }

@@ -7,6 +7,8 @@ public class UIController : MonoBehaviour
 {
     private CameraController cameraController;
 
+    private CharacterController characterController;
+
     public Canvas WindowUI;
 
 
@@ -14,6 +16,9 @@ public class UIController : MonoBehaviour
     {
         GameObject camera = ObjectFind.FindFirstWithTag("MainCamera");
         cameraController = camera.GetComponent<CameraController>();
+
+        GameObject characterControl = ObjectFind.FindFirstWithTag("CharacterController");
+        characterController = characterControl.GetComponent<CharacterController>();
 
     }
 
@@ -30,9 +35,14 @@ public class UIController : MonoBehaviour
                 WindowUI.enabled = false;
                 break;
             case CameraController.CameraPosition.WINDOW:
-                WindowUI.enabled = true;
+                WindowUI.enabled = WindowUIEnabled();
                 break;
         }
+
+    }
+
+    private bool WindowUIEnabled() {
+        return characterController.CharacterCurrentlyOrdering();
     }
 
 
