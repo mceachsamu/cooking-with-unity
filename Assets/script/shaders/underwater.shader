@@ -153,10 +153,11 @@
                 float waterLevel = waterHeight + _WaterLevel - _MaxHeight;
                 col = col * shading;
 
+                //abjects deeper in the water will be less visable
                 if (i.wpos.y < waterLevel+0.05){
-                    col.a = clamp(2.0 - (pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness),0.0,1.0)-0.5;
+                    col.a = clamp(2.0 - (saturate(pow(abs(i.wpos.y - _WaterLevel),0.3)) * _WaterOpaqueness),0.0,1.0)-0.5;
                 }else if (_CullAboveWater == 0){
-                    col.a = clamp(2.0 - (pow(abs(i.wpos.y - _WaterLevel),0.5) * _WaterOpaqueness),0.0,1.0)-0.5;
+                    col.a = clamp(2.0 - (saturate(pow(abs(i.wpos.y - _WaterLevel),0.3)) * _WaterOpaqueness),0.0,1.0)-0.5;
                 }else{
                     col.a = 0.0;
                 }
