@@ -7,11 +7,9 @@ public class ingredient : MonoBehaviour
 {
     private GameObject potController;
 
-    private Vector3 force = new Vector3(0.0f,10.0f,0.0f);
-
     public Name name;
 
-    private float gravityAcceleration = 9.81f;
+    private float buoyancy = 12.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -23,10 +21,10 @@ public class ingredient : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        force.y = this.GetComponent<Rigidbody>().mass * gravityAcceleration;
+        float upwardsForce = this.GetComponent<Rigidbody>().mass * buoyancy;
          if (isUnderWater()){
             //push the ingredient up to water height
-            this.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);
+            this.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, upwardsForce, 0.0f), ForceMode.Force);
         }
     }
 
