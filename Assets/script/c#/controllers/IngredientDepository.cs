@@ -7,23 +7,19 @@ public class IngredientDepository : MonoBehaviour
 {
 
     private GameObject water;
-
     private GameObject potController;
 
-
+    // these are the forces that the ingredients spawn in with
     public float popSideForce = 10.0f;
-
     public float popUpwardsForce = 20.0f;
 
     public int numMushrooms = 0;
     public GameObject mushroomPrefab;
     private IngredientSettings MushroomSettings;
 
-
     public int numCinamons = 0;
     public GameObject cinamonPrefab;
     private IngredientSettings CinamonSettings;
-
 
     public int numFlowers = 0;
     public GameObject flowerPrefab;
@@ -31,15 +27,13 @@ public class IngredientDepository : MonoBehaviour
 
     private IngredientSettings[] settings = new IngredientSettings[3];
 
-
     // Start is called before the first frame update
     void Start()
     {
-
-        //initialize water
+        // initialize water
         water = FindFirstWithTag("Water");
 
-        //initialize water controller
+        // initialize water controller
         potController = FindFirstWithTag("GameController");
 
         settings = new IngredientSettings[3]{
@@ -51,9 +45,9 @@ public class IngredientDepository : MonoBehaviour
 
         for (int i = 0; i < settings.Length; i++){
             for (int j = 0; j < settings[i].numSpawn; j++){
-                GameObject g = instantiateIngredient(settings[i].prefab);
+                GameObject g = InstantiateIngredient(settings[i].prefab);
 
-                //just moving the ingredients into the middle of nowhere
+                // just moving the ingredients into the middle of nowhere
                 Vector3 pos = g.transform.position;
                 pos.x += 100.0f;
                 g.transform.position = pos;
@@ -71,11 +65,9 @@ public class IngredientDepository : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        //for each ingredient type, check if they keystroke was hit to spawn it
+        // for each ingredient type, check if they keystroke was hit to spawn the ingredient
         for (int i = 0; i < settings.Length; i++){
             if (Input.GetKeyDown(settings[i].keyStroke) && settings[i].index < settings[i].numSpawn){
-
                 GameObject g = settings[i].ingredients[settings[i].index];
                 AddForceToIngredient(g);
 
@@ -91,7 +83,7 @@ public class IngredientDepository : MonoBehaviour
         go.GetComponent<Rigidbody>().AddForce(dir);
     }
 
-    public GameObject instantiateIngredient(GameObject prefab){
+    public GameObject InstantiateIngredient(GameObject prefab){
         GameObject go = Instantiate(prefab);
         go.transform.parent = water.transform;
         return go;
