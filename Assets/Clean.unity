@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 17319655}
   - component: {fileID: 17319654}
   - component: {fileID: 17319653}
+  - component: {fileID: 17319657}
   m_Layer: 10
   m_Name: potion-view
   m_TagString: Untagged
@@ -218,6 +219,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &17319657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17319652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1322a92cea17f49618fa179215f5592e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KeyStroke: 1
+  position: 0
 --- !u!1001 &132722424
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -857,6 +872,7 @@ GameObject:
   - component: {fileID: 906425045}
   - component: {fileID: 906425044}
   - component: {fileID: 906425043}
+  - component: {fileID: 906425047}
   m_Layer: 10
   m_Name: kitchen-view
   m_TagString: Untagged
@@ -940,6 +956,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 19.222, y: -16.161, z: 1.479}
+--- !u!114 &906425047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906425042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1322a92cea17f49618fa179215f5592e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KeyStroke: 3
+  position: 1
 --- !u!1001 &981008321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1112,6 +1142,7 @@ GameObject:
   - component: {fileID: 1175638072}
   - component: {fileID: 1175638071}
   - component: {fileID: 1175638070}
+  - component: {fileID: 1175638074}
   m_Layer: 10
   m_Name: window-view
   m_TagString: Untagged
@@ -1195,6 +1226,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1175638074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175638069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1322a92cea17f49618fa179215f5592e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KeyStroke: 2
+  position: 2
 --- !u!1 &1272200270
 GameObject:
   m_ObjectHideFlags: 0
@@ -1532,7 +1577,7 @@ PrefabInstance:
     - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
         type: 3}
       propertyPath: AnimationTimeInSeconds
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
         type: 3}
@@ -1549,6 +1594,51 @@ PrefabInstance:
       propertyPath: positions.Array.data[2]
       value: 
       objectReference: {fileID: 906425042}
+    - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
+        type: 3}
+      propertyPath: cameraMoveSpeed.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
+        type: 3}
+      propertyPath: cameraMoveSpeed.m_Curve.Array.data[1].time
+      value: 0.38396567
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
+        type: 3}
+      propertyPath: cameraMoveSpeed.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
+        type: 3}
+      propertyPath: cameraMoveSpeed.m_Curve.Array.data[1].value
+      value: 0.6927093
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
+        type: 3}
+      propertyPath: cameraMoveSpeed.m_Curve.Array.data[2].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
+        type: 3}
+      propertyPath: cameraMoveSpeed.m_Curve.Array.data[1].inSlope
+      value: 1.0153958
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
+        type: 3}
+      propertyPath: cameraMoveSpeed.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
+        type: 3}
+      propertyPath: cameraMoveSpeed.m_Curve.Array.data[1].outSlope
+      value: 1.0153958
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682004083924383984, guid: 5ba01d675a4fe422aae34ef8924480ea,
+        type: 3}
+      propertyPath: cameraMoveSpeed.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
     - target: {fileID: 3927549255418598643, guid: 5ba01d675a4fe422aae34ef8924480ea,
         type: 3}
       propertyPath: m_CullingMask.m_Bits
