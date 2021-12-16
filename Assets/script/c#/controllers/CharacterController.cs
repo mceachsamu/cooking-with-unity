@@ -5,15 +5,15 @@ using static ObjectFind;
 
 public class CharacterController : MonoBehaviour
 {
-    private TimeCycleController timeController;
+    private TimeCycleController _timeController;
 
-    private CharacterBehaviour[] characters;
+    private CharacterBehaviour[] _characters;
 
 
     void Start()
     {
         GameObject timer = ObjectFind.FindFirstWithTag("TimeController");
-        timeController = timer.GetComponent<TimeCycleController>();
+        _timeController = timer.GetComponent<TimeCycleController>();
 
 
         GameObject[] characterObjects = ObjectFind.FindAllWithTag("Character");
@@ -23,13 +23,13 @@ public class CharacterController : MonoBehaviour
             print("no characters");
         }
 
-        characters = new CharacterBehaviour[characterObjects.Length];
+        _characters = new CharacterBehaviour[characterObjects.Length];
         for (int i = 0; i < characterObjects.Length; i++)
         {
             CharacterBehaviour b = characterObjects[i].GetComponent<CharacterBehaviour>();
             if (b != null)
             {
-                characters[i] = b;
+                _characters[i] = b;
             }
         }
     }
@@ -58,9 +58,9 @@ public class CharacterController : MonoBehaviour
     //returns true if no characters are currently ordering
     private bool CanCharacterArrive()
     {
-        for (int i = 0; i < characters.Length; i++)
+        for (int i = 0; i < _characters.Length; i++)
         {
-            bool isOrdering = characters[i].IsCurrentlyOrdering();
+            bool isOrdering = _characters[i].IsCurrentlyOrdering();
             if (isOrdering)
             {
                 return false;
@@ -72,11 +72,11 @@ public class CharacterController : MonoBehaviour
 
     private CharacterBehaviour SelectNextCharacterToOrder()
     {
-        for (int i = 0; i < characters.Length; i++)
+        for (int i = 0; i < _characters.Length; i++)
         {
-            if (characters[i].CanArriveToOrder(timeController.GetTime()))
+            if (_characters[i].CanArriveToOrder(_timeController.GetTime()))
             {
-                return characters[i];
+                return _characters[i];
             }
         }
         return null;
@@ -84,9 +84,9 @@ public class CharacterController : MonoBehaviour
 
     public bool CharacterCurrentlyOrdering()
     {
-        for (int i = 0; i < characters.Length; i++)
+        for (int i = 0; i < _characters.Length; i++)
         {
-            if (characters[i].IsCurrentlyOrdering())
+            if (_characters[i].IsCurrentlyOrdering())
             {
                 return true;
             }
