@@ -22,10 +22,12 @@ public class IngredientDepository : MonoBehaviour
 
     public int NumCinamons = 0;
     public GameObject CinamonPrefab;
+    public string CinamonKey;
     private IngredientSettings _cinamonSettings;
 
     public int NumFlowers = 0;
     public GameObject FlowerPrefab;
+    public string FlowerKey;
     private IngredientSettings _flowerSettings;
 
     private IngredientSettings[] _settings = new IngredientSettings[3];
@@ -34,16 +36,16 @@ public class IngredientDepository : MonoBehaviour
     void Start()
     {
         // initialize _water
-        _water = FindFirstWithTag("_Water");
+        _water = FindFirstWithTag("Water");
 
         // initialize _water controller
         _potController = FindFirstWithTag("GameController");
 
         // initialize our ingredient settings
         _settings = new IngredientSettings[3] {
-            new IngredientSettings(MushroomPrefab, NumMushrooms, "q"),
-            new IngredientSettings(CinamonPrefab, NumCinamons, "w"),
-            new IngredientSettings(FlowerPrefab, NumFlowers, "e")
+            new IngredientSettings(MushroomPrefab, NumMushrooms, MushroomKey),
+            new IngredientSettings(CinamonPrefab, NumCinamons, CinamonKey),
+            new IngredientSettings(FlowerPrefab, NumFlowers, FlowerKey)
         };
 
         for (int i = 0; i < _settings.Length; i++)
