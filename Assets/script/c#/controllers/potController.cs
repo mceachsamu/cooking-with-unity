@@ -10,8 +10,6 @@ public class potController : MonoBehaviour
     [Range(0.0f, 0.5f)]
     public float speed = 0.1f;
 
-    private float count = 0;
-
     //the number of bubbles that appear on the water
     public int numBubbles = 20;
 
@@ -23,8 +21,6 @@ public class potController : MonoBehaviour
     public GameObject lid;
 
     public GameObject bubblePrefab;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -44,12 +40,12 @@ public class potController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //count is an internal timer we give to the shader to move the water along with time
-        count = count + speed;
+        // Count is an internal timer we give to the shader to move the water along with time
 
-        //find out what the hieght should be given the volume and move the water to that height
+        // Find out what the height should be given the volume and move the water to that height
         ApplyWaterHeight();
 
+        // Update the radius in case that has been changed during playtime
         SetWaterRadius();
 
     }
@@ -132,10 +128,6 @@ public class potController : MonoBehaviour
 
     public float GetWaterSize(){
         return water.GetComponent<potwater>().segSize * water.GetComponent<potwater>().numSegs;
-    }
-
-    public float GetCount(){
-        return count;
     }
 
     public float GetSpeed(){
