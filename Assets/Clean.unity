@@ -484,8 +484,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
         type: 3}
+      propertyPath: maxHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+        type: 3}
       propertyPath: numBubbles
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+        type: 3}
+      propertyPath: startHeight
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4296704068676737560, guid: a5cea682d5c7848099e94cb5aacf7cdf,
         type: 3}
@@ -1130,6 +1140,18 @@ MonoBehaviour:
   - assemblyQualifiedName: PostProcessOutline, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_AfterStackBundles: []
+--- !u!1 &1044523198 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4446146762717966600, guid: 1361db19bbdd244ecb7064471317283a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1429422099}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1069539660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4446146764613212609, guid: 1361db19bbdd244ecb7064471317283a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1429422099}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1175638069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,6 +1306,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1395518760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4446146764582563472, guid: 1361db19bbdd244ecb7064471317283a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1429422099}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1429422099
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1291,6 +1319,51 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3563063349316211410, guid: 1361db19bbdd244ecb7064471317283a,
+        type: 3}
+      propertyPath: FlowerKey
+      value: e
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563063349316211410, guid: 1361db19bbdd244ecb7064471317283a,
+        type: 3}
+      propertyPath: CinamonKey
+      value: w
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563063349316211410, guid: 1361db19bbdd244ecb7064471317283a,
+        type: 3}
+      propertyPath: NumFlowers
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563063349316211410, guid: 1361db19bbdd244ecb7064471317283a,
+        type: 3}
+      propertyPath: MushroomKey
+      value: q
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563063349316211410, guid: 1361db19bbdd244ecb7064471317283a,
+        type: 3}
+      propertyPath: NumCinamons
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563063349316211410, guid: 1361db19bbdd244ecb7064471317283a,
+        type: 3}
+      propertyPath: FlowerPrefab
+      value: 
+      objectReference: {fileID: 1395518760}
+    - target: {fileID: 3563063349316211410, guid: 1361db19bbdd244ecb7064471317283a,
+        type: 3}
+      propertyPath: NumMushrooms
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563063349316211410, guid: 1361db19bbdd244ecb7064471317283a,
+        type: 3}
+      propertyPath: CinamonPrefab
+      value: 
+      objectReference: {fileID: 1044523198}
+    - target: {fileID: 3563063349316211410, guid: 1361db19bbdd244ecb7064471317283a,
+        type: 3}
+      propertyPath: MushroomPrefab
+      value: 
+      objectReference: {fileID: 1069539660}
     - target: {fileID: 3563063349316211411, guid: 1361db19bbdd244ecb7064471317283a,
         type: 3}
       propertyPath: m_Name

@@ -13,6 +13,10 @@ public class potController : MonoBehaviour
     //the number of bubbles that appear on the water
     public int numBubbles = 20;
 
+    public float startHeight;
+
+    public float maxHeight;
+
     //the list of bubble game objects
     private GameObject[] bubbles;
 
@@ -70,9 +74,13 @@ public class potController : MonoBehaviour
     private void ApplyWaterHeight(){
         Vector3 pos = water.transform.position;
 
-        //using log because its kinda similar to the shape of a bowl
+        //using log because it produces a graph which is kinda similar to the shape of a bowl
         float newHeight = Mathf.Log(totalVolume, 2);
-        pos.y = newHeight+0.5f;
+        
+        if (pos.y < maxHeight) {
+            pos.y = newHeight + startHeight;
+        }
+        
         water.transform.position = pos;
     }
 
