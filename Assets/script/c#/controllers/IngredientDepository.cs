@@ -1,91 +1,107 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static ObjectFind;
 
 public class IngredientDepository : MonoBehaviour
 {
 
-    private GameObject water;
-    private GameObject potController;
+    private GameObject _water;
+    private GameObject _potController;
 
     // these are the forces that the ingredients spawn in with
-    public float popSideForce = 10.0f;
-    public float popUpwardsForce = 20.0f;
+    public float PopSideForce = 10.0f;
+    public float PopUpwardsForce = 20.0f;
 
-    public int numMushrooms = 0;
-    public GameObject mushroomPrefab;
-    private IngredientSettings MushroomSettings;
+    public int NumMushrooms = 0;
+    public GameObject MushroomPrefab;
+    public string MushroomKey;
+    private IngredientSettings _mushroomSettings;
 
-    public int numCinamons = 0;
-    public GameObject cinamonPrefab;
-    private IngredientSettings CinamonSettings;
 
-    public int numFlowers = 0;
-    public GameObject flowerPrefab;
-    private IngredientSettings FlowerSettings;
+    public int NumCinamons = 0;
+    public GameObject CinamonPrefab;
+    private IngredientSettings _cinamonSettings;
 
-    private IngredientSettings[] settings = new IngredientSettings[3];
+    public int NumFlowers = 0;
+    public GameObject FlowerPrefab;
+    private IngredientSettings _flowerSettings;
+
+    private IngredientSettings[] _settings = new IngredientSettings[3];
 
     // Start is called before the first frame update
     void Start()
     {
-        // initialize water
-        water = FindFirstWithTag("Water");
+        // initialize _water
+        _water = FindFirstWithTag("_Water");
 
-        // initialize water controller
-        potController = FindFirstWithTag("GameController");
+        // initialize _water controller
+        _potController = FindFirstWithTag("GameController");
 
-        settings = new IngredientSettings[3]{
-            new IngredientSettings(mushroomPrefab, numMushrooms, "q"),
-            new IngredientSettings(cinamonPrefab, numCinamons, "w"),
-            new IngredientSettings(flowerPrefab, numFlowers, "e")
+        // initialize our ingredient settings
+        _settings = new IngredientSettings[3] {
+            new IngredientSettings(MushroomPrefab, NumMushrooms, "q"),
+            new IngredientSettings(CinamonPrefab, NumCinamons, "w"),
+            new IngredientSettings(FlowerPrefab, NumFlowers, "e")
         };
 
-
-        for (int i = 0; i < settings.Length; i++){
-            for (int j = 0; j < settings[i].numSpawn; j++){
-                GameObject g = InstantiateIngredient(settings[i].prefab);
+        for (int i = 0; i < _settings.Length; i++)
+        {
+            for (int j = 0; j < _settings[i].numSpawn; j++)
+            {
+                GameObject g = InstantiateIngredient(_settings[i].prefab);
 
                 // just moving the ingredients into the middle of nowhere
                 Vector3 pos = g.transform.position;
                 pos.x += 100.0f;
                 g.transform.position = pos;
 
-                settings[i].ingredients[j] = g;
+                _settings[i].ingredients[j] = g;
             }
         }
 
         //destory the original prefabs
-        Destroy(mushroomPrefab);
-        Destroy(cinamonPrefab);
-        Destroy(flowerPrefab);
+        Destroy(MushroomPrefab);
+        Destroy(CinamonPrefab);
+        Destroy(FlowerPrefab);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // for each ingredient type, check if they keystroke was hit to spawn the ingredient
-        for (int i = 0; i < settings.Length; i++){
-            if (Input.GetKeyDown(settings[i].keyStroke) && settings[i].index < settings[i].numSpawn){
-                GameObject g = settings[i].ingredients[settings[i].index];
+        ListenToInput();
+    }
+
+    // For each ingredient type, check if they keystroke was hit to spawn the ingredient
+    private void ListenToInput()
+    {
+        for (int i = 0; i < _settings.Length; i++)
+        {
+            if (Input.GetKeyDown(_settings[i].keyStroke) && _settings[i].index < _settings[i].numSpawn)
+            {
+                GameObject g = _settings[i].ingredients[_settings[i].index];
                 AddForceToIngredient(g);
 
                 g.transform.position = this.transform.position;
-                settings[i].index++;
+                _settings[i].index++;
             }
         }
     }
 
-    public void AddForceToIngredient(GameObject go){
-        Vector3 dir = (potController.GetComponent<potController>().GetCenter() - this.transform.position) * popSideForce;
-        dir += Vector3.up * popUpwardsForce;
-        go.GetComponent<Rigidbody>().AddForce(dir);
+    public void AddForceToIngredient(GameObject ingredient)
+    {
+        Vector3 dir = (_potController.GetComponent<potController>().GetCenter() - this.transform.position) * PopSideForce;
+        dir += Vector3.up * PopUpwardsForce;
+        ingredient.GetComponent<Rigidbody>().AddForce(dir);
     }
 
-    public GameObject InstantiateIngredient(GameObject prefab){
+    public GameObject InstantiateIngredient(GameObject prefab)
+    {
         GameObject go = Instantiate(prefab);
-        go.transform.parent = water.transform;
+
+        // set the parent transform to be the _water so that the ingredients spin at the same rate as the _water
+        go.transform.parent = _water.transform;
         return go;
     }
 }
