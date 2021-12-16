@@ -63,7 +63,7 @@ public class CameraController : MonoBehaviour
     private void ListenToInput()
     {
         for (int i = 0; i < positions.Length; i++) {
-            if (Input.GetKeyDown(positions[i].GetComponent<cameraPosition>().KeyStroke))
+            if (Input.GetKeyDown(positions[i].GetComponent<CameraPosition>().KeyStroke))
             {
                 if (positions[i] != null)
                 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class ingredient : MonoBehaviour
+public class Ingredient : MonoBehaviour
 {
     private GameObject potController;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class bottle : MonoBehaviour
+public class Bottle : MonoBehaviour
 {
 
     //the origin of the bottle so we can reset its position

@@ -23,7 +23,7 @@ public class particleRipples : MonoBehaviour
     {
         //move this particle effect to its attached component
         //want to keep it at the water height
-        if (attachedTo != null){
+        if (attachedTo != null) {
             float height = potController.GetComponent<potController>().GetWaterHeightAtPosition(this.transform.position);
             Vector3 position = attachedTo.transform.position;
             position.y = potController.GetComponent<potController>().GetWaterPosition().y - potController.GetComponent<potController>().GetWaterMaxHeight()/2;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class spoon : MonoBehaviour
+public class Spoon : MonoBehaviour
 {
     //get the origin of the spoon so we can reset its position
     Vector3 origin;

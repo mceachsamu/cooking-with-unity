@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cameraPosition : MonoBehaviour
+public class CameraPosition : MonoBehaviour
 {
     public string KeyStroke;
 

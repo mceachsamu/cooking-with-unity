@@ -85,7 +85,7 @@ public class potController : MonoBehaviour
     }
 
     private void SetWaterRadius(){
-        this.water.GetComponent<potwater>().SetRadius(this.transform.localScale.x * lid.GetComponent<lid>().lidXradius);
+        this.water.GetComponent<potwater>().SetRadius(this.transform.localScale.x * lid.GetComponent<Lid>().lidXradius);
     }
 
     public void AddLiquidToWater(float amount, Color color) {
@@ -143,7 +143,7 @@ public class potController : MonoBehaviour
     }
 
     public float GetXRadius(){
-        return this.transform.localScale.x * lid.GetComponent<lid>().lidXradius;
+        return this.transform.localScale.x * lid.GetComponent<Lid>().lidXradius;
     }
 
 }
