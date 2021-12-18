@@ -102,29 +102,31 @@ public class Potwater : MonoBehaviour
         this.angle *= rotationalFriction;
         this.transform.rotation = startRotation;
         Quaternion q = RotateAroundQ(this.transform, Vector3.up, angle);
-
     }
 
     public void AddForceToWater(Vector3 position, float forceAmount, float rotationAdd){
         //first rotate the input position to match the rotation of the water
         Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -angle);
+        
         //ensures we dont get an out of bounds exception and translates position to water
         Vector2 index = GetClosestPoint(adjustedPosition);
         this.pointField[(int)index.x,(int)index.y].AddForce(-1 * forceAmount);
+        
         //add rotation to the water
         this.angleDiff += rotationAdd;
     }
 
     private void setShaderProperties(){
-        //give these values to our shader
-        this.GetComponent<Renderer>().material.SetFloat("_xRad", xRadius);
-        this.GetComponent<Renderer>().material.SetFloat("_Seperation", segSize);
-        this.GetComponent<Renderer>().material.SetFloat("_TotalSize", GetSize());
-        this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", maxHeight);
+        Material mat = this.GetComponent<Renderer>().material;
 
-        this.GetComponent<Renderer>().material.SetVector("_Center", GetCenter());
-        this.GetComponent<Renderer>().material.SetTexture("_Tex", heightMap);
-        this.GetComponent<Renderer>().material.SetVector("_BaseColor", primaryCol);
+        //give these values to our shader
+        mat.SetFloat("_xRad", xRadius);
+        mat.SetFloat("_Seperation", segSize);
+        mat.SetFloat("_TotalSize", GetSize());
+        mat.SetFloat("_MaxHeight", maxHeight);
+        mat.SetVector("_Center", GetCenter());
+        mat.SetTexture("_Tex", heightMap);
+        mat.SetVector("_BaseColor", primaryCol);
     }
 
     public Color GetColor(){
@@ -176,7 +178,7 @@ public class Potwater : MonoBehaviour
 
     public Quaternion RotateAroundQ(Transform t, Vector3 axis, float angle)
     {
-        Quaternion q = Quaternion.AngleAxis(angle * 0.0174532924f, axis);
+        Quaternion q = Quaternion.AngleAxis(this.angle * 0.0174532924f, axis);
         return t.rotation *= q;
     }
 

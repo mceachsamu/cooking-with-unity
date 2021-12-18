@@ -72,24 +72,25 @@ public class WaterPipe : MonoBehaviour
 
         potController.GetComponent<PotController>().AddForceToWater(FallPosition, force, 0.0f);
         potController.GetComponent<PotController>().AddLiquidToWater(0.01f * force, new Color(0.0f,0.0f,0.0f,0.0f));
-
-        this.GetComponent<Renderer>().material.SetVector("_PipeStart", bottleEnd.transform.position);
-        this.GetComponent<Renderer>().material.SetVector("_PipeEnd", FallPosition);
-        this.GetComponent<Renderer>().material.SetFloat("_Count", count);
-        this.GetComponent<Renderer>().material.SetFloat("_PipeLength", baseLength);
-        this.GetComponent<Renderer>().material.SetFloat("_PipeRadius", baseRadius);
-        this.GetComponent<Renderer>().material.SetFloat("_PipeSize", this.size * sizeAdd);
-        this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsRound", numSegmentsRound);
-        this.GetComponent<Renderer>().material.SetFloat("_PipeSegmentsLong", numSegmentsLong);
-        this.GetComponent<Renderer>().material.SetFloat("_Exponent", exponential);
-
-        this.GetComponent<Renderer>().material.SetVector("_PreviousEnd", PreviousPoint);
-        this.GetComponent<Renderer>().material.SetVector("_BaseColor", potController.GetComponent<PotController>().GetColor());
-
+        
+        Material mat = this.GetComponent<Renderer>().material;
+        mat.SetVector("_PipeStart", bottleEnd.transform.position);
+        mat.SetVector("_PipeEnd", FallPosition);
+        mat.SetFloat("_Count", count);
+        mat.SetFloat("_PipeLength", baseLength);
+        mat.SetFloat("_PipeRadius", baseRadius);
+        mat.SetFloat("_PipeSize", this.size * sizeAdd);
+        mat.SetFloat("_PipeSegmentsRound", numSegmentsRound);
+        mat.SetFloat("_PipeSegmentsLong", numSegmentsLong);
+        mat.SetFloat("_Exponent", exponential);
+        mat.SetVector("_PreviousEnd", PreviousPoint);
+        mat.SetVector("_BaseColor", potController.GetComponent<PotController>().GetColor());
+        
         Vector3 direction = this.transform.position - FallPosition;
         Vector3 directionPrev = this.transform.position - PreviousPoint;
-        this.GetComponent<Renderer>().material.SetVector("_Direction", direction);
-        this.GetComponent<Renderer>().material.SetVector("_DirectionPrev", directionPrev);
+
+        mat.SetVector("_Direction", direction);
+        mat.SetVector("_DirectionPrev", directionPrev);
 
         float diffX = FallPosition.x - PreviousPoint.x;
         float diffY = FallPosition.y - PreviousPoint.y;
