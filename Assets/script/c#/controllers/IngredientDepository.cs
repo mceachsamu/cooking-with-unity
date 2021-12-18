@@ -93,7 +93,7 @@ public class IngredientDepository : MonoBehaviour
 
     public void AddForceToIngredient(GameObject ingredient)
     {
-        Vector3 dir = (_potController.GetComponent<potController>().GetCenter() - this.transform.position) * PopSideForce;
+        Vector3 dir = (_potController.GetComponent<PotController>().GetCenter() - this.transform.position) * PopSideForce;
         dir += Vector3.up * PopUpwardsForce;
         ingredient.GetComponent<Rigidbody>().AddForce(dir);
     }

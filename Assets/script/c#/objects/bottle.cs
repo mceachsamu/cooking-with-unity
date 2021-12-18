@@ -54,11 +54,11 @@ public class Bottle : MonoBehaviour
     }
 
     void setShaderProperties(){
-        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", potController.GetComponent<potController>().GetWaterOpaqueness());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", potController.GetComponent<potController>().GetWaterSize());
-        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", potController.GetComponent<potController>().GetWaterHeightMap());
-        this.GetComponent<Renderer>().material.SetVector("_PotCenter", potController.GetComponent<potController>().GetCenter());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", potController.GetComponent<potController>().GetWaterPosition().y);
+        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", potController.GetComponent<PotController>().GetWaterOpaqueness());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", potController.GetComponent<PotController>().GetWaterSize());
+        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", potController.GetComponent<PotController>().GetWaterHeightMap());
+        this.GetComponent<Renderer>().material.SetVector("_PotCenter", potController.GetComponent<PotController>().GetCenter());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", potController.GetComponent<PotController>().GetWaterPosition().y);
     }
 
 }

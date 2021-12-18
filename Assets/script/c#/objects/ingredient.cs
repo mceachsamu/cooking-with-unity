@@ -29,8 +29,8 @@ public class Ingredient : MonoBehaviour
     }
 
     private bool isUnderWater() {
-        float waterHeight = potController.GetComponent<potController>().GetWaterHeightAtPosition(this.transform.position);
-        return this.transform.position.y < (waterHeight + potController.GetComponent<potController>().GetWaterPosition().y);
+        float waterHeight = potController.GetComponent<PotController>().GetWaterHeightAtPosition(this.transform.position);
+        return this.transform.position.y < (waterHeight + potController.GetComponent<PotController>().GetWaterPosition().y);
     }
 
     public enum Name

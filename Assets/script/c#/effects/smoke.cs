@@ -31,6 +31,6 @@ public class Smoke : MonoBehaviour
 
     private void SetShaderProperties(){
         this.GetComponent<Renderer>().material.SetInt("_Count", count);
-        this.GetComponent<Renderer>().material.SetVector("_Color", potController.GetComponent<potController>().GetColor());
+        this.GetComponent<Renderer>().material.SetVector("_Color", potController.GetComponent<PotController>().GetColor());
     }
 }

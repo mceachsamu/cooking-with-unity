@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class potController : MonoBehaviour
+public class PotController : MonoBehaviour
 {
     private float totalVolume = 0.001f;
 

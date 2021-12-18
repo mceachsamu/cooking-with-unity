@@ -10,7 +10,7 @@ public class Bubble : MonoBehaviour
     public float scaleIncrease = 0.02f;
     public float maxScale = 0.1f;
 
-    public potController water;
+    public PotController water;
 
     private float curScale;
     public Vector3 center;
@@ -68,15 +68,15 @@ public class Bubble : MonoBehaviour
         this.GetComponent<Bubble>().center = new Vector3(water.transform.position.x, water.GetWaterPosition().y+bubbleHeight, water.transform.position.z);
         this.GetComponent<Renderer>().material.SetFloat("_xRad", water.GetXRadius());
         this.GetComponent<Renderer>().material.SetFloat("_zRad", water.GetXRadius());
-        this.GetComponent<Renderer>().material.SetFloat("waterSize", water.GetComponent<potController>().GetWaterSize());
+        this.GetComponent<Renderer>().material.SetFloat("waterSize", water.GetComponent<PotController>().GetWaterSize());
         this.GetComponent<Renderer>().material.SetVector("_Center", water.GetCenter());
         this.GetComponent<Renderer>().material.SetVector("_Color", water.GetColor());
         this.GetComponent<Renderer>().material.SetFloat("_DecayAmount", decay);
-        this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", water.GetComponent<potController>().GetWaterMaxHeight());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<potController>().GetWaterPosition().y);
-        this.GetComponent<Renderer>().material.SetVector("_PotCenter", water.GetComponent<potController>().GetCenter());
-        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", water.GetComponent<potController>().GetWaterHeightMap());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", water.GetComponent<potController>().GetWaterSize());
+        this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", water.GetComponent<PotController>().GetWaterMaxHeight());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", water.GetComponent<PotController>().GetWaterPosition().y);
+        this.GetComponent<Renderer>().material.SetVector("_PotCenter", water.GetComponent<PotController>().GetCenter());
+        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", water.GetComponent<PotController>().GetWaterHeightMap());
+        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", water.GetComponent<PotController>().GetWaterSize());
 
     }
 }
