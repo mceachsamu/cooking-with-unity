@@ -43,8 +43,8 @@ public class waterPipe : MonoBehaviour
     void Start()
     {
         //create starting shape
-        shapes3D shapeGen = new shapes3D();
-        Mesh mesh = shapeGen.CreateCylandar(baseRadius,baseLength,numSegmentsRound,numSegmentsLong);
+        Shapes3D shapeGen = new Shapes3D();
+        Mesh mesh = shapeGen.CreateCylandar(baseRadius, baseLength, numSegmentsRound, numSegmentsLong);
         this.GetComponent<MeshFilter>().mesh = mesh;
 
         //initialize water

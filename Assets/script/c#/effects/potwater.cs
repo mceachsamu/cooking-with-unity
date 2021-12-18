@@ -23,7 +23,7 @@ public class potwater : MonoBehaviour
     public int numFieldPoints = 10;
 
     //the physical water mesh points, these define the y positions of the water surface
-    private point[,] pointField;
+    private WaterPoint[,] pointField;
 
     //the resulting texture from the points field
     private Texture2D heightMap;
@@ -68,7 +68,7 @@ public class potwater : MonoBehaviour
     {
         //set the same as xradius for now
         //create a new 2d plane mesh for this object
-        shapes3D shapeGen = new shapes3D();
+        Shapes3D shapeGen = new Shapes3D();
         Mesh mesh = shapeGen.CreatePlane(numSegs, segSize);
         this.GetComponent<MeshFilter>().mesh = mesh;
 
@@ -76,10 +76,10 @@ public class potwater : MonoBehaviour
         this.pointField = initializePoints(numFieldPoints);
 
         //initialize our height map texture to be the same dimensions as our field points
-        heightMap = new Texture2D(numFieldPoints, numFieldPoints);
+        this.heightMap = new Texture2D(numFieldPoints, numFieldPoints);
 
         //store the starting rotation of this object
-        startRotation = this.transform.rotation;
+        this.startRotation = this.transform.rotation;
     }
 
 
@@ -89,7 +89,7 @@ public class potwater : MonoBehaviour
         //this loop applies the physics model for each point in our field an updates the heightmap accordingly
         for (int i = 0; i < numFieldPoints;i++){
             for (int j = 0; j < numFieldPoints;j++){
-                pointField[i,j].move();
+                pointField[i,j].Move();
                 heightMap.SetPixel(i,j, pointField[i,j].GetHeightValue());
             }
         }
@@ -98,8 +98,8 @@ public class potwater : MonoBehaviour
         setShaderProperties();
 
         //rotate the water
-        angle += angleDiff;
-        angle *= rotationalFriction;
+        this.angle += angleDiff;
+        this.angle *= rotationalFriction;
         this.transform.rotation = startRotation;
         Quaternion q = RotateAroundQ(this.transform, Vector3.up, angle);
 
@@ -110,9 +110,9 @@ public class potwater : MonoBehaviour
         Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -angle);
         //ensures we dont get an out of bounds exception and translates position to water
         Vector2 index = GetClosestPoint(adjustedPosition);
-        pointField[(int)index.x,(int)index.y].addForce(-1 * forceAmount);
+        this.pointField[(int)index.x,(int)index.y].AddForce(-1 * forceAmount);
         //add rotation to the water
-        angleDiff += rotationAdd;
+        this.angleDiff += rotationAdd;
     }
 
     private void setShaderProperties(){
@@ -132,7 +132,7 @@ public class potwater : MonoBehaviour
     }
 
     public void SetColor(Color col){
-        primaryCol = col;
+        this.primaryCol = col;
     }
 
 
@@ -180,16 +180,15 @@ public class potwater : MonoBehaviour
         return t.rotation *= q;
     }
 
-
     public void SetRadius(float radius){
-        xRadius = radius;
+        this.xRadius = radius;
     }
 
     public Texture2D GetHeightMap(){
-        return heightMap;
+        return this.heightMap;
     }
 
-    //translates world positions into the closest index on the field points matrix.
+    // GetClosestPoint translates world positions into the closest index on the field points matrix.
     public Vector2 GetClosestPoint(Vector3 position){
         float xDiff = position.x - this.transform.position.x + this.GetSize()/2.0f;
         float zDiff = position.z - this.transform.position.z + this.GetSize()/2.0f;
@@ -212,16 +211,16 @@ public class potwater : MonoBehaviour
         return new Vector2(x, z);
     }
 
-    //initializes field points
-    public point[,] initializePoints(int numPoints) {
+    // initializePoints initializes field points
+    public WaterPoint[,] initializePoints(int numPoints) {
         //initialize all the points without neighbours
         int counter = 0;
-        point[,] points = new point[numPoints,numPoints];
+        WaterPoint[,] points = new WaterPoint[numPoints,numPoints];
 
         for (int i = 0; i < numPoints;i++){
             for (int j = 0; j < numPoints; j++){
                 counter++;
-                points[i,j] = new point(this, 0.0f);
+                points[i,j] = new WaterPoint(this, 0.0f);
             }
         }
         //now that we have initialized all our points, lets set all their neighbours
@@ -229,7 +228,7 @@ public class potwater : MonoBehaviour
         //over the matrix
         for (int i = 0; i < numPoints;i++){
             for (int j = 0; j < numPoints; j++){
-                List<point> neighbours = new List<point>();
+                List<WaterPoint> neighbours = new List<WaterPoint>();
                 if (i + 1 < numPoints){
                     neighbours.Add(points[i+1,j]);
                     if (j + 1 < numPoints){
@@ -254,7 +253,7 @@ public class potwater : MonoBehaviour
                 if (j - 1 >= 0){
                     neighbours.Add(points[i,j-1]);
                 }
-                points[i,j].setNeighbours(neighbours.ToArray());
+                points[i,j].SetNeighbours(neighbours.ToArray());
             }
         }
         return points;

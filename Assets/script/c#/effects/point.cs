@@ -2,69 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class point
+// WaterPoint represents a point on the water grid. Used in the water physics simulation
+public class WaterPoint
 {
     //position of point in world
     public float y;
 
     //the neighbouring points
-    public  point[] neighbours;
+    public  WaterPoint[] Neighbours;
 
     //how much neighbouring points effect this point
+    public float CurrentDeceleration = 0.00f;
+    public float Acceleration = 0.0f;
 
-    public float curDeceleration = -0.00f;
+    private potwater _water;
 
-    public float acceleration = 0.0f;
+    public float FrictionForce;
+    public float ForceApplied;
 
-    private potwater water;
-
-    public float frictionForce;
-    public float forceApplied;
-
-    public float speed = 0.0f;
+    public float Speed = 0.0f;
 
 
-    //initialize our point
-    public point(potwater waterObj, float y){
-        this.water = waterObj;
+    // WaterPoint initializes our point
+    public WaterPoint(potwater waterObj, float y){
+        this._water = waterObj;
         this.y = y;
     }
 
-        //move this point based on its speed and its neighbours position
-    public void move(){
-        //determine the direction of the center and set curDecelleration towards that direction
-
+        // Move this point based on its speed and its neighbours position
+    public void Move(){
+        // Calculate the force given from the neighbouring points on the water surface
         float totalForce = 0.0f;
-        for (int i = 0; i < neighbours.Length; i++){
-            float difference = neighbours[i].y - this.y;
+        for (int i = 0; i < Neighbours.Length; i++){
+            float difference = Neighbours[i].y - this.y;
             totalForce += difference;
         }
-        this.forceApplied = (totalForce / neighbours.Length) *  water.neighbourFriction;
+        
+        // Calculate the average force from the neigbours and apply friction
+        this.ForceApplied = (totalForce / Neighbours.Length) *  _water.neighbourFriction;
 
-        //decrease/increase gravity based on amplitude
+        // Deceleration is the counter force. This provides elasticity to the water surface
+        // Here we calculate the deceleration using the water amplitude.
         if (this.y > 0){
-            this.curDeceleration = 1.0f * (water.deceleration * 1.0f * Mathf.Abs(this.y) * water.damping);
+            this.CurrentDeceleration = 1.0f * (_water.deceleration * Mathf.Abs(this.y) * _water.damping);
         } else {
-            this.curDeceleration = -1.0f * (water.deceleration * 1.0f * Mathf.Abs(this.y) * water.damping);
+            this.CurrentDeceleration = -1.0f * (_water.deceleration * Mathf.Abs(this.y) * _water.damping);
         }
 
-        this.forceApplied += this.curDeceleration;
-        this.addForce(this.forceApplied);
-        this.acceleration = this.acceleration * water.drag;
-        this.y += this.acceleration;
+        this.ForceApplied += this.CurrentDeceleration;
+        this.Acceleration += this.ForceApplied/_water.mass;
+        this.Acceleration = this.Acceleration * _water.drag;
+        this.y += this.Acceleration;
     }
 
     public Vector4 GetHeightValue(){
-        float height =  ((this.y + water.maxHeight))/(water.maxHeight*2.0f);
+        float height =  ((this.y + _water.maxHeight))/(_water.maxHeight*2.0f);
         return new Vector4(height,height,height,1.0f);
     }
-    public void addForce(float force){
-        this.acceleration += force/water.mass;
+
+    public void AddForce(float force){
+        this.Acceleration += force/_water.mass;
     }
 
-    //set the neighbours for this point
-    public void setNeighbours(point[] neighs){
-        this.neighbours = neighs;
+    public void SetNeighbours(WaterPoint[] neighbours){
+        this.Neighbours = neighbours;
     }
 
 }
