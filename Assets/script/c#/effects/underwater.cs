@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class underwater : MonoBehaviour
+public class Underwater : MonoBehaviour
 {
     private GameObject potController;
 
@@ -31,7 +31,7 @@ public class underwater : MonoBehaviour
             GameObject particles = FindFirstWithTag("WaterRipples");
             ParticleSystem system = particles.GetComponent<ParticleSystem>();
             ParticleSystem ripple = Instantiate(system, this.transform.position, this.transform.rotation);
-            ripple.GetComponent<particleRipples>().SetAttachedObject(this.gameObject);
+            ripple.GetComponent<ParticleRipples>().SetAttachedObject(this.gameObject);
         }
 
     }

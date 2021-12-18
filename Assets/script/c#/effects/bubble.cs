@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bubble : MonoBehaviour
+public class Bubble : MonoBehaviour
 {
 
     public float initialScale = 0.0f;
@@ -62,10 +62,10 @@ public class bubble : MonoBehaviour
         this.transform.position.Set(this.transform.position.x, water.GetWaterPosition().y + bubbleHeight, this.transform.position.z);
 
         this.GetComponent<Renderer>().material.SetTexture("_MainTex", water.GetWaterHeightMap());
-        this.GetComponent<bubble>().zRadius = water.GetXRadius();
-        this.GetComponent<bubble>().xRadius = water.GetXRadius();
-        this.GetComponent<bubble>().scaleIncrease = water.GetSpeed();
-        this.GetComponent<bubble>().center = new Vector3(water.transform.position.x, water.GetWaterPosition().y+bubbleHeight, water.transform.position.z);
+        this.GetComponent<Bubble>().zRadius = water.GetXRadius();
+        this.GetComponent<Bubble>().xRadius = water.GetXRadius();
+        this.GetComponent<Bubble>().scaleIncrease = water.GetSpeed();
+        this.GetComponent<Bubble>().center = new Vector3(water.transform.position.x, water.GetWaterPosition().y+bubbleHeight, water.transform.position.z);
         this.GetComponent<Renderer>().material.SetFloat("_xRad", water.GetXRadius());
         this.GetComponent<Renderer>().material.SetFloat("_zRad", water.GetXRadius());
         this.GetComponent<Renderer>().material.SetFloat("waterSize", water.GetComponent<potController>().GetWaterSize());

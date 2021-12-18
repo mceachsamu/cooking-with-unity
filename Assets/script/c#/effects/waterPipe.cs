@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class waterPipe : MonoBehaviour
+public class WaterPipe : MonoBehaviour
 {
     public float baseRadius = 0.1f;
     public float baseLength = 1.0f;

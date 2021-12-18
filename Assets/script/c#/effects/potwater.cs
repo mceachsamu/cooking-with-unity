@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
-public class potwater : MonoBehaviour
+public class Potwater : MonoBehaviour
 {
     //the object who's transformation defines where the water can be seen through
     private GameObject lid;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class particleRipples : MonoBehaviour
+public class ParticleRipples : MonoBehaviour
 {
 
     private GameObject potController;
@@ -47,8 +47,8 @@ public class particleRipples : MonoBehaviour
         //if not attached to anything, dont set these shader properties
         if (attachedTo != null){
             this.GetComponent<Renderer>().material.SetVector("_ItemWorldPosition", attachedTo.transform.position);
-            this.GetComponent<Renderer>().material.SetFloat("_Magnitude", attachedTo.GetComponent<underwater>().RippleMagnitude);
-            this.GetComponent<ParticleSystem>().startSize = attachedTo.GetComponent<underwater>().RippleMagnitude;
+            this.GetComponent<Renderer>().material.SetFloat("_Magnitude", attachedTo.GetComponent<Underwater>().RippleMagnitude);
+            this.GetComponent<ParticleSystem>().startSize = attachedTo.GetComponent<Underwater>().RippleMagnitude;
         }
     }
 

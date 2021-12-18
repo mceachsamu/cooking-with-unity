@@ -15,7 +15,7 @@ public class WaterPoint
     public float CurrentDeceleration = 0.00f;
     public float Acceleration = 0.0f;
 
-    private potwater _water;
+    private Potwater _water;
 
     public float FrictionForce;
     public float ForceApplied;
@@ -24,7 +24,7 @@ public class WaterPoint
 
 
     // WaterPoint initializes our point
-    public WaterPoint(potwater waterObj, float y){
+    public WaterPoint(Potwater waterObj, float y){
         this._water = waterObj;
         this.y = y;
     }

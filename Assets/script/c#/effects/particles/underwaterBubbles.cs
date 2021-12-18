@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class underwaterBubbles : MonoBehaviour
+public class UnderwaterBubbles : MonoBehaviour
 {
 
     private GameObject potController;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class smoke : MonoBehaviour
+public class Smoke : MonoBehaviour
 {
     //a counter that increments each update. used to move smoke effect with time
     private int count = 0;
