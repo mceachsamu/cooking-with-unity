@@ -31,16 +31,6 @@ public class CameraController : MonoBehaviour
     //the time the current animation started at
     private float startTime;
 
-    private CameraPosition cameraPosition = CameraPosition.KITCHEN;
-
-    public enum CameraPosition
-    {
-        POTION,
-        KITCHEN,
-        WINDOW,
-    }
-
-
     void Start()
     {
         if (positions.Length == 0)
@@ -48,9 +38,11 @@ public class CameraController : MonoBehaviour
             print("need to have atleast one position object on camera");
         }
 
-        //initialize target position to the first position in the list
+        // Initialize target position to the first position in the list
         startPosition = positions[0].transform.position;
         targetPosition = positions[0].transform.position;
+        
+        // Initialize target rotation to the first rotation in the list
         startRotation = positions[0].transform.rotation;
         targetRotation = positions[0].transform.rotation;
     }
@@ -70,53 +62,24 @@ public class CameraController : MonoBehaviour
 
     private void ListenToInput()
     {
-        if (Input.GetKeyDown("1"))
-        {
-            if (positions[0] != null)
+        for (int i = 0; i < positions.Length; i++) {
+            if (Input.GetKeyDown(positions[i].GetComponent<CameraPosition>().KeyStroke))
             {
-                cameraPosition = CameraPosition.POTION;
-                startTime = Time.time;
+                if (positions[i] != null)
+                {
+                    startTime = Time.time;
 
-                startPosition = this.transform.position;
-                startRotation = this.transform.rotation;
+                    startPosition = this.transform.position;
+                    startRotation = this.transform.rotation;
 
-                targetRotation = positions[0].transform.rotation;
-                targetPosition = positions[0].transform.position;
-            }
-        }
-
-        if (Input.GetKeyDown("2"))
-        {
-            if (positions[1] != null)
-            {
-                cameraPosition = CameraPosition.WINDOW;
-                startTime = Time.time;
-
-                startPosition = this.transform.position;
-                startRotation = this.transform.rotation;
-
-                targetRotation = positions[1].transform.rotation;
-                targetPosition = positions[1].transform.position;
-            }
-        }
-
-        if (Input.GetKeyDown("3"))
-        {
-            if (positions[2] != null)
-            {
-                cameraPosition = CameraPosition.KITCHEN;
-                startTime = Time.time;
-
-                startPosition = this.transform.position;
-                startRotation = this.transform.rotation;
-
-                targetRotation = positions[2].transform.rotation;
-                targetPosition = positions[2].transform.position;
+                    targetRotation = positions[i].transform.rotation;
+                    targetPosition = positions[i].transform.position;
+                }
             }
         }
     }
 
-    //returns a float between 0.0 and 1.0
+    // Returns a float between 0.0 and 1.0, corresponding to the point in the animation we are on
     private float GetAnimationFrame(AnimationCurve speedCurve, float sTime) {
         float timeSinceStart = Time.time - sTime;
         float endTime = AnimationTimeInSeconds;
@@ -139,10 +102,4 @@ public class CameraController : MonoBehaviour
         Quaternion InterpolatedRot = Quaternion.Lerp(currentRotation, newRotation, frame);
         return InterpolatedRot;
     }
-
-    public CameraPosition GetCameraPosition()
-    {
-        return cameraPosition;
-    }
-
 }

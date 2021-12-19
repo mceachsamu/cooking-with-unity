@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class spoon : MonoBehaviour
+public class Spoon : MonoBehaviour
 {
     //get the origin of the spoon so we can reset its position
     Vector3 origin;
@@ -37,7 +37,7 @@ public class spoon : MonoBehaviour
     }
 
     private void addForceToWater(){
-        Vector3 center = potController.GetComponent<potController>().GetCenter();
+        Vector3 center = potController.GetComponent<PotController>().GetCenter();
         float force = (this.transform.position - previousPosition).magnitude;
 
         //determine the direction to stir the water
@@ -48,14 +48,14 @@ public class spoon : MonoBehaviour
         float x = -1.0f * (ac.x*bc.z-ac.z*bc.x);
 
         //if x positive, then clockwise, otherwise anti clockwise
-        potController.GetComponent<potController>().AddForceToWater(this.transform.position, force * forceMultiplier, x * stirForce);
+        potController.GetComponent<PotController>().AddForceToWater(this.transform.position, force * forceMultiplier, x * stirForce);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        Vector3 dir =  this.transform.position - potController.GetComponent<potController>().GetCenter();
+        Vector3 dir =  this.transform.position - potController.GetComponent<PotController>().GetCenter();
         dir.y = 0.0f;
 
         //add a force to water each frame

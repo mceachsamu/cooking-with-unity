@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class waterParticles : MonoBehaviour
+public class WaterParticles : MonoBehaviour
 {
-
-
     public float gravity = 0.00f;
     private int count = 0;
 
@@ -42,8 +40,8 @@ public class waterParticles : MonoBehaviour
         system.GetCustomParticleData(customDat, ParticleSystemCustomData.Custom1);
 
         int numParticlesAlive = system.GetParticles(m_Particles);
-        potController controller = potController.GetComponent<potController>();
-        waterPipe waterPipe = waterSpout.GetComponent<waterPipe>();
+        PotController controller = potController.GetComponent<PotController>();
+        WaterPipe waterPipe = waterSpout.GetComponent<WaterPipe>();
         int count = 0;
         Vector3 positionSum = new Vector3(0.0f,0.0f,0.0f);
         for (int i = 0; i < numParticlesAlive; i++)

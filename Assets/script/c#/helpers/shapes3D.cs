@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //this is a class used to generate 3d shapes on program startup
-public class shapes3D
+public class Shapes3D
 {
-
     //creates a simple plane mesh to be used as the water surface
     public Mesh CreatePlane(int numSegs, float segSize){
         Mesh m = new Mesh();

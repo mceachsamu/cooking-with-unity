@@ -13,7 +13,6 @@
         _WaterOpaqueness("water opaqueness", float) = 0.0
         _WaterLevel("water level", float) = 0.0
         _CullAboveWater("cull above water", int) = 0
-        _Count("count", float) = 0.0
         _Angle("angle", float) = 0.0
 
         _CausticNoiseScroll("caustic noise scroll speed", float) = 600.0
@@ -91,7 +90,6 @@
             uniform float _WaterOpaqueness;
             uniform float _WaterLevel;
             uniform int _CullAboveWater;
-            uniform float _Count;
             uniform float _Angle;
 
             uniform float _CausticNoiseScroll;
@@ -138,11 +136,13 @@
                 //get the height of the water at this fragment
                 float waterHeight = tex2D(_HeightMap, waterUV);
 
-                fixed4 noise = tex2D(_NoiseMap, float2(i.uv.x, i.uv.y - _Count / _CausticNoiseScroll));
+                float time = _Time.z;
+
+                fixed4 noise = tex2D(_NoiseMap, float2(i.uv.x, i.uv.y - time / _CausticNoiseScroll));
 
                 //calculate the caustic distortion
                 float uvxDistortion = i.uv.x + waterHeight.r / _CausticXWaterDistortion + noise.r / _CausticXDistortNoise + _Angle / _CausticRotationSpeed;
-                float uvyDistortion = i.uv.y + waterHeight.r / _CausticYWaterDistortion + noise.r / _CausticYDistortNoise - _Count / _CausticScrollSpeed;
+                float uvyDistortion = i.uv.y + waterHeight.r / _CausticYWaterDistortion + noise.r / _CausticYDistortNoise - time / _CausticScrollSpeed;
                 fixed4 caustic1 = tex2D(_Caustics, float2(uvxDistortion, uvyDistortion) * _Caustic1Frequency);
                 fixed4 caustic2 = tex2D(_Caustics, float2(uvxDistortion, uvyDistortion) * _Caustic2Frequency);
 

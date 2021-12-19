@@ -5,13 +5,13 @@ using UnityEngine;
 public class Order
 {
     //the type of potion on the order
-    public PotionType order;
+    public PotionType OrderType;
 
     //the numer of potions ordered
-    public int number;
+    public int Number;
 
-    public Order(PotionType type, int numPotions) {
-        this.order = type;
-        this.number = numPotions;
+    public Order(PotionType Type, int NumPotions) {
+        this.OrderType = Type;
+        this.Number = NumPotions;
     }
 }

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class ingredient : MonoBehaviour
+public class Ingredient : MonoBehaviour
 {
-
     private GameObject potController;
 
-    private Vector3 force = new Vector3(0.0f,10.0f,0.0f);
+    public Name name;
 
-    public GameObject[] DissolvedParts;
+    private float buoyancy = 12.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -20,13 +19,18 @@ public class ingredient : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        force.y = this.GetComponent<Rigidbody>().mass * 9.81f;
-        float waterHeight = potController.GetComponent<potController>().GetWaterHeightAtPosition(this.transform.position);
-        if (this.transform.position.y < (waterHeight + potController.GetComponent<potController>().GetWaterPosition().y)){
-            this.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);
+        float upwardsForce = this.GetComponent<Rigidbody>().mass * buoyancy;
+         if (isUnderWater()){
+            //push the ingredient up to water height
+            this.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, upwardsForce, 0.0f), ForceMode.Force);
         }
+    }
+
+    private bool isUnderWater() {
+        float waterHeight = potController.GetComponent<PotController>().GetWaterHeightAtPosition(this.transform.position);
+        return this.transform.position.y < (waterHeight + potController.GetComponent<PotController>().GetWaterPosition().y);
     }
 
     public enum Name
@@ -35,5 +39,4 @@ public class ingredient : MonoBehaviour
         Cinamon,
         Flower
     }
-
 }

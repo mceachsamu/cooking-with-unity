@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class underwater : MonoBehaviour
+public class Underwater : MonoBehaviour
 {
     private GameObject potController;
-
-    private ParticleSystem prefab;
-
     public bool hasRipples = true;
 
     //if true, will not render fragments above water surface
@@ -31,7 +28,7 @@ public class underwater : MonoBehaviour
             GameObject particles = FindFirstWithTag("WaterRipples");
             ParticleSystem system = particles.GetComponent<ParticleSystem>();
             ParticleSystem ripple = Instantiate(system, this.transform.position, this.transform.rotation);
-            ripple.GetComponent<particleRipples>().SetAttachedObject(this.gameObject);
+            ripple.GetComponent<ParticleRipples>().SetAttachedObject(this.gameObject);
         }
 
     }
@@ -43,16 +40,15 @@ public class underwater : MonoBehaviour
     }
 
     private void setShaderProperties(){
-        this.GetComponent<Renderer>().material.SetFloat("_WaterOpaqueness", potController.GetComponent<potController>().GetWaterOpaqueness());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterSize", potController.GetComponent<potController>().GetWaterSize());
-        this.GetComponent<Renderer>().material.SetFloat("_Count", potController.GetComponent<potController>().GetCount());
-        this.GetComponent<Renderer>().material.SetTexture("_HeightMap", potController.GetComponent<potController>().GetWaterHeightMap());
-        this.GetComponent<Renderer>().material.SetVector("_PotCenter", potController.GetComponent<potController>().GetCenter());
-        this.GetComponent<Renderer>().material.SetFloat("_WaterLevel", potController.GetComponent<potController>().GetWaterPosition().y);
-        this.GetComponent<Renderer>().material.SetFloat("_MaxHeight", potController.GetComponent<potController>().GetWaterMaxHeight());
-        this.GetComponent<Renderer>().material.SetInt("_CullAboveWater", cullAboveWater);
-
-        this.GetComponent<Renderer>().material.SetFloat("_Angle", potController.GetComponent<potController>().GetWaterAngle());
+        Material mat = this.GetComponent<Renderer>().material;
+        mat.SetFloat("_WaterOpaqueness", potController.GetComponent<PotController>().GetWaterOpaqueness());
+        mat.SetFloat("_WaterSize", potController.GetComponent<PotController>().GetWaterSize());
+        mat.SetTexture("_HeightMap", potController.GetComponent<PotController>().GetWaterHeightMap());
+        mat.SetVector("_PotCenter", potController.GetComponent<PotController>().GetCenter());
+        mat.SetFloat("_WaterLevel", potController.GetComponent<PotController>().GetWaterPosition().y);
+        mat.SetFloat("_MaxHeight", potController.GetComponent<PotController>().GetWaterMaxHeight());
+        mat.SetInt("_CullAboveWater", cullAboveWater);
+        mat.SetFloat("_Angle", potController.GetComponent<PotController>().GetWaterAngle());
     }
 
 }

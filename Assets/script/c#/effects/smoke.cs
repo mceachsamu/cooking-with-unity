@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ObjectFind;
 
-public class smoke : MonoBehaviour
+public class Smoke : MonoBehaviour
 {
     //a counter that increments each update. used to move smoke effect with time
     private int count = 0;
@@ -31,6 +31,6 @@ public class smoke : MonoBehaviour
 
     private void SetShaderProperties(){
         this.GetComponent<Renderer>().material.SetInt("_Count", count);
-        this.GetComponent<Renderer>().material.SetVector("_Color", potController.GetComponent<potController>().GetColor());
+        this.GetComponent<Renderer>().material.SetVector("_Color", potController.GetComponent<PotController>().GetColor());
     }
 }

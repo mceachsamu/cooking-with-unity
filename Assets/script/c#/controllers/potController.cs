@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class potController : MonoBehaviour
+public class PotController : MonoBehaviour
 {
     private float totalVolume = 0.001f;
 
@@ -10,10 +10,12 @@ public class potController : MonoBehaviour
     [Range(0.0f, 0.5f)]
     public float speed = 0.1f;
 
-    private float count = 0;
-
     //the number of bubbles that appear on the water
     public int numBubbles = 20;
+
+    public float startHeight;
+
+    public float maxHeight;
 
     //the list of bubble game objects
     private GameObject[] bubbles;
@@ -23,8 +25,6 @@ public class potController : MonoBehaviour
     public GameObject lid;
 
     public GameObject bubblePrefab;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -38,28 +38,28 @@ public class potController : MonoBehaviour
             bubbles[i] = createBubble(i);
         }
 
-        this.water.GetComponent<potwater>().SetLidObject(lid);
+        this.water.GetComponent<Potwater>().SetLidObject(lid);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //count is an internal timer we give to the shader to move the water along with time
-        count = count + speed;
+        // Count is an internal timer we give to the shader to move the water along with time
 
-        //find out what the hieght should be given the volume and move the water to that height
+        // Find out what the height should be given the volume and move the water to that height
         ApplyWaterHeight();
 
+        // Update the radius in case that has been changed during playtime
         SetWaterRadius();
 
     }
 
     public Vector3 GetCenter(){
-        return water.GetComponent<potwater>().GetCenter();
+        return water.GetComponent<Potwater>().GetCenter();
     }
 
     public float GetWaterHeightAtPosition(Vector3 position){
-        return water.GetComponent<potwater>().GetWaterHeightAtPosition(position);
+        return water.GetComponent<Potwater>().GetWaterHeightAtPosition(position);
     }
 
     public Vector3 GetWaterPosition(){
@@ -67,21 +67,25 @@ public class potController : MonoBehaviour
     }
 
     public Texture2D GetWaterHeightMap(){
-        return water.GetComponent<potwater>().GetHeightMap();
+        return water.GetComponent<Potwater>().GetHeightMap();
     }
 
     //calculates what the height of the water should be based on water volume
     private void ApplyWaterHeight(){
         Vector3 pos = water.transform.position;
 
-        //using log because its kinda similar to the shape of a bowl
+        //using log because it produces a graph which is kinda similar to the shape of a bowl
         float newHeight = Mathf.Log(totalVolume, 2);
-        pos.y = newHeight+0.5f;
+        
+        if (pos.y < maxHeight) {
+            pos.y = newHeight + startHeight;
+        }
+        
         water.transform.position = pos;
     }
 
     private void SetWaterRadius(){
-        this.water.GetComponent<potwater>().SetRadius(this.transform.localScale.x * lid.GetComponent<lid>().lidXradius);
+        this.water.GetComponent<Potwater>().SetRadius(this.transform.localScale.x * lid.GetComponent<Lid>().lidXradius);
     }
 
     public void AddLiquidToWater(float amount, Color color) {
@@ -89,7 +93,7 @@ public class potController : MonoBehaviour
     }
 
     public void AddForceToWater(Vector3 position, float forceAmount, float rotationAdd){
-        water.GetComponent<potwater>().AddForceToWater(position, forceAmount, rotationAdd);
+        water.GetComponent<Potwater>().AddForceToWater(position, forceAmount, rotationAdd);
     }
 
     private GameObject createBubble(int i){
@@ -99,14 +103,14 @@ public class potController : MonoBehaviour
         bub.AddComponent<MeshRenderer>();
         bub.GetComponent<MeshRenderer>().material = bubblePrefab.GetComponent<MeshRenderer>().material;
         bub.GetComponent<MeshFilter>().mesh = bubblePrefab.GetComponent<MeshFilter>().mesh;
-        bub.AddComponent<bubble>();
+        bub.AddComponent<Bubble>();
         bub.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
-        bub.GetComponent<bubble>().center = new Vector3(this.transform.position.x, lid.transform.position.y, this.transform.position.z);
-        bub.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<potwater>().GetColor());
+        bub.GetComponent<Bubble>().Center = new Vector3(this.transform.position.x, lid.transform.position.y, this.transform.position.z);
+        bub.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<Potwater>().GetColor());
 
-        bub.GetComponent<bubble>().scaleIncrease = Random.Range(0.003f,0.006f);
-        bub.GetComponent<bubble>().maxScale = Random.Range(0.05f,0.1f);
-        bub.GetComponent<bubble>().water = this;
+        bub.GetComponent<Bubble>().ScaleIncrease = Random.Range(0.003f,0.006f);
+        bub.GetComponent<Bubble>().MaxScale = Random.Range(0.05f,0.1f);
+        bub.GetComponent<Bubble>().Water = this;
         bub.GetComponent<Transform>().parent = water.GetComponent<Transform>();
 
         //water layer
@@ -115,27 +119,23 @@ public class potController : MonoBehaviour
     }
 
     public float GetWaterOpaqueness(){
-        return water.GetComponent<potwater>().waterOpaqueness;
+        return water.GetComponent<Potwater>().WaterOpaqueness;
     }
 
     public float GetWaterMaxHeight(){
-        return water.GetComponent<potwater>().maxHeight;
+        return water.GetComponent<Potwater>().MaxHeight;
     }
 
     public float GetWaterAngle(){
-        return water.GetComponent<potwater>().GetAngle();
+        return water.GetComponent<Potwater>().GetAngle();
     }
 
     public Color GetColor(){
-        return water.GetComponent<potwater>().GetColor();
+        return water.GetComponent<Potwater>().GetColor();
     }
 
     public float GetWaterSize(){
-        return water.GetComponent<potwater>().segSize * water.GetComponent<potwater>().numSegs;
-    }
-
-    public float GetCount(){
-        return count;
+        return water.GetComponent<Potwater>().SegSize * water.GetComponent<Potwater>().NumSegs;
     }
 
     public float GetSpeed(){
@@ -143,7 +143,7 @@ public class potController : MonoBehaviour
     }
 
     public float GetXRadius(){
-        return this.transform.localScale.x * lid.GetComponent<lid>().lidXradius;
+        return this.transform.localScale.x * lid.GetComponent<Lid>().lidXradius;
     }
 
 }
