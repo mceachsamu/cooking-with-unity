@@ -54,9 +54,7 @@ public class WaterPipe : MonoBehaviour
         //initialize bottle end
         bottleEnd = FindFirstWithTag("BottleEnd");
 
-
         PreviousPoint = potController.GetComponent<PotController>().GetCenter();
-
     }
 
     // Update is called once per frame

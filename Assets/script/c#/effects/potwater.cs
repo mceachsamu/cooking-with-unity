@@ -98,7 +98,7 @@ public class Potwater : MonoBehaviour
 
         //rotate the water
         this._angle += _angleDiff;
-        this._angle *= RotationalFriction;
+        this._angleDiff *= RotationalFriction;
         this.transform.rotation = _startRotation;
         Quaternion q = RotateAroundQ(this.transform, Vector3.up, _angle);
     }
@@ -118,7 +118,7 @@ public class Potwater : MonoBehaviour
     private void setShaderProperties(){
         Material mat = this.GetComponent<Renderer>().material;
 
-        //give these values to our shader
+        // Give these values to our shader
         mat.SetFloat("_xRad", _xRadius);
         mat.SetFloat("_Seperation", SegSize);
         mat.SetFloat("_TotalSize", GetSize());
