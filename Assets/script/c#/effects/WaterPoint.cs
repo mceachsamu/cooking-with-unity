@@ -39,29 +39,29 @@ public class WaterPoint
         }
         
         // Calculate the average force from the neigbours and apply friction
-        this.ForceApplied = (totalForce / Neighbours.Length) *  _water.neighbourFriction;
+        this.ForceApplied = (totalForce / Neighbours.Length) *  _water.NeighbourFriction;
 
         // Deceleration is the counter force. This provides elasticity to the water surface
         // Here we calculate the deceleration using the water amplitude.
         if (this.y > 0){
-            this.CurrentDeceleration = 1.0f * (_water.deceleration * Mathf.Abs(this.y) * _water.damping);
+            this.CurrentDeceleration = 1.0f * (_water.Deceleration * Mathf.Abs(this.y) * _water.Damping);
         } else {
-            this.CurrentDeceleration = -1.0f * (_water.deceleration * Mathf.Abs(this.y) * _water.damping);
+            this.CurrentDeceleration = -1.0f * (_water.Deceleration * Mathf.Abs(this.y) * _water.Damping);
         }
 
         this.ForceApplied += this.CurrentDeceleration;
-        this.Acceleration += this.ForceApplied/_water.mass;
-        this.Acceleration = this.Acceleration * _water.drag;
+        this.Acceleration += this.ForceApplied/_water.Mass;
+        this.Acceleration = this.Acceleration * _water.Drag;
         this.y += this.Acceleration;
     }
 
     public Vector4 GetHeightValue(){
-        float height =  ((this.y + _water.maxHeight))/(_water.maxHeight*2.0f);
+        float height =  ((this.y + _water.MaxHeight))/(_water.MaxHeight*2.0f);
         return new Vector4(height,height,height,1.0f);
     }
 
     public void AddForce(float force){
-        this.Acceleration += force/_water.mass;
+        this.Acceleration += force/_water.Mass;
     }
 
     public void SetNeighbours(WaterPoint[] neighbours){

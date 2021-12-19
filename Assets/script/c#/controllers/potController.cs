@@ -119,11 +119,11 @@ public class PotController : MonoBehaviour
     }
 
     public float GetWaterOpaqueness(){
-        return water.GetComponent<Potwater>().waterOpaqueness;
+        return water.GetComponent<Potwater>().WaterOpaqueness;
     }
 
     public float GetWaterMaxHeight(){
-        return water.GetComponent<Potwater>().maxHeight;
+        return water.GetComponent<Potwater>().MaxHeight;
     }
 
     public float GetWaterAngle(){
@@ -135,7 +135,7 @@ public class PotController : MonoBehaviour
     }
 
     public float GetWaterSize(){
-        return water.GetComponent<Potwater>().segSize * water.GetComponent<Potwater>().numSegs;
+        return water.GetComponent<Potwater>().SegSize * water.GetComponent<Potwater>().NumSegs;
     }
 
     public float GetSpeed(){

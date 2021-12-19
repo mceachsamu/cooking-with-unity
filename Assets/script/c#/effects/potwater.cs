@@ -5,165 +5,164 @@ using System.Reflection;
 public class Potwater : MonoBehaviour
 {
     //the object who's transformation defines where the water can be seen through
-    private GameObject lid;
+    private GameObject _lid;
 
     //the number of segments the plane is made up from
-    public int numSegs = 10;
+    public int NumSegs = 10;
     //the size of the segments on the plane generated
-    public float segSize = 5.0f;
+    public float SegSize = 5.0f;
 
     //how quickly objects fade in water
     [Range(0.0f, 3.0f)]
-    public float waterOpaqueness = 1.0f;
+    public float WaterOpaqueness = 1.0f;
 
     //the main color of the water
-    public Color primaryCol = new Color(155.0f/255,0.0f/255.0f,28.0f/255.0f);
+    public Color PrimaryCol = new Color(155.0f/255,0.0f/255.0f,28.0f/255.0f);
     //the shading color of the water
 
-    public int numFieldPoints = 10;
+    public int NumFieldPoints = 10;
 
     //the physical water mesh points, these define the y positions of the water surface
-    private WaterPoint[,] pointField;
+    private WaterPoint[,] _pointField;
 
     //the resulting texture from the points field
-    private Texture2D heightMap;
+    private Texture2D _heightMap;
 
     //list our constants for our water physics
 
     //neighbourFriction defines how much neighbouring points influence each other
     [Range(0.0f, 0.3f)]
-    public float neighbourFriction = 0.1f;
+    public float NeighbourFriction = 0.1f;
     //friction defines amount of counter force for each point (higher friction const -> less friction)
     [Range(0.8f, 1.0f)]
-    public float friction = 0.9f;
+    public float Friction = 0.9f;
     //drag defines how quickly the acceleration of a point is decreased at each frame (higher drag const -> less drag)
     [Range(0.9f, 1.0f)]
-    public float drag = 0.97f;
+    public float Drag = 0.97f;
     //maxHeight defines the height of the water that we allow. at lower values the water surface is more defined. higher less defined but smoother
     [Range(0.1f, 5.0f)]
-    public float maxHeight = 1.0f;
+    public float MaxHeight = 1.0f;
     //the mass defines the mass of each point. this effects how much points are effected by forces
     [Range(1.0f, 10.0f)]
-    public float mass = 3.0f;
+    public float Mass = 3.0f;
     //deceleration defines the rate at which each point tends to a state of rest
     [Range(-0.01f, -0.1f)]
-    public float deceleration = -0.1f;
+    public float Deceleration = -0.1f;
 
     [Range(0.01f, 0.3f)]
-    public float damping = 0.1f;
+    public float Damping = 0.1f;
 
-    private float angle = 0.0f;
+    private float _angle = 0.0f;
 
-    private float angleDiff = 0.0f;
+    private float _angleDiff = 0.0f;
 
     [Range(0.6f, 1.0f)]
 
-    public float rotationalFriction = 0.8f;
+    public float RotationalFriction = 0.8f;
 
-    private Quaternion startRotation;
+    private Quaternion _startRotation;
 
-    private float xRadius;
+    private float _xRadius;
 
     void Start()
     {
         //set the same as xradius for now
         //create a new 2d plane mesh for this object
         Shapes3D shapeGen = new Shapes3D();
-        Mesh mesh = shapeGen.CreatePlane(numSegs, segSize);
+        Mesh mesh = shapeGen.CreatePlane(NumSegs, SegSize);
         this.GetComponent<MeshFilter>().mesh = mesh;
 
         //initialize our field points
-        this.pointField = initializePoints(numFieldPoints);
+        this._pointField = InitializePoints(NumFieldPoints);
 
         //initialize our height map texture to be the same dimensions as our field points
-        this.heightMap = new Texture2D(numFieldPoints, numFieldPoints);
+        this._heightMap = new Texture2D(NumFieldPoints, NumFieldPoints);
 
         //store the starting rotation of this object
-        this.startRotation = this.transform.rotation;
+        this._startRotation = this.transform.rotation;
     }
-
 
     // Update is called once per frame
     void Update()
     {
         //this loop applies the physics model for each point in our field an updates the heightmap accordingly
-        for (int i = 0; i < numFieldPoints;i++){
-            for (int j = 0; j < numFieldPoints;j++){
-                pointField[i,j].Move();
-                heightMap.SetPixel(i,j, pointField[i,j].GetHeightValue());
+        for (int i = 0; i < NumFieldPoints;i++){
+            for (int j = 0; j < NumFieldPoints;j++){
+                _pointField[i,j].Move();
+                _heightMap.SetPixel(i,j, _pointField[i,j].GetHeightValue());
             }
         }
-        heightMap.Apply();
+        _heightMap.Apply();
 
         setShaderProperties();
 
         //rotate the water
-        this.angle += angleDiff;
-        this.angle *= rotationalFriction;
-        this.transform.rotation = startRotation;
-        Quaternion q = RotateAroundQ(this.transform, Vector3.up, angle);
+        this._angle += _angleDiff;
+        this._angle *= RotationalFriction;
+        this.transform.rotation = _startRotation;
+        Quaternion q = RotateAroundQ(this.transform, Vector3.up, _angle);
     }
 
     public void AddForceToWater(Vector3 position, float forceAmount, float rotationAdd){
         //first rotate the input position to match the rotation of the water
-        Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -angle);
+        Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -_angle);
         
         //ensures we dont get an out of bounds exception and translates position to water
         Vector2 index = GetClosestPoint(adjustedPosition);
-        this.pointField[(int)index.x,(int)index.y].AddForce(-1 * forceAmount);
+        this._pointField[(int)index.x,(int)index.y].AddForce(-1 * forceAmount);
         
         //add rotation to the water
-        this.angleDiff += rotationAdd;
+        this._angleDiff += rotationAdd;
     }
 
     private void setShaderProperties(){
         Material mat = this.GetComponent<Renderer>().material;
 
         //give these values to our shader
-        mat.SetFloat("_xRad", xRadius);
-        mat.SetFloat("_Seperation", segSize);
+        mat.SetFloat("_xRad", _xRadius);
+        mat.SetFloat("_Seperation", SegSize);
         mat.SetFloat("_TotalSize", GetSize());
-        mat.SetFloat("_MaxHeight", maxHeight);
+        mat.SetFloat("_MaxHeight", MaxHeight);
         mat.SetVector("_Center", GetCenter());
-        mat.SetTexture("_Tex", heightMap);
-        mat.SetVector("_BaseColor", primaryCol);
+        mat.SetTexture("_Tex", _heightMap);
+        mat.SetVector("_BaseColor", PrimaryCol);
     }
 
     public Color GetColor(){
-        return primaryCol;
+        return PrimaryCol;
     }
 
     public void SetColor(Color col){
-        this.primaryCol = col;
+        this.PrimaryCol = col;
     }
 
 
     public float GetWaterHeightAtPosition(Vector3 position){
-        Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -angle);
+        Vector3 adjustedPosition = RotateAround(position, this.transform.position, Vector3.up, -_angle);
         Vector2 closest = GetClosestPoint(adjustedPosition);
-        return (this.heightMap.GetPixel((int)closest.x, (int)closest.y).r) - maxHeight;
+        return (this._heightMap.GetPixel((int)closest.x, (int)closest.y).r) - MaxHeight;
     }
 
 
     public float GetAngle(){
-        return angle;
+        return _angle;
     }
 
     public void SetLidObject(GameObject lid){
-        this.lid = lid;
+        this._lid = lid;
     }
 
     //get the center point for the pot
     public Vector3 GetCenter(){
-        if (lid != null){
-            return lid.transform.position;
+        if (_lid != null){
+            return _lid.transform.position;
         }
 
         return new Vector3(0.0f,0.0f,0.0f);
     }
 
     public float GetSize(){
-        return segSize * numSegs;
+        return SegSize * NumSegs;
     }
 
     public Vector3 RotateAround(Vector3 position, Vector3 point, Vector3 axis, float angle)
@@ -178,33 +177,33 @@ public class Potwater : MonoBehaviour
 
     public Quaternion RotateAroundQ(Transform t, Vector3 axis, float angle)
     {
-        Quaternion q = Quaternion.AngleAxis(this.angle * 0.0174532924f, axis);
+        Quaternion q = Quaternion.AngleAxis(this._angle * 0.0174532924f, axis);
         return t.rotation *= q;
     }
 
     public void SetRadius(float radius){
-        this.xRadius = radius;
+        this._xRadius = radius;
     }
 
     public Texture2D GetHeightMap(){
-        return this.heightMap;
+        return this._heightMap;
     }
 
     // GetClosestPoint translates world positions into the closest index on the field points matrix.
     public Vector2 GetClosestPoint(Vector3 position){
         float xDiff = position.x - this.transform.position.x + this.GetSize()/2.0f;
         float zDiff = position.z - this.transform.position.z + this.GetSize()/2.0f;
-        float x = (xDiff / (this.GetSize())) * numFieldPoints;
-        float z = (zDiff / (this.GetSize())) * numFieldPoints;
+        float x = (xDiff / (this.GetSize())) * NumFieldPoints;
+        float z = (zDiff / (this.GetSize())) * NumFieldPoints;
 
-        if (x >= numFieldPoints){
-            x = numFieldPoints - 1;
+        if (x >= NumFieldPoints){
+            x = NumFieldPoints - 1;
         }
         if (x < 0.0f){
             x = 0.0f;
         }
-        if (z >= numFieldPoints){
-            z = numFieldPoints - 1;
+        if (z >= NumFieldPoints){
+            z = NumFieldPoints - 1;
         }
         if (z < 0.0f){
             z = 0.0f;
@@ -213,8 +212,8 @@ public class Potwater : MonoBehaviour
         return new Vector2(x, z);
     }
 
-    // initializePoints initializes field points
-    public WaterPoint[,] initializePoints(int numPoints) {
+    // InitializePoints initializes field points
+    public WaterPoint[,] InitializePoints(int numPoints) {
         //initialize all the points without neighbours
         int counter = 0;
         WaterPoint[,] points = new WaterPoint[numPoints,numPoints];
