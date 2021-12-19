@@ -4,6 +4,6 @@ using UnityEngine;
 
 public abstract class PotionBehaviour
 {
-    public static string name;
+    public static string Name;
 
 }

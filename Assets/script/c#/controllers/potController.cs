@@ -105,12 +105,12 @@ public class PotController : MonoBehaviour
         bub.GetComponent<MeshFilter>().mesh = bubblePrefab.GetComponent<MeshFilter>().mesh;
         bub.AddComponent<Bubble>();
         bub.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
-        bub.GetComponent<Bubble>().center = new Vector3(this.transform.position.x, lid.transform.position.y, this.transform.position.z);
+        bub.GetComponent<Bubble>().Center = new Vector3(this.transform.position.x, lid.transform.position.y, this.transform.position.z);
         bub.GetComponent<Renderer>().material.SetVector("baseColor", water.GetComponent<Potwater>().GetColor());
 
-        bub.GetComponent<Bubble>().scaleIncrease = Random.Range(0.003f,0.006f);
-        bub.GetComponent<Bubble>().maxScale = Random.Range(0.05f,0.1f);
-        bub.GetComponent<Bubble>().water = this;
+        bub.GetComponent<Bubble>().ScaleIncrease = Random.Range(0.003f,0.006f);
+        bub.GetComponent<Bubble>().MaxScale = Random.Range(0.05f,0.1f);
+        bub.GetComponent<Bubble>().Water = this;
         bub.GetComponent<Transform>().parent = water.GetComponent<Transform>();
 
         //water layer
