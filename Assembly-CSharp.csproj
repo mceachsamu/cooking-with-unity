@@ -36,53 +36,53 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\script\c#\effects\Bubble.cs" />
-     <Compile Include="Assets\script\c#\characters\CharacterPhase.cs" />
-     <Compile Include="Assets\script\c#\effects\Underwater.cs" />
-     <Compile Include="Assets\script\c#\controllers\IngredientDepository.cs" />
-     <Compile Include="Assets\script\c#\helpers\ObjectFind.cs" />
-     <Compile Include="Assets\script\c#\potions\PotionBehaviour.cs" />
-     <Compile Include="Assets\script\c#\characters\CharacterBehaviour.cs" />
-     <Compile Include="Assets\script\postprocessing\PostProcessOutline.cs" />
-     <Compile Include="Assets\script\c#\objects\spoon.cs" />
-     <Compile Include="Assets\script\c#\effects\particles\WaterParticles.cs" />
-     <Compile Include="Assets\script\c#\orders\Order.cs" />
-     <Compile Include="Assets\script\c#\controllers\CameraController.cs" />
-     <Compile Include="Assets\script\c#\effects\WaterPipe.cs" />
-     <Compile Include="Assets\script\c#\objects\lid.cs" />
-     <Compile Include="Assets\script\c#\controllers\CharacterController.cs" />
-     <Compile Include="Assets\script\c#\effects\Potwater.cs" />
-     <Compile Include="Assets\script\c#\effects\particles\UnderwaterBubbles.cs" />
-     <Compile Include="Assets\script\c#\objects\ingredient.cs" />
-     <Compile Include="Assets\script\c#\controllers\PotController.cs" />
-     <Compile Include="Assets\script\c#\characters\Wilson.cs" />
-     <Compile Include="Assets\script\c#\objects\cameraPosition.cs" />
-     <Compile Include="Assets\script\c#\effects\Smoke.cs" />
-     <Compile Include="Assets\script\c#\potions\PotionType.cs" />
-     <Compile Include="Assets\script\postprocessing\RenderReplacementShaderToTexture.cs" />
-     <Compile Include="Assets\script\c#\objects\bottle.cs" />
-     <Compile Include="Assets\script\c#\effects\WaterPoint.cs" />
-     <Compile Include="Assets\script\c#\effects\particles\particleRipples.cs" />
-     <Compile Include="Assets\script\c#\controllers\TimeCycleController.cs" />
-     <Compile Include="Assets\script\c#\helpers\shapes3D.cs" />
-     <Compile Include="Assets\script\c#\controllers\IngredientSettings.cs" />
-     <None Include="Assets\script\shaders\underwater-bubbles.shader" />
-     <None Include="Assets\script\shaders\cell_shading.shader" />
-     <None Include="Assets\script\postprocessing\outline.shader" />
-     <None Include="Assets\script\shaders\pot-cull.cginc" />
-     <None Include="Assets\script\shaders\waterPipe.shader" />
-     <None Include="Assets\script\shaders\cellShading.cginc" />
-     <None Include="Assets\script\shaders\water.shader" />
-     <None Include="Assets\script\shaders\My Shadows.cginc" />
-     <None Include="Assets\script\postprocessing\normals.shader" />
-     <None Include="Assets\script\shaders\fire.shader" />
-     <None Include="Assets\script\shaders\bubbles.shader" />
-     <None Include="Assets\script\shaders\smoke.shader" />
-     <None Include="Assets\script\shaders\glass.shader" />
-     <None Include="Assets\script\shaders\candle-light.shader" />
-     <None Include="Assets\script\shaders\waterDistortion.cginc" />
-     <None Include="Assets\script\shaders\particle-ripples.shader" />
-     <None Include="Assets\script\shaders\underwater.shader" />
+     <Compile Include="Assets\scripts\c#\effects\Bubble.cs" />
+     <Compile Include="Assets\scripts\c#\characters\CharacterPhase.cs" />
+     <Compile Include="Assets\scripts\c#\effects\Underwater.cs" />
+     <Compile Include="Assets\scripts\c#\controllers\IngredientDepository.cs" />
+     <Compile Include="Assets\scripts\c#\helpers\ObjectFind.cs" />
+     <Compile Include="Assets\scripts\c#\potions\PotionBehaviour.cs" />
+     <Compile Include="Assets\scripts\c#\characters\CharacterBehaviour.cs" />
+     <Compile Include="Assets\scripts\postprocessing\PostProcessOutline.cs" />
+     <Compile Include="Assets\scripts\c#\objects\Spoon.cs" />
+     <Compile Include="Assets\scripts\c#\effects\particles\WaterParticles.cs" />
+     <Compile Include="Assets\scripts\c#\orders\Order.cs" />
+     <Compile Include="Assets\scripts\c#\controllers\CameraController.cs" />
+     <Compile Include="Assets\scripts\c#\effects\WaterPipe.cs" />
+     <Compile Include="Assets\scripts\c#\objects\Lid.cs" />
+     <Compile Include="Assets\scripts\c#\controllers\CharacterController.cs" />
+     <Compile Include="Assets\scripts\c#\effects\Potwater.cs" />
+     <Compile Include="Assets\scripts\c#\effects\particles\UnderwaterBubbles.cs" />
+     <Compile Include="Assets\scripts\c#\objects\Ingredient.cs" />
+     <Compile Include="Assets\scripts\c#\controllers\PotController.cs" />
+     <Compile Include="Assets\scripts\c#\characters\Wilson.cs" />
+     <Compile Include="Assets\scripts\c#\objects\CameraPosition.cs" />
+     <Compile Include="Assets\scripts\c#\effects\Smoke.cs" />
+     <Compile Include="Assets\scripts\c#\potions\PotionType.cs" />
+     <Compile Include="Assets\scripts\postprocessing\RenderReplacementShaderToTexture.cs" />
+     <Compile Include="Assets\scripts\c#\objects\Bottle.cs" />
+     <Compile Include="Assets\scripts\c#\effects\WaterPoint.cs" />
+     <Compile Include="Assets\scripts\c#\effects\particles\ParticleRipples.cs" />
+     <Compile Include="Assets\scripts\c#\controllers\TimeCycleController.cs" />
+     <Compile Include="Assets\scripts\c#\helpers\Shapes3D.cs" />
+     <Compile Include="Assets\scripts\c#\controllers\IngredientSettings.cs" />
+     <None Include="Assets\scripts\shaders\underwater-bubbles.shader" />
+     <None Include="Assets\scripts\shaders\cell_shading.shader" />
+     <None Include="Assets\scripts\postprocessing\outline.shader" />
+     <None Include="Assets\scripts\shaders\pot-cull.cginc" />
+     <None Include="Assets\scripts\shaders\waterPipe.shader" />
+     <None Include="Assets\scripts\shaders\cellShading.cginc" />
+     <None Include="Assets\scripts\shaders\water.shader" />
+     <None Include="Assets\scripts\shaders\My Shadows.cginc" />
+     <None Include="Assets\scripts\postprocessing\normals.shader" />
+     <None Include="Assets\scripts\shaders\fire.shader" />
+     <None Include="Assets\scripts\shaders\bubbles.shader" />
+     <None Include="Assets\scripts\shaders\smoke.shader" />
+     <None Include="Assets\scripts\shaders\glass.shader" />
+     <None Include="Assets\scripts\shaders\candle-light.shader" />
+     <None Include="Assets\scripts\shaders\waterDistortion.cginc" />
+     <None Include="Assets\scripts\shaders\particle-ripples.shader" />
+     <None Include="Assets\scripts\shaders\underwater.shader" />
     <Reference Include="UnityEngine">
         <HintPath>/Users/sammceachern/dev/untiy/2020.1.14f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
@@ -273,13 +273,13 @@
         <HintPath>/Users/sammceachern/dev/untiy/2020.1.14f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/PackageCache/com.unity.analytics@3.5.3/Unity.Analytics.Tracker.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/PackageCache/com.unity.analytics@3.5.3/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/PackageCache/com.unity.analytics@3.5.3/Unity.Analytics.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/PackageCache/com.unity.analytics@3.5.3/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/PackageCache/com.unity.analytics@3.5.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/PackageCache/com.unity.analytics@3.5.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
         <HintPath>/Users/sammceachern/dev/untiy/2020.1.14f1/Unity.app/Contents/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -627,76 +627,76 @@
         <HintPath>/Users/sammceachern/dev/untiy/2020.1.14f1/Unity.app/Contents/NetStandard/compat/2.0.0/shims/netfx/mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Monetization">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.Monetization.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.Monetization.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Advertisements">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.Advertisements.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Purchasing">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Analytics">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Analytics.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Analytics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Tilemap.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Advertisements.Editor">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.Advertisements.Editor.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEngine.Advertisements.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-        <HintPath>/Users/sammceachern/dev/untiy/cooking-with-unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+        <HintPath>/Users/sammceachern/dev/cooking-with-unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
