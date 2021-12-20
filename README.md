@@ -2,6 +2,19 @@
 
 This is a unity project for demonstrating some visual effects based on a potion making game. 
 
+# controls
+right mouse button - move spoon
+
+z - tilt bottle
+
+x - camera 1
+c - camera 2
+v - camera 3
+
+q - spawn ingredient 1
+w - spawn ingredient 2
+e - spawn ingredient 3
+
 ![alt text][logo]
 
 [logo]: https://github.com/mceachsamu/cooking-with-unity/blob/master/pot2.gif "Logo Title Text 1"
@@ -22,8 +35,3 @@ Make sure you have the same unity version.
 
 step 3: 
 Open up the file using unity hub using the recommended version.
-
-# controls
-right mouse button - move spoon
-
-z - tilt bottle
