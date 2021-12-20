@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1322a92cea17f49618fa179215f5592e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeyStroke: 1
+  KeyStroke: z
   position: 0
 --- !u!1001 &132722424
 PrefabInstance:
@@ -933,7 +933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1322a92cea17f49618fa179215f5592e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeyStroke: 3
+  KeyStroke: c
   position: 0
 --- !u!1001 &981008321
 PrefabInstance:
@@ -1221,7 +1221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1322a92cea17f49618fa179215f5592e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeyStroke: 2
+  KeyStroke: x
   position: 0
 --- !u!1 &1272200270
 GameObject:

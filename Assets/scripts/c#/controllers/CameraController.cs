@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     // Positions holds tell the controller the different positions it can move to
-    // Each object in this array should have a CameraTag script attached
     public GameObject[] Positions;
 
     // The animation speed of the camera
@@ -23,7 +22,7 @@ public class CameraController : MonoBehaviour
     // The rotation the camera is starting at
     private Quaternion _startRotation;
 
-    // The rotation the camera is moving to/ is currently at
+    // The rotation the camera is moving to/is currently at
     private Quaternion _targetRotation;
 
     // The time the current animation started at
