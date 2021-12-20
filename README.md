@@ -8,11 +8,15 @@ right mouse button - move spoon
 z - tilt bottle
 
 x - camera 1
+
 c - camera 2
+
 v - camera 3
 
 q - spawn ingredient 1
+
 w - spawn ingredient 2
+
 e - spawn ingredient 3
 
 ![alt text][logo]
