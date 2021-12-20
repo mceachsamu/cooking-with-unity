@@ -420,8 +420,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
         type: 3}
+      propertyPath: Lid
+      value: 
+      objectReference: {fileID: 818178119}
+    - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+        type: 3}
+      propertyPath: Water
+      value: 
+      objectReference: {fileID: 1035654441}
+    - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+        type: 3}
+      propertyPath: MaxHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+        type: 3}
       propertyPath: maxHeight
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+        type: 3}
+      propertyPath: NumBubbles
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
         type: 3}
@@ -430,9 +450,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
         type: 3}
+      propertyPath: StartHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+        type: 3}
       propertyPath: startHeight
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4296704067726469628, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+        type: 3}
+      propertyPath: BubblePrefab
+      value: 
+      objectReference: {fileID: 790349913}
     - target: {fileID: 4296704068676737560, guid: a5cea682d5c7848099e94cb5aacf7cdf,
         type: 3}
       propertyPath: Mass
@@ -783,6 +813,18 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4344746556911941910, guid: a2b636aef107341a3a9eebe472951f44, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a2b636aef107341a3a9eebe472951f44, type: 3}
+--- !u!1 &790349913 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4296704068462241253, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+    type: 3}
+  m_PrefabInstance: {fileID: 411538150}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &818178119 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4296704067109289230, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+    type: 3}
+  m_PrefabInstance: {fileID: 411538150}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &906425042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,6 +1095,12 @@ MonoBehaviour:
   - assemblyQualifiedName: PostProcessOutline, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_AfterStackBundles: []
+--- !u!1 &1035654441 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4296704068676737561, guid: a5cea682d5c7848099e94cb5aacf7cdf,
+    type: 3}
+  m_PrefabInstance: {fileID: 411538150}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1044523198 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4446146762717966600, guid: 1361db19bbdd244ecb7064471317283a,
