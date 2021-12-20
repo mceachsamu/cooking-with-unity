@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class IngredientSettings {
-    public int numSpawn;
-    public GameObject[] ingredients;
-    public GameObject prefab;
-    public int index = 0;
-    public string keyStroke;
+    public int NumSpawn;
+    public GameObject[] Ingredients;
+    public GameObject Prefab;
+    public int Index = 0;
+    public string KeyStroke;
 
     public IngredientSettings(GameObject ingredientPrefab, int numberToSpawn, string keyDown) {
 
-        prefab = ingredientPrefab;
+        Prefab = ingredientPrefab;
 
-        numSpawn = numberToSpawn;
+        NumSpawn = numberToSpawn;
 
-        ingredients = new GameObject[numSpawn];
+        Ingredients = new GameObject[NumSpawn];
 
-        keyStroke = keyDown;
+        KeyStroke = keyDown;
     }
 }

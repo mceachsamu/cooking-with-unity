@@ -50,16 +50,16 @@ public class IngredientDepository : MonoBehaviour
 
         for (int i = 0; i < _settings.Length; i++)
         {
-            for (int j = 0; j < _settings[i].numSpawn; j++)
+            for (int j = 0; j < _settings[i].NumSpawn; j++)
             {
-                GameObject g = InstantiateIngredient(_settings[i].prefab);
+                GameObject g = InstantiateIngredient(_settings[i].Prefab);
 
                 // just moving the ingredients into the middle of nowhere
                 Vector3 pos = g.transform.position;
                 pos.x += 100.0f;
                 g.transform.position = pos;
 
-                _settings[i].ingredients[j] = g;
+                _settings[i].Ingredients[j] = g;
             }
         }
 
@@ -80,13 +80,13 @@ public class IngredientDepository : MonoBehaviour
     {
         for (int i = 0; i < _settings.Length; i++)
         {
-            if (Input.GetKeyDown(_settings[i].keyStroke) && _settings[i].index < _settings[i].numSpawn)
+            if (Input.GetKeyDown(_settings[i].KeyStroke) && _settings[i].Index < _settings[i].NumSpawn)
             {
-                GameObject g = _settings[i].ingredients[_settings[i].index];
+                GameObject g = _settings[i].Ingredients[_settings[i].Index];
                 AddForceToIngredient(g);
 
                 g.transform.position = this.transform.position;
-                _settings[i].index++;
+                _settings[i].Index++;
             }
         }
     }
